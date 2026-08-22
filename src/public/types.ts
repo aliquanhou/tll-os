@@ -4,7 +4,7 @@
  * 这是 TLL OS 对外暴露的所有公开类型定义。
  * 外部 Agent 和第三方开发者只能依赖这里导出的类型。
  *
- * 这是 TLL OS 13 项 Public Contracts 的统一类型定义。
+ * 这是 TLL OS 17 项 Public Contracts 的统一类型定义。
  */
 
 // ============================================================
@@ -44,9 +44,23 @@ export interface Application {
   readonly events: EventManager;
   readonly config: ConfigManager;
 
+  // Multi-Agent 协作（P0-2 ~ P0-6）
+  readonly workspaces: WorkspaceManager;
+  readonly locks: LockManager;
+  readonly handoffs: HandoffManager;
+  readonly reviews: ReviewManager;
+  readonly changeSets: ChangeSetManager;
+
+  // Persistence & Plugin（P0-7, P0-11）
+  readonly persistence: PersistenceAdapter;
+  readonly plugins: PluginManager;
+
   // 生命周期
   start(): Awaitable<void>;
   stop(): Awaitable<void>;
+
+  // HTTP 服务器（P0-8）
+  startHttp(port?: number, host?: string): Promise<{ port: number; url: string }>;
 }
 
 export type ApplicationState = 'created' | 'starting' | 'running' | 'stopping' | 'stopped' | 'error';
@@ -58,7 +72,7 @@ export type ApplicationState = 'created' | 'starting' | 'running' | 'stopping' |
 export type GraphNodeType =
   | 'application' | 'module' | 'plugin' | 'api' | 'model' | 'event'
   | 'workflow' | 'agent' | 'tool' | 'skill' | 'permission' | 'command'
-  | 'config' | 'dependency' | 'build_target';
+  | 'config' | 'dependency' | 'build_target' | 'adapter';
 
 export interface GraphNode {
   id: string;
@@ -129,9 +143,27 @@ export interface ImpactAnalysisResult {
   node: GraphNode;
   directDependents: GraphNode[];
   indirectDependents: GraphNode[];
+  // 归属资源（belongs_to 反向：这个节点拥有什么）
+  ownedApis: GraphNode[];
+  ownedTools: GraphNode[];
+  ownedTests: GraphNode[];
+  ownedAgents: GraphNode[];
+  ownedModels: GraphNode[];
+  ownedEvents: GraphNode[];
+  // 受影响汇总
+  affectedModules: GraphNode[];
   affectedApis: GraphNode[];
+  affectedTools: GraphNode[];
   affectedAgents: GraphNode[];
+  affectedTests: GraphNode[];
+  // 调用链影响（calls/uses 边）
+  callers: GraphNode[];
+  callees: GraphNode[];
+  // 回归分析
+  regressionPoints: Array<{ node: GraphNode; reason: string; severity: 'low' | 'medium' | 'high' | 'critical' }>;
+  dependencyPaths: Array<{ path: string[]; risk: 'low' | 'medium' | 'high' | 'critical' }>;
   riskLevel: 'low' | 'medium' | 'high' | 'critical';
+  summary: string;
 }
 
 export interface GraphSnapshot {
@@ -246,6 +278,70 @@ export interface ApiManager {
 
   // 模拟请求（不需要真实 HTTP 服务器）
   request(method: string, path: string, body?: unknown): Awaitable<ApiResponse>;
+}
+
+// ============================================================
+// 4b. 统一 API 响应 Contract（P0-9）
+// ============================================================
+
+export type ApiErrorCode =
+  | 'validation_error'
+  | 'not_found'
+  | 'unauthorized'
+  | 'forbidden'
+  | 'conflict'
+  | 'rate_limited'
+  | 'internal_error'
+  | 'service_unavailable'
+  | 'bad_request';
+
+export interface ApiErrorDetail {
+  field?: string;
+  message: string;
+  code?: string;
+}
+
+export interface StandardApiResponse<T = unknown> {
+  ok: boolean;
+  data: T | null;
+  error: {
+    code: ApiErrorCode;
+    message: string;
+    details?: ApiErrorDetail[];
+    requestId: string;
+  } | null;
+  requestId: string;
+  timestamp: number;
+  pagination?: PaginationInfo;
+}
+
+export interface PaginationInfo {
+  page: number;
+  pageSize: number;
+  total: number;
+  totalPages: number;
+  hasNext: boolean;
+  hasPrev: boolean;
+}
+
+export interface PaginationParams {
+  page?: number;
+  pageSize?: number;
+  sort?: string;
+  order?: 'asc' | 'desc';
+}
+
+// 标准响应构造器类型
+export interface ApiResponseBuilder {
+  ok<T>(data: T, pagination?: PaginationInfo): StandardApiResponse<T>;
+  created<T>(data: T): StandardApiResponse<T>;
+  badRequest(message: string, details?: ApiErrorDetail[]): StandardApiResponse;
+  notFound(resource: string): StandardApiResponse;
+  unauthorized(message?: string): StandardApiResponse;
+  forbidden(message?: string): StandardApiResponse;
+  conflict(message: string): StandardApiResponse;
+  validationError(details: ApiErrorDetail[]): StandardApiResponse;
+  internalError(message?: string): StandardApiResponse;
 }
 
 // ============================================================
@@ -869,4 +965,415 @@ export interface TEPEngine {
   runAIReview(id: string): Promise<ProposalValidation>;
   merge(id: string): Promise<boolean>;
   reject(id: string, reason: string): EvolutionProposal | null;
+}
+
+// ============================================================
+// 18. Runtime ChangeSet Contract（P0-2）
+// ============================================================
+
+export type ChangeOperation = 'add' | 'modify' | 'remove';
+export type ChangeEntityType = 'module' | 'api' | 'tool' | 'agent' | 'test' | 'event' | 'config' | 'model' | 'graph_node' | 'graph_edge' | 'plugin';
+
+export interface ChangeEntry {
+  id: string;
+  operation: ChangeOperation;
+  entityType: ChangeEntityType;
+  entityId: string;
+  entityName?: string;
+  before?: unknown;
+  after?: unknown;
+  timestamp: number;
+  agentName?: string;
+  description?: string;
+}
+
+export type ChangeSetStatus = 'draft' | 'previewed' | 'validated' | 'applied' | 'rolled_back' | 'conflict';
+
+export interface RuntimeChangeSet {
+  readonly id: string;
+  readonly name: string;
+  readonly description?: string;
+  readonly agentName?: string;
+  readonly workspaceId?: string;
+  status: ChangeSetStatus;
+  readonly createdAt: number;
+  updatedAt: number;
+
+  entries: ChangeEntry[];
+
+  // 依赖与风险
+  dependencies: string[];
+  affectedNodeIds: string[];
+  riskLevel: 'low' | 'medium' | 'high' | 'critical';
+
+  // 操作
+  addEntry(entry: Omit<ChangeEntry, 'id' | 'timestamp'>): void;
+  preview(): ChangeSetPreview;
+  validate(): ChangeSetValidationResult;
+  apply(): Promise<ChangeSetApplyResult>;
+  rollback(): Promise<boolean>;
+  toJSON(): ChangeSetSnapshot;
+}
+
+export interface ChangeSetPreview {
+  totalChanges: number;
+  byOperation: Record<ChangeOperation, number>;
+  byEntityType: Record<string, number>;
+  affectedModules: string[];
+  affectedApis: string[];
+  affectedTools: string[];
+  affectedTests: string[];
+  estimatedRisk: 'low' | 'medium' | 'high' | 'critical';
+  conflicts: string[];
+}
+
+export interface ChangeSetValidationResult {
+  valid: boolean;
+  errors: Array<{ entryId?: string; message: string; code: string }>;
+  warnings: Array<{ entryId?: string; message: string }>;
+  requiresTests: string[];
+}
+
+export interface ChangeSetApplyResult {
+  success: boolean;
+  appliedCount: number;
+  failedCount: number;
+  errors: Array<{ entryId: string; message: string }>;
+  newGraphSnapshot?: GraphSnapshot;
+}
+
+export interface ChangeSetSnapshot {
+  id: string;
+  name: string;
+  status: ChangeSetStatus;
+  agentName?: string;
+  workspaceId?: string;
+  entries: ChangeEntry[];
+  createdAt: number;
+  updatedAt: number;
+}
+
+export interface ChangeSetManager {
+  create(name: string, options?: { description?: string; agentName?: string; workspaceId?: string }): RuntimeChangeSet;
+  get(id: string): RuntimeChangeSet | null;
+  list(status?: ChangeSetStatus): RuntimeChangeSet[];
+  listByWorkspace(workspaceId: string): RuntimeChangeSet[];
+  listByAgent(agentName: string): RuntimeChangeSet[];
+  remove(id: string): void;
+}
+
+// ============================================================
+// 19. Workspace Contract（P0-3）
+// ============================================================
+
+export type WorkspaceStatus = 'active' | 'merged' | 'abandoned' | 'conflict';
+
+export interface Workspace {
+  readonly id: string;
+  readonly name: string;
+  readonly description?: string;
+  readonly agentName: string;
+  readonly baseGraphSnapshot: GraphSnapshot;
+  status: WorkspaceStatus;
+  readonly createdAt: number;
+  updatedAt: number;
+
+  // 工作区内的 Application（独立状态，不直接影响主 Application）
+  readonly application: Application;
+
+  // ChangeSet
+  readonly changeSets: ChangeSetManager;
+
+  // 操作
+  createChangeSet(name: string, description?: string): RuntimeChangeSet;
+  getCurrentChangeSet(): RuntimeChangeSet | null;
+  commit(changeSetId: string): Promise<ChangeSetApplyResult>;
+  diff(): ChangeSetPreview;
+  abandon(): void;
+}
+
+export interface WorkspaceManager {
+  create(name: string, agentName: string, options?: { description?: string }): Workspace;
+  get(id: string): Workspace | null;
+  getByName(name: string): Workspace | null;
+  list(status?: WorkspaceStatus): Workspace[];
+  listByAgent(agentName: string): Workspace[];
+  getActiveWorkspaces(): Workspace[];
+  remove(id: string): void;
+}
+
+// ============================================================
+// 20. Resource Lock Contract（P0-4）
+// ============================================================
+
+export interface ResourceLock {
+  readonly id: string;
+  readonly resourceId: string;
+  readonly resourceType: ChangeEntityType;
+  readonly ownerAgent: string;
+  readonly version: number;
+  readonly acquiredAt: number;
+  readonly expiresAt: number;
+  readonly status: 'active' | 'expired' | 'released';
+
+  isExpired(): boolean;
+  release(): void;
+  extend(ttlMs: number): void;
+}
+
+export interface VersionConflictError {
+  code: 'VERSION_CONFLICT';
+  resourceId: string;
+  resourceType: ChangeEntityType;
+  expectedVersion: number;
+  actualVersion: number;
+  ownerAgent: string;
+  message: string;
+}
+
+export interface LockManager {
+  acquire(resourceId: string, resourceType: ChangeEntityType, agentName: string, ttlMs?: number): ResourceLock;
+  release(lockId: string): boolean;
+  get(resourceId: string): ResourceLock | null;
+  listActive(): ResourceLock[];
+  listByAgent(agentName: string): ResourceLock[];
+  checkVersion(resourceId: string, expectedVersion: number): { ok: boolean; actualVersion: number };
+  incrementVersion(resourceId: string): number;
+  getVersion(resourceId: string): number;
+}
+
+// ============================================================
+// 21. Agent Handoff Contract（P0-5）
+// ============================================================
+
+export type HandoffStatus = 'pending' | 'accepted' | 'rejected' | 'completed';
+
+export interface AgentHandoff {
+  readonly id: string;
+  readonly fromAgent: string;
+  readonly toAgent: string;
+  readonly task: string;
+  readonly description?: string;
+  status: HandoffStatus;
+  readonly createdAt: number;
+  updatedAt: number;
+
+  // 上下文
+  readonly workspaceId?: string;
+  readonly changeSetId?: string;
+  graphSnapshot?: GraphSnapshot;
+  unresolvedIssues: string[];
+  context: Record<string, unknown>;
+
+  // 操作
+  accept(): void;
+  reject(reason: string): void;
+  complete(summary: string): void;
+  addIssue(issue: string): void;
+}
+
+export interface HandoffManager {
+  create(fromAgent: string, toAgent: string, task: string, options?: {
+    description?: string;
+    workspaceId?: string;
+    changeSetId?: string;
+    graphSnapshot?: GraphSnapshot;
+    context?: Record<string, unknown>;
+  }): AgentHandoff;
+  get(id: string): AgentHandoff | null;
+  list(status?: HandoffStatus): AgentHandoff[];
+  listByAgent(agentName: string): AgentHandoff[];
+  listIncoming(agentName: string): AgentHandoff[];
+  listOutgoing(agentName: string): AgentHandoff[];
+  remove(id: string): void;
+}
+
+// ============================================================
+// 22. Review / Merge Contract（P0-6）
+// ============================================================
+
+export type ReviewStatus = 'pending' | 'approved' | 'rejected' | 'changes_requested';
+export type MergeStatus = 'pending' | 'approved' | 'rejected' | 'merged' | 'conflict';
+
+export interface ReviewComment {
+  id: string;
+  author: string;
+  authorType: 'agent' | 'human';
+  content: string;
+  createdAt: number;
+  changeEntryId?: string;
+}
+
+export interface ReviewRequest {
+  readonly id: string;
+  readonly title: string;
+  readonly description?: string;
+  readonly author: string;
+  readonly authorType: 'agent' | 'human';
+  readonly changeSetId: string;
+  readonly workspaceId?: string;
+  status: ReviewStatus;
+  readonly createdAt: number;
+  updatedAt: number;
+
+  reviewers: Array<{ name: string; type: 'agent' | 'human'; status: ReviewStatus }>;
+  comments: ReviewComment[];
+
+  // 操作
+  addReviewer(name: string, type: 'agent' | 'human'): void;
+  addComment(author: string, authorType: 'agent' | 'human', content: string, changeEntryId?: string): ReviewComment;
+  approve(reviewer: string): void;
+  reject(reviewer: string, reason: string): void;
+  requestChanges(reviewer: string, reason: string): void;
+}
+
+export interface MergeRequest {
+  readonly id: string;
+  readonly title: string;
+  readonly sourceWorkspaceId: string;
+  readonly targetWorkspaceId: string; // 'main' 或其他 workspace
+  readonly changeSetId: string;
+  readonly author: string;
+  status: MergeStatus;
+  readonly createdAt: number;
+  updatedAt: number;
+
+  reviewRequestId?: string;
+  conflictDetails?: string[];
+  mergeResult?: ChangeSetApplyResult;
+
+  // 操作
+  approve(): void;
+  reject(reason: string): void;
+  merge(): Promise<ChangeSetApplyResult>;
+}
+
+export interface ReviewManager {
+  createReview(title: string, author: string, authorType: 'agent' | 'human', changeSetId: string, options?: {
+    description?: string;
+    workspaceId?: string;
+  }): ReviewRequest;
+  getReview(id: string): ReviewRequest | null;
+  listReviews(status?: ReviewStatus): ReviewRequest[];
+
+  createMerge(title: string, sourceWorkspaceId: string, changeSetId: string, author: string, options?: {
+    targetWorkspaceId?: string;
+    reviewRequestId?: string;
+  }): MergeRequest;
+  getMerge(id: string): MergeRequest | null;
+  listMerges(status?: MergeStatus): MergeRequest[];
+}
+
+// ============================================================
+// 23. Persistence Contract（P0-7）
+// ============================================================
+
+export interface PersistenceAdapter {
+  readonly name: string;
+  readonly type: 'memory' | 'sqlite' | 'postgresql' | 'mongodb' | string;
+
+  connect(): Promise<void>;
+  disconnect(): Promise<void>;
+  isConnected(): boolean;
+
+  getRepository<T extends Record<string, unknown>>(collection: string): Repository<T>;
+  transaction<T>(fn: (tx: Transaction) => Promise<T>): Promise<T>;
+  migrate(migrations: Migration[]): Promise<PersistenceMigrationResult>;
+}
+
+export interface Repository<T extends Record<string, unknown>> {
+  readonly collection: string;
+
+  create(data: Partial<T>): Promise<T>;
+  createMany(data: Array<Partial<T>>): Promise<T[]>;
+  findById(id: string): Promise<T | null>;
+  findOne(query: Query): Promise<T | null>;
+  find(query?: Query): Promise<T[]>;
+  findPaginated(query?: Query, pagination?: PaginationParams): Promise<PaginationResult<T>>;
+  update(id: string, data: Partial<T>): Promise<T | null>;
+  updateMany(query: Query, data: Partial<T>): Promise<number>;
+  delete(id: string): Promise<boolean>;
+  deleteMany(query: Query): Promise<number>;
+  count(query?: Query): Promise<number>;
+  exists(query: Query): Promise<boolean>;
+}
+
+export interface Query {
+  filter?: Record<string, unknown>;
+  sort?: Array<{ field: string; order: 'asc' | 'desc' }>;
+  limit?: number;
+  offset?: number;
+  select?: string[];
+}
+
+export interface PaginationResult<T> {
+  items: T[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+  hasNext: boolean;
+  hasPrev: boolean;
+}
+
+export interface Transaction {
+  readonly id: string;
+  commit(): Promise<void>;
+  rollback(): Promise<void>;
+  getRepository<T extends Record<string, unknown>>(collection: string): Repository<T>;
+}
+
+export interface Migration {
+  id: string;
+  name: string;
+  up: (adapter: PersistenceAdapter) => Promise<void>;
+  down?: (adapter: PersistenceAdapter) => Promise<void>;
+}
+
+export interface PersistenceMigrationResult {
+  applied: string[];
+  skipped: string[];
+  failed: Array<{ id: string; error: string }>;
+}
+
+// ============================================================
+// 24. Plugin Contract Runtime（P0-11）
+// ============================================================
+
+export interface PluginManifest {
+  name: string;
+  version: string;
+  description?: string;
+  author?: string;
+  license?: string;
+  main: string;
+  dependencies?: string[];
+  permissions?: string[];
+  capabilities?: string[];
+  configSchema?: JsonObject;
+}
+
+export type PluginState = 'installed' | 'enabled' | 'disabled' | 'error';
+
+export interface PluginInstance {
+  readonly manifest: PluginManifest;
+  readonly state: PluginState;
+  readonly installedAt: number;
+  enabledAt?: number;
+
+  enable(): Promise<void>;
+  disable(): Promise<void>;
+  uninstall(): Promise<void>;
+  getConfig(): Record<string, unknown>;
+  setConfig(key: string, value: unknown): void;
+}
+
+export interface PluginManager {
+  install(manifest: PluginManifest, code?: unknown): Promise<PluginInstance>;
+  uninstall(name: string): Promise<boolean>;
+  enable(name: string): Promise<PluginInstance | null>;
+  disable(name: string): Promise<PluginInstance | null>;
+  get(name: string): PluginInstance | null;
+  list(state?: PluginState): PluginInstance[];
+  has(name: string): boolean;
 }

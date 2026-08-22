@@ -19,7 +19,20 @@ import type {
   RuntimeAdapter,
   TllOS, ContractInfo,
   JsonValue, JsonObject,
+  StandardApiResponse, ApiResponseBuilder, ApiErrorDetail, PaginationInfo,
+  PersistenceAdapter,
 } from '../public/types.js';
+
+import {
+  ChangeSetManagerImpl,
+  WorkspaceManagerImpl,
+  LockManagerImpl,
+  HandoffManagerImpl,
+  ReviewManagerImpl,
+} from './collaboration.js';
+
+import { MemoryPersistenceAdapter } from './persistence.js';
+import { PluginManagerImpl } from './plugin.js';
 
 // ============================================================
 // 工具函数
@@ -170,14 +183,25 @@ class ApplicationGraphImpl implements ApplicationGraph {
     if (!node) {
       return {
         node: { id: nodeId, type: 'application', name: 'unknown', createdAt: 0, updatedAt: 0 },
-        directDependents: [],
-        indirectDependents: [],
-        affectedApis: [],
-        affectedAgents: [],
-        riskLevel: 'low',
+        directDependents: [], indirectDependents: [],
+        ownedApis: [], ownedTools: [], ownedTests: [], ownedAgents: [], ownedModels: [], ownedEvents: [],
+        affectedModules: [], affectedApis: [], affectedTools: [], affectedAgents: [], affectedTests: [],
+        callers: [], callees: [], regressionPoints: [], dependencyPaths: [],
+        riskLevel: 'low', summary: 'Node not found in graph.',
       };
     }
 
+    // === 1. 归属资源（belongs_to 反向：谁的 target 是这个节点）===
+    const ownedEdges = this.edgesArray().filter(e => e.type === 'belongs_to' && e.target === nodeId);
+    const ownedNodes = ownedEdges.map(e => this.getNode(e.source)).filter((n): n is GraphNode => n !== null);
+    const ownedApis = ownedNodes.filter(n => n.type === 'api');
+    const ownedTools = ownedNodes.filter(n => n.type === 'tool');
+    const ownedTests = ownedNodes.filter(n => n.type === 'command'); // tests registered as command nodes
+    const ownedAgents = ownedNodes.filter(n => n.type === 'agent');
+    const ownedModels = ownedNodes.filter(n => n.type === 'model');
+    const ownedEvents = ownedNodes.filter(n => n.type === 'event');
+
+    // === 2. 依赖者（depends_on 反向：谁依赖这个节点）===
     const directDependentEdges = this.getDependents(nodeId);
     const directDependents = directDependentEdges.map(e => this.getNode(e.source)).filter((n): n is GraphNode => n !== null);
 
@@ -185,22 +209,104 @@ class ApplicationGraphImpl implements ApplicationGraph {
     for (const dep of directDependents) {
       const subDeps = this.getDependents(dep.id).map(e => this.getNode(e.source)).filter((n): n is GraphNode => n !== null);
       for (const sub of subDeps) {
-        if (!directDependents.find(d => d.id === sub.id) && !indirectDependents.find(d => d.id === sub.id)) {
+        if (sub.id !== nodeId && !directDependents.find(d => d.id === sub.id) && !indirectDependents.find(d => d.id === sub.id)) {
           indirectDependents.push(sub);
         }
       }
     }
 
-    const affectedApis = [...directDependents, ...indirectDependents].filter(n => n.type === 'api');
-    const affectedAgents = [...directDependents, ...indirectDependents].filter(n => n.type === 'agent');
+    // === 3. 调用链（calls 边）===
+    const callerEdges = this.edgesArray().filter(e => e.type === 'calls' && e.target === nodeId);
+    const callers = callerEdges.map(e => this.getNode(e.source)).filter((n): n is GraphNode => n !== null);
+    const calleeEdges = this.edgesArray().filter(e => e.type === 'calls' && e.source === nodeId);
+    const callees = calleeEdges.map(e => this.getNode(e.target)).filter((n): n is GraphNode => n !== null);
 
-    const totalAffected = directDependents.length + indirectDependents.length;
+    // === 4. uses 边 ===
+    const userEdges = this.edgesArray().filter(e => e.type === 'uses' && e.target === nodeId);
+    const users = userEdges.map(e => this.getNode(e.source)).filter((n): n is GraphNode => n !== null);
+
+    // === 5. 汇总受影响范围 ===
+    const allAffected = new Set<string>();
+    const addAffected = (nodes: GraphNode[]) => { for (const n of nodes) allAffected.add(n.id); };
+    addAffected(directDependents);
+    addAffected(indirectDependents);
+    addAffected(ownedApis);
+    addAffected(ownedTools);
+    addAffected(ownedTests);
+    addAffected(ownedAgents);
+    addAffected(callers);
+    addAffected(users);
+
+    const affectedList = Array.from(allAffected).map(id => this.getNode(id)).filter((n): n is GraphNode => n !== null);
+    const affectedModules = affectedList.filter(n => n.type === 'module');
+    const affectedApis = affectedList.filter(n => n.type === 'api');
+    const affectedTools = affectedList.filter(n => n.type === 'tool');
+    const affectedAgents = affectedList.filter(n => n.type === 'agent');
+    const affectedTests = affectedList.filter(n => n.type === 'command');
+
+    // === 6. 回归点分析 ===
+    const regressionPoints: ImpactAnalysisResult['regressionPoints'] = [];
+    for (const api of ownedApis) {
+      regressionPoints.push({ node: api, reason: `API "${api.name}" belongs to modified node, contract may change`, severity: 'high' });
+    }
+    for (const tool of ownedTools) {
+      regressionPoints.push({ node: tool, reason: `Tool "${tool.name}" belongs to modified node, behavior may change`, severity: 'high' });
+      // 调用这个 tool 的 agent 也是回归点
+      const toolCallers = this.edgesArray().filter(e => e.type === 'calls' && e.target === tool.id);
+      for (const ce of toolCallers) {
+        const caller = this.getNode(ce.source);
+        if (caller) regressionPoints.push({ node: caller, reason: `Agent "${caller.name}" calls Tool "${tool.name}" which may change`, severity: 'medium' });
+      }
+    }
+    for (const test of ownedTests) {
+      regressionPoints.push({ node: test, reason: `Test "${test.name}" covers modified node, must re-run`, severity: 'medium' });
+    }
+    for (const dep of directDependents) {
+      regressionPoints.push({ node: dep, reason: `Module "${dep.name}" directly depends on modified node`, severity: dep.type === 'module' ? 'high' : 'medium' });
+    }
+
+    // === 7. 依赖路径 ===
+    const dependencyPaths: ImpactAnalysisResult['dependencyPaths'] = [];
+    for (const depEdge of directDependentEdges) {
+      const depNode = this.getNode(depEdge.source);
+      if (depNode) {
+        const pathRisk: 'low' | 'medium' | 'high' | 'critical' = depNode.type === 'module' ? 'high' : 'medium';
+        dependencyPaths.push({ path: [nodeId, depNode.id], risk: pathRisk });
+        // 二级路径
+        const subDeps = this.getDependents(depNode.id);
+        for (const subEdge of subDeps) {
+          const subNode = this.getNode(subEdge.source);
+          if (subNode && subNode.id !== nodeId) {
+            dependencyPaths.push({ path: [nodeId, depNode.id, subNode.id], risk: 'medium' });
+          }
+        }
+      }
+    }
+
+    // === 8. 风险等级 ===
+    const totalAffected = allAffected.size;
+    const highRiskCount = regressionPoints.filter(r => r.severity === 'high' || r.severity === 'critical').length;
     const riskLevel: ImpactAnalysisResult['riskLevel'] =
       totalAffected === 0 ? 'low' :
-      totalAffected <= 3 ? 'medium' :
-      totalAffected <= 10 ? 'high' : 'critical';
+      highRiskCount >= 5 || totalAffected >= 15 ? 'critical' :
+      highRiskCount >= 2 || totalAffected >= 8 ? 'high' :
+      totalAffected >= 3 ? 'medium' : 'low';
 
-    return { node, directDependents, indirectDependents, affectedApis, affectedAgents, riskLevel };
+    // === 9. 摘要 ===
+    const summary = `Node "${node.name}" (${node.type}) impact: ${totalAffected} affected nodes, ` +
+      `${affectedModules.length} modules, ${affectedApis.length} APIs, ${affectedTools.length} tools, ` +
+      `${affectedAgents.length} agents, ${affectedTests.length} tests. Risk: ${riskLevel}.`;
+
+    return {
+      node, directDependents, indirectDependents,
+      ownedApis, ownedTools, ownedTests, ownedAgents, ownedModels, ownedEvents,
+      affectedModules, affectedApis, affectedTools, affectedAgents, affectedTests,
+      callers, callees, regressionPoints, dependencyPaths, riskLevel, summary,
+    };
+  }
+
+  private edgesArray(): GraphEdge[] {
+    return Array.from(this.edges.values());
   }
 
   toJSON(): GraphSnapshot {
@@ -456,6 +562,28 @@ class ToolImpl implements Tool {
       agentName: context?.agentName,
       requestId: context?.requestId ?? generateId('req'),
     };
+
+    // P0-10: JSON Schema 输入校验
+    if (this.parameters && Object.keys(this.parameters).length > 0) {
+      const validation = validateJsonSchema(args, this.parameters);
+      if (!validation.valid) {
+        return {
+          success: false,
+          error: {
+            code: 'TOOL_VALIDATION_ERROR',
+            message: `Input validation failed: ${validation.errors.map(e => e.message).join('; ')}`,
+          },
+        };
+      }
+    }
+
+    // P0-10: 权限检查（如果 context 提供了 agent 权限）
+    if (this.permissions.length > 0 && context?.agentName) {
+      // 权限检查由调用方（Agent 执行器）在调用前验证，
+      // 这里记录权限要求，实际执行在 Agent Workspace 层完成
+      // （当前 PoC 阶段：权限声明已记录，执行层在 P0-3 Workspace 中实现）
+    }
+
     try {
       const result = await this.handler(args, fullContext);
       return result;
@@ -636,15 +764,42 @@ class TestManagerImpl implements TestManager {
   private tests: Map<string, TestCase> = new Map();
   private moduleName?: string;
   private contextFactory: () => TestContext;
+  private graph?: ApplicationGraphImpl;
 
-  constructor(contextFactory: () => TestContext, moduleName?: string) {
+  constructor(contextFactory: () => TestContext, moduleName?: string, graph?: ApplicationGraphImpl) {
     this.contextFactory = contextFactory;
     this.moduleName = moduleName;
+    this.graph = graph;
   }
 
   create(definition: TestDefinition): TestCase {
     const test = new TestCaseImpl({ ...definition, moduleName: definition.moduleName ?? this.moduleName }, this.contextFactory);
     this.tests.set(test.name, test);
+
+    // 注册到 Graph（作为 command 节点）
+    if (this.graph) {
+      const nodeId = `test:${test.name}`;
+      this.graph.addNode({
+        id: nodeId,
+        type: 'command',
+        name: test.name,
+        description: test.description,
+        status: 'pending',
+        metadata: { kind: 'test', module: this.moduleName },
+        createdAt: now(),
+        updatedAt: now(),
+      });
+      if (this.moduleName) {
+        this.graph.addEdge({
+          id: generateId('edge'),
+          type: 'belongs_to',
+          source: nodeId,
+          target: `module:${this.moduleName}`,
+          createdAt: now(),
+        });
+      }
+    }
+
     return test;
   }
 
@@ -741,7 +896,7 @@ class ModuleImpl implements Module {
       module: this,
       assert: new TestAssertionsImpl(),
     });
-    this.tests = new TestManagerImpl(contextFactory, config.name);
+    this.tests = new TestManagerImpl(contextFactory, config.name, graph);
 
     // 注册到 Graph
     graph.addNode({
@@ -1152,6 +1307,20 @@ class ApplicationImpl implements Application {
   readonly events: EventManager;
   readonly config: ConfigManager;
 
+  // Multi-Agent 协作（P0-2 ~ P0-6）
+  readonly workspaces: WorkspaceManagerImpl;
+  readonly locks: LockManagerImpl;
+  readonly handoffs: HandoffManagerImpl;
+  readonly reviews: ReviewManagerImpl;
+  readonly changeSets: ChangeSetManagerImpl;
+
+  // Persistence & Plugin（P0-7, P0-11）
+  readonly persistence: PersistenceAdapter;
+  readonly plugins: PluginManagerImpl;
+
+  // HTTP 服务器（P0-8）
+  private httpServer?: { close(): Promise<void> };
+
   constructor(config: ApplicationConfig) {
     this.id = generateId('app');
     this.name = config.name;
@@ -1176,7 +1345,7 @@ class ApplicationImpl implements Application {
       application: this,
       assert: new TestAssertionsImpl(),
     });
-    const appLevelTests = new TestManagerImpl(contextFactory);
+    const appLevelTests = new TestManagerImpl(contextFactory, undefined, this.graph);
 
     // 聚合管理器：Application 级 + 所有 Module 级资源
     // Agent 通过 app.apis / app.tools / app.tests 可以访问任何 Module 注册的资源
@@ -1185,11 +1354,31 @@ class ApplicationImpl implements Application {
     this.tests = new AggregatingTestManager(appLevelTests, () => this.modules.list());
 
     this.agents = new AgentManagerImpl(this, this.graph);
+
+    // Multi-Agent 协作管理器（P0-2 ~ P0-6）
+    this.changeSets = new ChangeSetManagerImpl();
+    this.changeSets.setApplication(this);
+    this.workspaces = new WorkspaceManagerImpl();
+    this.workspaces.setMainApplication(this);
+    this.locks = new LockManagerImpl();
+    this.handoffs = new HandoffManagerImpl();
+    this.reviews = new ReviewManagerImpl();
+
+    // Persistence & Plugin（P0-7, P0-11）
+    this.persistence = new MemoryPersistenceAdapter();
+    this.plugins = new PluginManagerImpl();
+    this.plugins.setApplication(this);
   }
 
   async start(): Promise<void> {
     this.state = 'starting';
     await this.events.dispatch('application.starting', { name: this.name });
+
+    // 连接 Persistence
+    if (!this.persistence.isConnected()) {
+      await this.persistence.connect();
+    }
+
     this.state = 'running';
     await this.events.dispatch('application.started', { name: this.name });
   }
@@ -1197,7 +1386,107 @@ class ApplicationImpl implements Application {
   async stop(): Promise<void> {
     this.state = 'stopping';
     await this.events.dispatch('application.stopping', { name: this.name });
+
+    // 停止 HTTP 服务器
+    if (this.httpServer) {
+      await this.httpServer.close();
+      this.httpServer = undefined;
+    }
+
+    // 断开 Persistence
+    if (this.persistence.isConnected()) {
+      await this.persistence.disconnect();
+    }
+
     this.state = 'stopped';
+  }
+
+  // P0-8: 启动 HTTP 服务器，将所有注册的 API 暴露为真实 HTTP 端点
+  async startHttp(port: number = 3000, host: string = '0.0.0.0'): Promise<{ port: number; url: string }> {
+    if (this.state !== 'running') {
+      await this.start();
+    }
+
+    const { createServer } = await import('node:http');
+
+    const server = createServer(async (req, res) => {
+      const requestId = generateId('req');
+      const method = (req.method ?? 'GET').toUpperCase() as HttpMethod;
+      const url = new URL(req.url ?? '/', `http://${req.headers.host ?? 'localhost'}`);
+      const path = url.pathname;
+
+      // CORS
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization,X-Request-Id');
+      res.setHeader('X-Request-Id', requestId);
+
+      if (method === 'OPTIONS') {
+        res.writeHead(204);
+        res.end();
+        return;
+      }
+
+      // 健康检查
+      if (path === '/health') {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true, status: this.state, name: this.name, version: this.version, requestId }));
+        return;
+      }
+
+      // Application Graph 端点
+      if (path === '/graph' && method === 'GET') {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(this.graph.toJSON()));
+        return;
+      }
+
+      // 匹配 API 端点
+      const endpoint = this.apis.match(method, path);
+      if (!endpoint) {
+        res.writeHead(404, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: false, error: { code: 'not_found', message: `No endpoint for ${method} ${path}`, requestId }, requestId }));
+        return;
+      }
+
+      try {
+        // 读取 body
+        let body: unknown = undefined;
+        if (method !== 'GET' && method !== 'HEAD') {
+          const chunks: Buffer[] = [];
+          for await (const chunk of req) chunks.push(chunk as Buffer);
+          const raw = Buffer.concat(chunks).toString('utf-8');
+          if (raw) {
+            try { body = JSON.parse(raw); } catch { body = raw; }
+          }
+        }
+
+        // 解析 query
+        const query: Record<string, string> = {};
+        for (const [key, value] of url.searchParams) query[key] = value;
+
+        const result = await endpoint.invoke({ method, path, headers: req.headers as Record<string, string>, query, body });
+
+        res.writeHead(result.status, { 'Content-Type': result.headers['content-type'] ?? 'application/json' });
+        if (typeof result.body === 'string') {
+          res.end(result.body);
+        } else {
+          res.end(JSON.stringify(result.body));
+        }
+      } catch (error) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: false, error: { code: 'internal_error', message: error instanceof Error ? error.message : String(error), requestId }, requestId }));
+      }
+    });
+
+    return new Promise((resolve, reject) => {
+      server.once('error', reject);
+      server.listen(port, host, () => {
+        const actualPort = (server.address() as { port: number }).port;
+        this.httpServer = { close: () => new Promise<void>((res) => server.close(() => res())) };
+        resolve({ port: actualPort, url: `http://${host}:${actualPort}` });
+      });
+    });
   }
 }
 
@@ -1206,19 +1495,23 @@ class ApplicationImpl implements Application {
 // ============================================================
 
 const CONTRACTS: ContractInfo[] = [
-  { name: 'Application Model', version: '1.0.0', description: '应用模型与生命周期', status: 'stable' },
-  { name: 'Application Graph', version: '1.0.0', description: '应用结构图', status: 'beta' },
-  { name: 'Module Contract', version: '1.0.0', description: '模块契约', status: 'stable' },
-  { name: 'Plugin Contract', version: '1.0.0', description: '插件契约', status: 'beta' },
-  { name: 'Agent Contract', version: '1.0.0', description: 'AI Agent 契约', status: 'beta' },
-  { name: 'Tool Contract', version: '1.0.0', description: 'Tool 契约', status: 'stable' },
-  { name: 'Skill Contract', version: '0.1.0', description: 'Skill 契约', status: 'draft' },
-  { name: 'AI Context Contract', version: '0.1.0', description: 'AI 上下文契约', status: 'draft' },
-  { name: 'Permission Contract', version: '1.0.0', description: '权限契约', status: 'stable' },
-  { name: 'Workflow Contract', version: '0.1.0', description: '工作流契约', status: 'draft' },
-  { name: 'Runtime Lifecycle', version: '1.0.0', description: '运行时生命周期', status: 'stable' },
-  { name: 'Developer-Agent Protocol', version: '0.1.0', description: '开发者-Agent 协议', status: 'draft' },
-  { name: 'Runtime Adapter', version: '0.1.0', description: '运行时适配器', status: 'beta' },
+  { name: 'Application Model', version: '2.0.0', description: '应用模型与生命周期', status: 'stable' },
+  { name: 'Application Graph', version: '2.0.0', description: '应用结构图与影响分析', status: 'beta' },
+  { name: 'Module Contract', version: '2.0.0', description: '模块契约', status: 'stable' },
+  { name: 'Plugin Contract', version: '2.0.0', description: '插件契约', status: 'beta' },
+  { name: 'Agent Contract', version: '2.0.0', description: 'AI Agent 契约', status: 'beta' },
+  { name: 'Tool Contract', version: '2.0.0', description: 'Tool 契约（含输入校验与权限）', status: 'stable' },
+  { name: 'Skill Contract', version: '2.0.0', description: 'Skill 契约', status: 'draft' },
+  { name: 'Context Contract', version: '2.0.0', description: 'AI 上下文契约', status: 'draft' },
+  { name: 'Permission Contract', version: '2.0.0', description: '权限契约', status: 'stable' },
+  { name: 'Workflow Contract', version: '2.0.0', description: '工作流契约', status: 'draft' },
+  { name: 'Event Contract', version: '2.0.0', description: '事件契约', status: 'stable' },
+  { name: 'Adapter Contract', version: '2.0.0', description: '适配器契约', status: 'beta' },
+  { name: 'Projection Contract', version: '2.0.0', description: '投影契约（Graph→代码）', status: 'draft' },
+  { name: 'BuildTarget Contract', version: '2.0.0', description: '构建目标契约', status: 'draft' },
+  { name: 'Capability Contract', version: '2.0.0', description: '能力注册契约', status: 'beta' },
+  { name: 'Compatibility Manifest', version: '2.0.0', description: '兼容性声明契约', status: 'draft' },
+  { name: 'Evolution Proposal', version: '2.0.0', description: '演进提案契约（TEP）', status: 'beta' },
 ];
 
 class TllOSImpl implements TllOS {
@@ -1314,6 +1607,105 @@ function createDefaultRuntime(): RuntimeAdapter {
 }
 
 // ============================================================
+// 统一 API 响应构造器（P0-9）
+// ============================================================
+
+class ApiResponseBuilderImpl implements ApiResponseBuilder {
+  private requestId: string;
+
+  constructor(requestId?: string) {
+    this.requestId = requestId ?? generateId('req');
+  }
+
+  ok<T>(data: T, pagination?: PaginationInfo): StandardApiResponse<T> {
+    return { ok: true, data, error: null, requestId: this.requestId, timestamp: now(), pagination };
+  }
+
+  created<T>(data: T): StandardApiResponse<T> {
+    return { ok: true, data, error: null, requestId: this.requestId, timestamp: now() };
+  }
+
+  badRequest(message: string, details?: ApiErrorDetail[]): StandardApiResponse {
+    return { ok: false, data: null, error: { code: 'bad_request', message, details, requestId: this.requestId }, requestId: this.requestId, timestamp: now() };
+  }
+
+  notFound(resource: string): StandardApiResponse {
+    return { ok: false, data: null, error: { code: 'not_found', message: `${resource} not found`, requestId: this.requestId }, requestId: this.requestId, timestamp: now() };
+  }
+
+  unauthorized(message?: string): StandardApiResponse {
+    return { ok: false, data: null, error: { code: 'unauthorized', message: message ?? 'Authentication required', requestId: this.requestId }, requestId: this.requestId, timestamp: now() };
+  }
+
+  forbidden(message?: string): StandardApiResponse {
+    return { ok: false, data: null, error: { code: 'forbidden', message: message ?? 'Permission denied', requestId: this.requestId }, requestId: this.requestId, timestamp: now() };
+  }
+
+  conflict(message: string): StandardApiResponse {
+    return { ok: false, data: null, error: { code: 'conflict', message, requestId: this.requestId }, requestId: this.requestId, timestamp: now() };
+  }
+
+  validationError(details: ApiErrorDetail[]): StandardApiResponse {
+    return { ok: false, data: null, error: { code: 'validation_error', message: 'Validation failed', details, requestId: this.requestId }, requestId: this.requestId, timestamp: now() };
+  }
+
+  internalError(message?: string): StandardApiResponse {
+    return { ok: false, data: null, error: { code: 'internal_error', message: message ?? 'Internal server error', requestId: this.requestId }, requestId: this.requestId, timestamp: now() };
+  }
+}
+
+export function createApiResponseBuilder(requestId?: string): ApiResponseBuilder {
+  return new ApiResponseBuilderImpl(requestId);
+}
+
+// ============================================================
+// Tool 输入校验（P0-10）— 极简 JSON Schema 校验器
+// ============================================================
+
+function validateJsonSchema(value: unknown, schema: JsonObject): { valid: boolean; errors: ApiErrorDetail[] } {
+  const errors: ApiErrorDetail[] = [];
+
+  if (!schema || typeof schema !== 'object') return { valid: true, errors };
+
+  // type 校验
+  const expectedType = schema.type as string | undefined;
+  if (expectedType) {
+    const actualType = value === null ? 'null' : Array.isArray(value) ? 'array' : typeof value;
+    const typeMap: Record<string, string> = { integer: 'number' };
+    const normalizedExpected = typeMap[expectedType] ?? expectedType;
+    if (actualType !== normalizedExpected) {
+      errors.push({ message: `Expected type ${expectedType}, got ${actualType}` });
+    }
+  }
+
+  // required 校验（仅对 object）
+  if (schema.required && Array.isArray(schema.required) && value && typeof value === 'object' && !Array.isArray(value)) {
+    const obj = value as Record<string, unknown>;
+    for (const field of schema.required as string[]) {
+      if (!(field in obj) || obj[field] === undefined) {
+        errors.push({ field, message: `Field "${field}" is required` });
+      }
+    }
+  }
+
+  // properties 递归校验
+  if (schema.properties && value && typeof value === 'object' && !Array.isArray(value)) {
+    const obj = value as Record<string, unknown>;
+    const props = schema.properties as Record<string, JsonObject>;
+    for (const [key, propSchema] of Object.entries(props)) {
+      if (key in obj && obj[key] !== undefined) {
+        const result = validateJsonSchema(obj[key], propSchema);
+        for (const err of result.errors) {
+          errors.push({ field: err.field ? `${key}.${err.field}` : key, message: err.message });
+        }
+      }
+    }
+  }
+
+  return { valid: errors.length === 0, errors };
+}
+
+// ============================================================
 // 导出
 // ============================================================
 
@@ -1321,4 +1713,4 @@ export function createTllOS(runtime?: RuntimeAdapter): TllOS {
   return new TllOSImpl(runtime);
 }
 
-export { TllOSImpl, ApplicationImpl, ApplicationGraphImpl };
+export { TllOSImpl, ApplicationImpl, ApplicationGraphImpl, ApiResponseBuilderImpl };

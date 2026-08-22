@@ -1,10 +1,13 @@
 {
   "name": "@tll/os",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "TLL OS — AI-Native Universal Application Development Protocol",
   "type": "module",
   "main": "src/public/index.ts",
   "types": "src/public/types.ts",
+  "bin": {
+    "tll": "src/cli/index.ts"
+  },
   "exports": {
     ".": "./src/public/index.ts",
     "./public": "./src/public/index.ts",
@@ -42,7 +45,7 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tll-os/tll-os.git"
+    "url": "https://github.com/aliquanhou/tll-os.git"
   },
   "homepage": "https://ts.knitoem.com"
 }
