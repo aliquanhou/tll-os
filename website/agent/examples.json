@@ -9,6 +9,7 @@
       "type": "proof_of_concept",
       "description": "Minimal PoC proving an AI Agent can build a TLL OS application using only the public contract. Single module, complete test-fix-retest loop.",
       "path": "examples/hello-tll-agent/agent.ts",
+      "source_url": "https://github.com/aliquanhou/tll-os/blob/main/examples/hello-tll-agent/agent.ts",
       "run_command": "npx tsx examples/hello-tll-agent/agent.ts",
       "modules": 1,
       "apis": 1,
@@ -31,6 +32,7 @@
       "type": "real_agent_development_experiment",
       "description": "Critical validation. An Agent that has never seen TLL OS source code independently builds a multi-module application with cross-module dependencies, 11 REST APIs, a unified Tool (6 operations), and an intent-parsing Agent. 12 tests, all passing.",
       "path": "examples/autonomous-task-manager/agent.ts",
+      "source_url": "https://github.com/aliquanhou/tll-os/blob/main/examples/autonomous-task-manager/agent.ts",
       "run_command": "npx tsx examples/autonomous-task-manager/agent.ts",
       "modules": 2,
       "module_names": ["project", "task"],
@@ -101,8 +103,73 @@
         "Real Agent experiments discover core bugs that unit tests miss"
       ],
       "status": "verified"
+    },
+    {
+      "id": "stranger-agent-inventory",
+      "name": "Stranger Agent Inventory Management",
+      "type": "stranger_agent_verification",
+      "description": "Critical public-release verification. An Agent that has NEVER seen TLL OS source code, only the Agent-readable JSON docs and TypeScript type definitions, independently builds a complete inventory management application. Discovered 8 documentation gaps and 1 core bug (query params not passed by aggregating API manager). 8 tests, all passing.",
+      "path": "examples/stranger-agent-inventory/agent.ts",
+      "source_url": "https://github.com/aliquanhou/tll-os/blob/main/examples/stranger-agent-inventory/agent.ts",
+      "run_command": "npx tsx examples/stranger-agent-inventory/agent.ts",
+      "modules": 1,
+      "apis": 6,
+      "tools": 1,
+      "tool_operations": 6,
+      "agents": 0,
+      "tests": {"total": 8, "passed": 8, "failed": 0, "errors": 0},
+      "graph": {"nodes": 9, "edges": 7},
+      "api_endpoints": [
+        "GET /api/items",
+        "GET /api/items/:id",
+        "POST /api/items",
+        "PUT /api/items/:id",
+        "DELETE /api/items/:id",
+        "POST /api/items/:id/restock"
+      ],
+      "tool": {
+        "name": "manage_inventory",
+        "operations": ["create", "list", "get", "update", "delete", "restock"]
+      },
+      "documentation_gaps_discovered": [
+        "createTllOS() returns TllOS, then tll.createApplication() — two-step process not documented",
+        "Need await app.start() before using the app",
+        "app.modules.create() not registerModule()",
+        "app.graph is a property, not getGraph() method",
+        "API handlers return { status, headers, body }",
+        "app.apis.request() not app.request()",
+        "module.tests.create() not module.registerTest()",
+        "Tools use handler (not execute) and tool.invoke() returns { success, data }"
+      ],
+      "bugs_found_and_fixed": [
+        {
+          "id": "aggregating_api_query_params",
+          "description": "AggregatingApiManager.request() did not parse or pass query parameters to API handlers. GET /api/items?lowStock=true always returned all items.",
+          "severity": "high",
+          "discovered_by": "stranger-agent-inventory experiment",
+          "fix": "Added query parameter parsing in AggregatingApiManager.request() matching the ApiManager implementation.",
+          "note": "This bug existed because the aggregating manager was added later and did not replicate the query handling of the per-module ApiManager."
+        }
+      ],
+      "key_features": [
+        "Agent with zero prior knowledge builds complete app from docs only",
+        "Full CRUD + restock + low-stock filter APIs",
+        "Unified Tool with 6 operations",
+        "8 comprehensive tests covering all APIs and tool",
+        "Application Graph correctly reflects all structure",
+        "Discovered real documentation gaps and core bugs"
+      ],
+      "proves": [
+        "A completely unfamiliar Agent can discover and use TLL OS from public docs",
+        "Agent JSON docs + TypeScript types are sufficient for application development",
+        "Stranger agent experiments discover documentation gaps and core bugs",
+        "Public Contract API is consistent enough for external agents to learn"
+      ],
+      "status": "verified"
     }
   ],
-  "how_to_run": "Clone the repository, run 'npm install', then execute any example with 'npx tsx examples/<name>/agent.ts'",
-  "contributing_examples": "Want to add an example? Build it using only the public contract, ensure all tests pass, then submit a PR."
+  "how_to_run": "1. Clone: git clone https://github.com/aliquanhou/tll-os.git\n2. Install: cd tll-os && npm install\n3. Run all tests: npm test (expect 23/23)\n4. Run single example: npx tsx examples/<name>/agent.ts",
+  "total_verified_examples": 3,
+  "total_tests": 23,
+  "contributing_examples": "Want to add an example? Build it using only the public contract (src/public/), ensure all tests pass, then submit a PR to https://github.com/aliquanhou/tll-os."
 }

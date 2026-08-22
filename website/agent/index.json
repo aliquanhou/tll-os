@@ -1,9 +1,110 @@
 {
   "name": "TLL OS Agent Documentation Index",
-  "version": "2.0.0",
-  "description": "Entry point for AI Agents to discover all structured TLL OS resources",
+  "version": "2.0.1",
+  "description": "Entry point for AI Agents to discover all structured TLL OS resources. This is the single starting point for any agent that wants to use, develop, or extend TLL OS.",
   "protocol": "TLL OS Protocol 2.0",
-  "frozen": "2026-08-22",
+  "protocol_frozen": "2026-08-22",
+  "last_updated": "2026-08-22",
+
+  "official_identity": {
+    "name": "TLL OS",
+    "tagline": "AI-Native Universal Application Development Protocol",
+    "website": "https://ts.knitoem.com",
+    "repository": {
+      "provider": "github",
+      "url": "https://github.com/aliquanhou/tll-os",
+      "clone_url": "https://github.com/aliquanhou/tll-os.git",
+      "default_branch": "main",
+      "owner": "aliquanhou",
+      "repo": "tll-os"
+    },
+    "license": "Apache-2.0",
+    "trademark": "TLL OS and TLL are trademarks. Code is open source, trademark is protected. See TRADEMARK.md."
+  },
+
+  "runtime": {
+    "name": "TLL OS Runtime",
+    "version": "0.1.0",
+    "status": "available",
+    "language": "TypeScript",
+    "language_version": ">=5.4",
+    "platform": "Node.js >=20",
+    "implementation": "in-memory reference implementation",
+    "capabilities": [
+      "Application lifecycle",
+      "Module system",
+      "REST API routing",
+      "Tool system (Agent-callable)",
+      "Test runner",
+      "Application Graph"
+    ],
+    "not_yet_implemented": [
+      "Plugin system",
+      "HTTP server (Fastify adapter)",
+      "CLI",
+      "Persistence / Database",
+      "Permission system",
+      "LLM adapter",
+      "WebSocket",
+      "Build targets (H5/APK/EXE)"
+    ],
+    "source_entry": "src/public/index.ts",
+    "types_entry": "src/public/types.ts",
+    "core_implementation": "src/core/index.ts (internal — do not import directly)"
+  },
+
+  "package": {
+    "npm": {
+      "name": "@tll/os",
+      "status": "planned",
+      "published": false,
+      "note": "Not yet published on npm. Install via git clone until npm release. See install field below."
+    }
+  },
+
+  "install": {
+    "method": "git_clone",
+    "steps": [
+      {
+        "step": 1,
+        "action": "clone",
+        "command": "git clone https://github.com/aliquanhou/tll-os.git",
+        "description": "Clone the TLL OS repository"
+      },
+      {
+        "step": 2,
+        "action": "enter_directory",
+        "command": "cd tll-os",
+        "description": "Enter the project directory"
+      },
+      {
+        "step": 3,
+        "action": "install_dependencies",
+        "command": "npm install",
+        "description": "Install dev dependencies (typescript, tsx, @types/node)"
+      },
+      {
+        "step": 4,
+        "action": "verify_installation",
+        "command": "npm test",
+        "description": "Run the full test suite. Expected: 23/23 tests passed."
+      }
+    ],
+    "import_statement": "import { createTllOS } from './src/public/index.js';",
+    "import_note": "Use relative path to src/public/index.js from within the cloned repository. The npm package @tll/os is not yet published.",
+    "prerequisites": [
+      "Node.js >= 20",
+      "npm >= 9",
+      "git"
+    ]
+  },
+
+  "cli": {
+    "status": "planned",
+    "note": "CLI (tll new, tll serve, tll module, tll plugin, tll test) is not yet implemented. Use the programmatic API via createTllOS() for now.",
+    "planned_commands": ["tll new", "tll serve", "tll module", "tll plugin", "tll route", "tll test", "tll ai"]
+  },
+
   "resources": [
     {
       "name": "Protocol Specification",
@@ -26,7 +127,7 @@
     {
       "name": "Examples",
       "path": "/agent/examples.json",
-      "description": "Verified, tested examples with source, Graph structure, and test results",
+      "description": "Verified, tested examples with source paths, Graph structure, and test results",
       "content_type": "application/json"
     },
     {
@@ -36,6 +137,7 @@
       "content_type": "application/json"
     }
   ],
+
   "human_pages": {
     "home": "/",
     "protocol": "/protocol.html",
@@ -44,24 +146,67 @@
     "agents": "/agents.html",
     "contribute": "/contribute.html"
   },
+
+  "agent_discovery_flow": {
+    "description": "The recommended flow for a stranger agent to discover and start using TLL OS",
+    "steps": [
+      "Fetch this index.json from https://ts.knitoem.com/agent/index.json",
+      "Read official_identity.repository.url to find the source code",
+      "Read install.steps to clone and install the runtime",
+      "Read runtime.source_entry to know what to import",
+      "Read /agent/protocol.json to understand Protocol 2.0 principles",
+      "Read /agent/contracts.json for all 17 contract interfaces",
+      "Read /agent/examples.json for verified working examples",
+      "Clone the repository, npm install, npm test to verify",
+      "Start building your application using createTllOS()"
+    ]
+  },
+
   "getting_started": {
-    "import": "import { createTllOS } from '@tll/os/public';",
-    "rule": "Only import from @tll/os/public. Never import internal implementations.",
+    "import": "import { createTllOS } from './src/public/index.js';",
+    "rule": "Only import from src/public/. Never import internal implementations from src/core/.",
     "first_steps": [
+      "Clone: git clone https://github.com/aliquanhou/tll-os.git",
+      "Install: cd tll-os && npm install",
+      "Verify: npm test (expect 23/23 passed)",
       "Read /agent/protocol.json to understand Protocol 2.0",
       "Read /agent/contracts.json for all 17 contracts",
       "Read /agent/examples.json for verified examples",
       "Use createTllOS() to build your application"
     ]
   },
+
   "verification_checklist": [
+    "Can you discover the repository URL from this index.json?",
+    "Can you clone the repository and run npm install?",
+    "Can you run npm test and see all tests pass?",
     "Can you read and parse the Application Graph?",
     "Can you create a Module with routes and services?",
     "Can you create REST API endpoints with path parameters?",
     "Can you create an Agent-callable Tool?",
-    "Can you create an Agent that uses Tools?",
     "Can you write and run tests, then interpret failures?",
     "Can you fix a bug and re-run tests?",
-    "Can you draft an Evolution Proposal?"
+    "Can you modify an existing application and run regression tests?",
+    "Can you draft an Evolution Proposal (TEP)?"
+  ],
+
+  "known_limitations": [
+    "Runtime 0.1 is in-memory only — no persistence across restarts",
+    "No HTTP server — API calls are programmatic via app.apis.request()",
+    "No CLI — use programmatic API",
+    "No Plugin system yet",
+    "No Permission system yet",
+    "npm package @tll/os not yet published — install via git clone"
+  ],
+
+  "active_teps": [
+    {
+      "id": "TEP-0001",
+      "title": "Runtime Public Distribution",
+      "status": "draft",
+      "description": "Define how TLL OS Runtime is distributed to agents and developers: npm package, versioning, install protocol, discovery endpoints.",
+      "proposed_by": "external_agent",
+      "related": "This index.json update is part of TEP-0001 implementation"
+    }
   ]
 }
