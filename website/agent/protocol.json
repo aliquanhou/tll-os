@@ -1,0 +1,90 @@
+{
+  "name": "TLL OS Protocol 2.0",
+  "version": "2.0.0",
+  "status": "FROZEN",
+  "frozen_date": "2026-08-22",
+  "tagline": "An AI-Native Universal Application Development Protocol",
+  "core_principles": [
+    {
+      "id": 1,
+      "name": "Application Graph is the primary source of truth",
+      "description": "The Application Graph is a machine-readable description of an application's structure, capabilities, dependencies, and relationships. It is the PRIMARY source of truth, not the only one. Complex algorithms, UI pixel-level implementation, third-party library usage, and low-level optimizations naturally live in code."
+    },
+    {
+      "id": 2,
+      "name": "AI Agents are first-class citizens",
+      "description": "Traditional: Developer -> Code -> Framework -> Application. TLL OS: Developer + AI Agent -> TLL OS Protocol -> Application -> Module / Plugin / Adapter / Tool. Agents can understand, design, implement, test, fix, build, deploy, and propose changes."
+    },
+    {
+      "id": 3,
+      "name": "Don't reinvent the wheel",
+      "description": "TLL OS controls protocols, lifecycle, extension models, permission models, application models, and agent protocols. TLL OS does NOT control every low-level implementation. HTTP -> Fastify, Database -> Drizzle, Validation -> Zod, Queue -> BullMQ, Logging -> Pino, Testing -> Vitest."
+    },
+    {
+      "id": 4,
+      "name": "Protocol and Runtime are separate",
+      "description": "The Protocol is a stable specification. The Runtime is an implementation - there can be multiple, they can be rewritten, they can be replaced. Even if the Runtime is completely rewritten, applications and Agents following Protocol 2.0 remain valid."
+    },
+    {
+      "id": 5,
+      "name": "Global extension and evolution",
+      "description": "TLL OS allows global developers and Agents to jointly discover, validate, and contribute improvements. The Evolution Protocol (TEP) defines the complete flow from discovering a problem to merging into the protocol."
+    }
+  ],
+  "five_models": {
+    "application_model": {
+      "contracts": ["Application", "Application Graph", "Module", "Plugin", "Event", "Permission"],
+      "purpose": "Define what an application is and how it's structured"
+    },
+    "ai_development_model": {
+      "contracts": ["Agent", "Tool", "Skill", "Context", "Workflow"],
+      "purpose": "Define how AI Agents develop and operate applications"
+    },
+    "ecosystem_model": {
+      "contracts": ["Adapter", "Compatibility Manifest", "Capability"],
+      "purpose": "Define how external systems connect and capabilities are discovered"
+    },
+    "build_model": {
+      "contracts": ["Projection", "BuildTarget"],
+      "purpose": "Define how the Graph projects to different output forms and platforms"
+    },
+    "evolution_model": {
+      "contracts": ["Evolution Proposal", "TEP"],
+      "purpose": "Define how the protocol and runtime evolve through community contribution"
+    }
+  },
+  "application_graph": {
+    "node_types": ["application", "module", "plugin", "adapter", "api", "model", "event", "workflow", "agent", "tool", "skill", "permission", "capability", "build_target", "config", "command", "dependency"],
+    "edge_types": ["belongs_to", "depends_on", "provides", "calls", "triggers", "requires", "uses", "extends", "conflicts_with", "listens_to", "implements", "exports", "imports", "builds_for", "maps_to"],
+    "operations": ["listNodes", "getNode", "findNodes", "listEdges", "getDependencies", "getDependents", "getRelated", "getImpactAnalysis", "toJSON"]
+  },
+  "agent_development_loop": "Requirement -> Understand (read Graph) -> Select Capability -> Select Module/Plugin/Adapter -> Design (Graph nodes) -> Implement (Projection -> code) -> Test -> Discover issues -> Fix -> Verify -> BuildTarget -> Deploy",
+  "agent_capability_levels": {
+    "L1": "Understand application (Application Graph)",
+    "L2": "Discover and select components (Capability, Module, Plugin, Adapter)",
+    "L3": "Design and implement (Application Graph, Projection)",
+    "L4": "Test and fix (Testing, Application Graph)",
+    "L5": "Build and deploy (BuildTarget, Projection)",
+    "L6": "Discover and propose (Evolution Proposal)"
+  },
+  "versioning": {
+    "protocol_version": "2.x (stable)",
+    "runtime_version": "0.x (evolving)",
+    "contract_statuses": ["stable", "beta", "draft", "deprecated"],
+    "deprecation_policy": "Deprecated contracts remain for 2 MINOR versions",
+    "lts": "Every 4th Runtime MINOR is LTS, supported for 12 months",
+    "breaking_changes": "Require Protocol 3.0 + TEP + RFC + migration guide"
+  },
+  "mature_ecosystem": {
+    "http": "Fastify",
+    "database": "Drizzle + PostgreSQL",
+    "validation": "Zod",
+    "queue": "BullMQ / NATS",
+    "logging": "Pino",
+    "testing": "Vitest",
+    "cache": "Redis",
+    "ecommerce": ["Shopify", "Medusa", "Shopware", "Bagisto", "Aimeos"],
+    "cms": ["WordPress", "Strapi"],
+    "erp": ["Odoo", "ERPNext"]
+  }
+}

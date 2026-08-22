@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>For AI Agents — TLL OS</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<nav class="nav"><div class="nav-inner">
+  <a href="/" class="nav-brand"><div class="logo">T</div><span>TLL OS</span></a>
+  <div class="nav-links">
+    <a href="/protocol.html">Protocol</a>
+    <a href="/guide.html">Guide</a>
+    <a href="/examples.html">Examples</a>
+    <a href="/agents.html" class="active" style="color:var(--green)">For Agents</a>
+    <a href="/contribute.html">Contribute</a>
+    <a href="https://github.com/tll-os/tll-os" class="nav-cta" target="_blank">GitHub</a>
+  </div>
+</div></nav>
+
+<section class="hero">
+  <div class="hero-badge"><span class="dot" style="background:var(--green)"></span> Agent-Readable Documentation</div>
+  <h1>For <span class="gradient" style="background:linear-gradient(135deg,var(--green),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent">AI Agents</span></h1>
+  <p>This page is designed for AI Agents. Everything below is available as structured JSON. You can build a complete TLL OS application without reading any source code — only through these public endpoints.</p>
+</section>
+
+<section class="section">
+  <h2 class="section-title">How to Use TLL OS as an Agent</h2>
+  <p class="section-subtitle">Follow these steps to understand, develop, and operate TLL OS applications.</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon green">1</div>
+      <h3>Discover the Protocol</h3>
+      <p>Read <code>/agent/index.json</code> to discover all available structured resources. Then read <code>/agent/protocol.json</code> to understand Protocol 2.0.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon green">2</div>
+      <h3>Learn the Contracts</h3>
+      <p>Read <code>/agent/contracts.json</code> for all 17 core contracts with their TypeScript interfaces, status, and usage examples.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon green">3</div>
+      <h3>Study Examples</h3>
+      <p>Read <code>/agent/examples.json</code> for verified, tested examples. Each includes the full source code, test results, and Graph structure.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon green">4</div>
+      <h3>Discover Capabilities</h3>
+      <p>Read <code>/agent/capabilities.json</code> to discover available modules, plugins, adapters, and their capabilities in the TLL OS ecosystem.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon green">5</div>
+      <h3>Build Your Application</h3>
+      <p>Use the TLL OS Public Contract (<code>createTllOS()</code>) to create applications, modules, APIs, tools, agents, and tests. Never import internal implementations.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon green">6</div>
+      <h3>Propose Improvements</h3>
+      <p>Read <code>/agent/evolution.json</code> to learn the TEP process. Found a bug or want a new contract? Submit an Evolution Proposal.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2 class="section-title">Structured Endpoints</h2>
+  <p class="section-subtitle">All machine-readable resources. Fetch these as JSON.</p>
+
+  <div class="agent-endpoints" style="grid-template-columns:1fr">
+    <a href="/agent/index.json" class="agent-endpoint" style="display:flex;justify-content:space-between;align-items:center">
+      <div><span class="method">GET</span><span class="path">/agent/index.json</span><div class="desc">Entry point — lists all structured resources with descriptions and URLs</div></div>
+      <span style="color:var(--green);font-size:0.8rem">→</span>
+    </a>
+    <a href="/agent/protocol.json" class="agent-endpoint" style="display:flex;justify-content:space-between;align-items:center">
+      <div><span class="method">GET</span><span class="path">/agent/protocol.json</span><div class="desc">Protocol 2.0 specification — principles, models, contracts, versioning</div></div>
+      <span style="color:var(--green);font-size:0.8rem">→</span>
+    </a>
+    <a href="/agent/contracts.json" class="agent-endpoint" style="display:flex;justify-content:space-between;align-items:center">
+      <div><span class="method">GET</span><span class="path">/agent/contracts.json</span><div class="desc">17 core contracts — name, model, status, interface summary, key methods</div></div>
+      <span style="color:var(--green);font-size:0.8rem">→</span>
+    </a>
+    <a href="/agent/capabilities.json" class="agent-endpoint" style="display:flex;justify-content:space-between;align-items:center">
+      <div><span class="method">GET</span><span class="path">/agent/capabilities.json</span><div class="desc">Capability registry — available capabilities, providers, ecosystem map</div></div>
+      <span style="color:var(--green);font-size:0.8rem">→</span>
+    </a>
+    <a href="/agent/examples.json" class="agent-endpoint" style="display:flex;justify-content:space-between;align-items:center">
+      <div><span class="method">GET</span><span class="path">/agent/examples.json</span><div class="desc">Verified examples — description, source, Graph structure, test results</div></div>
+      <span style="color:var(--green);font-size:0.8rem">→</span>
+    </a>
+    <a href="/agent/evolution.json" class="agent-endpoint" style="display:flex;justify-content:space-between;align-items:center">
+      <div><span class="method">GET</span><span class="path">/agent/evolution.json</span><div class="desc">TEP process — proposal structure, status flow, AI review checklist, active proposals</div></div>
+      <span style="color:var(--green);font-size:0.8rem">→</span>
+    </a>
+  </div>
+</section>
+
+<section class="section">
+  <h2 class="section-title">Agent Development Contract</h2>
+  <p class="section-subtitle">The only import you need. Everything goes through the public contract.</p>
+
+  <div class="code-block">
+    <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span>agent-entry.ts</span></div>
+    <pre><code>// ✅ CORRECT: Only import the public contract
+import { createTllOS } from '@tll/os/public';
+
+// ❌ WRONG: Never import internal implementations
+// import { Kernel } from '@tll/os/core/kernel';
+// import { ApiManager } from '@tll/os/core/api';
+
+// Create a TLL OS application
+const app = createTllOS();
+
+// Register a module
+const module = app.registerModule({
+  name: 'my-module',
+  version: '1.0.0',
+  description: 'My first TLL OS module'
+});
+
+// Create an API endpoint
+module.registerApi({
+  method: 'GET',
+  path: '/api/hello',
+  handler: async (req) => ({ message: 'Hello, Agent!' })
+});
+
+// Create a Tool for Agents
+module.registerTool({
+  name: 'greet',
+  description: 'Greet a user by name',
+  parameters: { name: { type: 'string', required: true } },
+  execute: async (params) => ({ greeting: `Hello, ${params.name}!` })
+});
+
+// Read the Application Graph
+const graph = app.getGraph();
+console.log(`Nodes: ${graph.listNodes().length}`);
+console.log(`Edges: ${graph.listEdges().length}`);
+
+// Run tests
+const results = await app.runTests();
+console.log(`${results.passed}/${results.total} passed`);</code></pre>
+  </div>
+</section>
+
+<section class="section">
+  <h2 class="section-title">Agent Verification Checklist</h2>
+  <p class="section-subtitle">Before claiming you understand TLL OS, verify you can do all of these:</p>
+  <div class="card-grid">
+    <div class="card"><h3 style="color:var(--green)">✓ Read Graph</h3><p>Can you fetch and parse the Application Graph of an existing application?</p></div>
+    <div class="card"><h3 style="color:var(--green)">✓ Create Module</h3><p>Can you register a new module with routes, services, and tests?</p></div>
+    <div class="card"><h3 style="color:var(--green)">✓ Create API</h3><p>Can you create REST API endpoints with path parameters and validation?</p></div>
+    <div class="card"><h3 style="color:var(--green)">✓ Create Tool</h3><p>Can you create an Agent-callable Tool with parameter schemas?</p></div>
+    <div class="card"><h3 style="color:var(--green)">✓ Create Agent</h3><p>Can you create an Agent that uses Tools to accomplish tasks?</p></div>
+    <div class="card"><h3 style="color:var(--green)">✓ Run Tests</h3><p>Can you write and execute tests, then interpret failures?</p></div>
+    <div class="card"><h3 style="color:var(--green)">✓ Fix Bugs</h3><p>Can you diagnose a test failure, fix the code, and re-run?</p></div>
+    <div class="card"><h3 style="color:var(--green)">✓ Propose TEP</h3><p>Can you identify a protocol gap and draft an Evolution Proposal?</p></div>
+  </div>
+</section>
+
+<footer class="footer"><div class="footer-inner">
+  <div class="footer-brand"><div class="logo" style="width:24px;height:24px;font-size:0.65rem">T</div><span>TLL OS — Built for humans and AI Agents</span></div>
+  <div class="footer-links"><a href="/">Home</a><a href="/protocol.html">Protocol</a><a href="https://github.com/tll-os/tll-os" target="_blank">GitHub</a></div>
+</div></footer>
+</body>
+</html>

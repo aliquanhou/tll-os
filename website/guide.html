@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Getting Started — TLL OS</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<nav class="nav"><div class="nav-inner">
+  <a href="/" class="nav-brand"><div class="logo">T</div><span>TLL OS</span></a>
+  <div class="nav-links">
+    <a href="/protocol.html">Protocol</a>
+    <a href="/guide.html" class="active">Guide</a>
+    <a href="/examples.html">Examples</a>
+    <a href="/agents.html" style="color:var(--green)">For Agents</a>
+    <a href="/contribute.html">Contribute</a>
+    <a href="https://github.com/tll-os/tll-os" class="nav-cta" target="_blank">GitHub</a>
+  </div>
+</div></nav>
+
+<div class="docs-layout">
+  <aside class="docs-sidebar">
+    <h4>Getting Started</h4>
+    <a href="#install" class="active">Installation</a>
+    <a href="#create">Create App</a>
+    <a href="#module">Add Module</a>
+    <a href="#api">Add API</a>
+    <a href="#tool">Add Tool</a>
+    <a href="#agent">Add Agent</a>
+    <a href="#test">Run Tests</a>
+    <a href="#serve">Serve</a>
+    <h4>Advanced</h4>
+    <a href="#graph">Application Graph</a>
+    <a href="#adapter">Connect Existing</a>
+    <a href="#build">Build Targets</a>
+  </aside>
+
+  <main class="docs-content">
+    <h1>Getting Started</h1>
+    <div class="doc-meta">Build your first TLL OS application in 10 minutes</div>
+
+    <h2 id="install">Installation</h2>
+    <p>TLL OS requires Node.js 20+ and TypeScript 5.x.</p>
+    <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span>terminal</span></div>
+    <pre><code># Clone the repository
+git clone https://github.com/tll-os/tll-os.git
+cd tll-os
+
+# Install dependencies
+npm install
+
+# Verify installation
+npx tsc --noEmit
+→ No errors (zero dependencies runtime)</code></pre></div>
+
+    <h2 id="create">Create an Application</h2>
+    <p>Every TLL OS application starts with the public contract. You only ever import from <code>@tll/os/public</code>.</p>
+    <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span>src/app.ts</span></div>
+    <pre><code>import { createTllOS } from '@tll/os/public';
+
+const app = createTllOS({
+  name: 'my-first-app',
+  version: '0.1.0',
+  description: 'My first TLL OS application'
+});
+
+// The Application Graph is automatically created
+console.log('Application created:', app.getName());
+console.log('Graph nodes:', app.getGraph().listNodes().length);</code></pre></div>
+
+    <h2 id="module">Add a Module</h2>
+    <p>Modules are the building blocks of TLL OS applications. Each module has its own routes, services, models, events, and tests.</p>
+    <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span>src/modules/hello.ts</span></div>
+    <pre><code>const helloModule = app.registerModule({
+  name: 'hello',
+  version: '1.0.0',
+  description: 'A simple greeting module'
+});
+
+// Modules automatically appear in the Application Graph
+// Graph now has: module:hello node + belongs_to edge to application</code></pre></div>
+
+    <h2 id="api">Add an API Endpoint</h2>
+    <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span>src/modules/hello.ts</span></div>
+    <pre><code>helloModule.registerApi({
+  method: 'GET',
+  path: '/api/hello',
+  description: 'Return a greeting message',
+  handler: async (req) => {
+    return { message: 'Hello, TLL OS!' };
+  }
+});
+
+helloModule.registerApi({
+  method: 'GET',
+  path: '/api/hello/:name',
+  description: 'Greet a specific person',
+  handler: async (req) => {
+    const name = req.params.name;
+    return { message: `Hello, ${name}!` };
+  }
+});
+
+// Test the API
+const response = await app.request('GET', '/api/hello/World');
+console.log(response.body); // { message: 'Hello, World!' }</code></pre></div>
+
+    <h2 id="tool">Add a Tool (for AI Agents)</h2>
+    <p>Tools are callable capabilities that AI Agents can discover and use. Each Tool has a name, description, parameter schema, and execute function.</p>
+    <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span>src/modules/hello.ts</span></div>
+    <pre><code>helloModule.registerTool({
+  name: 'greet',
+  description: 'Generate a personalized greeting',
+  parameters: {
+    name: { type: 'string', required: true, description: 'Person to greet' },
+    language: { type: 'string', required: false, default: 'en', description: 'Language code' }
+  },
+  execute: async (params) => {
+    const greetings: Record<string, string> = {
+      en: 'Hello', es: 'Hola', zh: '你好', fr: 'Bonjour'
+    };
+    const greeting = greetings[params.language] || greetings.en;
+    return { message: `${greeting}, ${params.name}!` };
+  }
+});
+
+// Agents can discover and call this tool
+const tools = app.listTools();
+console.log(tools.map(t => t.name)); // ['greet']</code></pre></div>
+
+    <h2 id="agent">Add an Agent</h2>
+    <p>Agents are AI entities that can use Tools to accomplish tasks. They have a name, description, and a set of available tools.</p>
+    <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span>src/agents/greeter.ts</span></div>
+    <pre><code>const greeterAgent = app.registerAgent({
+  name: 'greeter',
+  description: 'An agent that greets people in multiple languages',
+  tools: ['greet'],  // Tools this agent can use
+  handler: async (input, context) => {
+    // Simple intent: "greet Alice in Spanish"
+    const match = input.match(/greet (\w+)(?: in (\w+))?/i);
+    if (match) {
+      const result = await context.callTool('greet', {
+        name: match[1],
+        language: match[2] || 'en'
+      });
+      return result;
+    }
+    return { error: 'I can only greet people. Try: "greet Alice in Spanish"' };
+  }
+});
+
+// Use the agent
+const result = await greeterAgent.run('greet Alice in Spanish');
+console.log(result); // { message: 'Hola, Alice!' }</code></pre></div>
+
+    <h2 id="test">Run Tests</h2>
+    <p>TLL OS has a built-in test framework. Tests are registered on modules and run through the application.</p>
+    <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span>src/modules/hello.test.ts</span></div>
+    <pre><code>helloModule.registerTest({
+  name: 'api.hello_returns_greeting',
+  run: async (app) => {
+    const res = await app.request('GET', '/api/hello');
+    if (res.status !== 200) throw new Error('Expected 200');
+    if (res.body.message !== 'Hello, TLL OS!') throw new Error('Wrong message');
+  }
+});
+
+helloModule.registerTest({
+  name: 'api.hello_with_name',
+  run: async (app) => {
+    const res = await app.request('GET', '/api/hello/World');
+    if (res.body.message !== 'Hello, World!') throw new Error('Wrong message');
+  }
+});
+
+// Run all tests
+const results = await app.runTests();
+console.log(`${results.passed}/${results.total} passed`);
+// → 2/2 passed</code></pre></div>
+
+    <h2 id="serve">Start Development Server</h2>
+    <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span>terminal</span></div>
+    <pre><code># Run your application
+npx tsx src/app.ts
+
+# Or use the CLI (Runtime 0.2+)
+tll serve
+→ TLL OS running at http://localhost:3000
+→ GET /api/hello → { "message": "Hello, TLL OS!" }
+→ GET /api/hello/World → { "message": "Hello, World!" }</code></pre></div>
+
+    <h2 id="graph">Understand the Application Graph</h2>
+    <p>At any point, you can inspect the Application Graph to understand your application's structure.</p>
+    <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span>inspect-graph.ts</span></div>
+    <pre><code>const graph = app.getGraph();
+
+// List all nodes
+console.log('Nodes:', graph.listNodes().map(n => `${n.type}:${n.name}`));
+// → ['application:my-first-app', 'module:hello', 'api:GET /api/hello', ...]
+
+// List all edges
+console.log('Edges:', graph.listEdges().map(e => `${e.from} --${e.type}--> ${e.to}`));
+// → ['module:hello --belongs_to--> application:my-first-app', ...]
+
+// Find all APIs in a module
+const apis = graph.findNodes({ type: 'api', belongsTo: 'module:hello' });
+console.log('Hello module APIs:', apis.map(a => a.name));
+
+// Impact analysis: what depends on this module?
+const impact = graph.getImpactAnalysis('module:hello');
+console.log('Affected by removing hello module:', impact.affected);</code></pre></div>
+
+    <h2 id="adapter">Connect an Existing System</h2>
+    <p>Don't start from scratch. Use Adapters to connect existing systems.</p>
+    <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span>connect-shopify.ts</span></div>
+    <pre><code>// Runtime 0.2+ will include the Shopify Adapter
+// For now, this shows the intended API
+
+// const shopify = app.installAdapter('shopify', {
+//   store: 'mystore.myshopify.com',
+//   token: 'shpat_xxx'
+// });
+//
+// await shopify.connect();
+// → Synced 142 products into Application Graph
+//
+// const products = graph.findNodes({ type: 'model', name: 'Product' });
+// console.log('Products from Shopify:', products.length);</code></pre></div>
+
+    <h2 id="build">Build for Different Targets</h2>
+    <p>One application model, multiple build targets. Projection turns the Graph into any output form.</p>
+    <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span>terminal</span></div>
+    <pre><code># Build for web (Runtime 0.2+)
+tll build --target web
+→ dist/web/
+
+# Build for AI Agent (MCP Server)
+tll build --target ai_agent
+→ dist/agent/
+
+# Build for desktop
+tll build --target exe
+→ dist/desktop/</code></pre></div>
+
+    <div style="margin-top:40px;padding:24px;background:var(--green-glow);border:1px solid rgba(74,222,128,0.2);border-radius:var(--radius-lg)">
+      <h3 style="color:var(--green);margin-bottom:8px">Next Steps</h3>
+      <p style="color:var(--text-muted);margin-bottom:12px">You've built your first TLL OS application. Now explore:</p>
+      <ul style="color:var(--text-muted);margin-left:20px">
+        <li><a href="/examples.html">Verified Examples</a> — Study real applications built by AI Agents</li>
+        <li><a href="/protocol.html">Protocol 2.0</a> — Deep dive into all 17 contracts</li>
+        <li><a href="/agents.html">For AI Agents</a> — Build applications with AI Agents</li>
+        <li><a href="/contribute.html">Contribute</a> — Build modules, plugins, adapters, or propose TEPs</li>
+      </ul>
+    </div>
+  </main>
+</div>
+
+<footer class="footer"><div class="footer-inner">
+  <div class="footer-brand"><div class="logo" style="width:24px;height:24px;font-size:0.65rem">T</div><span>TLL OS</span></div>
+  <div class="footer-links"><a href="/">Home</a><a href="/protocol.html">Protocol</a><a href="https://github.com/tll-os/tll-os" target="_blank">GitHub</a></div>
+</div></footer>
+</body>
+</html>

@@ -1,0 +1,127 @@
+{
+  "name": "TLL OS Capability Registry",
+  "protocol_version": "2.0.0",
+  "description": "Available capabilities in the TLL OS ecosystem. Provided by Modules, Plugins, and Adapters.",
+  "core_capabilities": [
+    {
+      "name": "application_management",
+      "description": "Create and manage TLL OS applications",
+      "provided_by": {"type": "runtime", "id": "tll-os-runtime"},
+      "status": "stable",
+      "features": [
+        {"name": "create_application", "supported": true},
+        {"name": "read_application_graph", "supported": true},
+        {"name": "run_tests", "supported": true}
+      ]
+    },
+    {
+      "name": "module_management",
+      "description": "Create, register, and manage modules",
+      "provided_by": {"type": "runtime", "id": "tll-os-runtime"},
+      "status": "stable",
+      "features": [
+        {"name": "register_module", "supported": true},
+        {"name": "module_api", "supported": true},
+        {"name": "module_service", "supported": true},
+        {"name": "module_tool", "supported": true},
+        {"name": "module_test", "supported": true},
+        {"name": "module_event", "supported": true}
+      ]
+    },
+    {
+      "name": "rest_api",
+      "description": "REST API endpoint creation and routing",
+      "provided_by": {"type": "runtime", "id": "tll-os-runtime"},
+      "status": "stable",
+      "features": [
+        {"name": "get", "supported": true},
+        {"name": "post", "supported": true},
+        {"name": "put", "supported": true},
+        {"name": "delete", "supported": true},
+        {"name": "path_parameters", "supported": true},
+        {"name": "query_parameters", "supported": true},
+        {"name": "request_body", "supported": true}
+      ]
+    },
+    {
+      "name": "agent_tools",
+      "description": "Create and manage Agent-callable Tools",
+      "provided_by": {"type": "runtime", "id": "tll-os-runtime"},
+      "status": "stable",
+      "features": [
+        {"name": "register_tool", "supported": true},
+        {"name": "parameter_schema", "supported": true},
+        {"name": "tool_execution", "supported": true},
+        {"name": "tool_discovery", "supported": true}
+      ]
+    },
+    {
+      "name": "ai_agent",
+      "description": "Create and run AI Agents",
+      "provided_by": {"type": "runtime", "id": "tll-os-runtime"},
+      "status": "beta",
+      "features": [
+        {"name": "register_agent", "supported": true},
+        {"name": "agent_handler", "supported": true},
+        {"name": "tool_calling", "supported": true},
+        {"name": "context_management", "supported": true},
+        {"name": "llm_integration", "supported": false, "limitations": "Runtime 0.1 uses scripted agents. LLM integration planned for Runtime 0.2."}
+      ]
+    },
+    {
+      "name": "application_graph",
+      "description": "Machine-readable application structure map",
+      "provided_by": {"type": "runtime", "id": "tll-os-runtime"},
+      "status": "stable",
+      "features": [
+        {"name": "node_management", "supported": true},
+        {"name": "edge_management", "supported": true},
+        {"name": "graph_query", "supported": true},
+        {"name": "impact_analysis", "supported": true},
+        {"name": "json_serialization", "supported": true}
+      ]
+    },
+    {
+      "name": "testing",
+      "description": "Built-in test framework",
+      "provided_by": {"type": "runtime", "id": "tll-os-runtime"},
+      "status": "stable",
+      "features": [
+        {"name": "register_test", "supported": true},
+        {"name": "run_all_tests", "supported": true},
+        {"name": "test_results", "supported": true},
+        {"name": "test_failure_diagnostics", "supported": true}
+      ]
+    },
+    {
+      "name": "event_system",
+      "description": "Pub/sub event system",
+      "provided_by": {"type": "runtime", "id": "tll-os-runtime"},
+      "status": "stable",
+      "features": [
+        {"name": "emit", "supported": true},
+        {"name": "subscribe", "supported": true},
+        {"name": "unsubscribe", "supported": true}
+      ]
+    }
+  ],
+  "planned_capabilities": [
+    {"name": "plugin_system", "status": "beta", "target_runtime": "0.2"},
+    {"name": "adapter_system", "status": "beta", "target_runtime": "0.2"},
+    {"name": "shopify_adapter", "status": "planned", "target_runtime": "0.2"},
+    {"name": "wordpress_adapter", "status": "planned", "target_runtime": "0.3"},
+    {"name": "fastify_http_adapter", "status": "planned", "target_runtime": "0.2"},
+    {"name": "cli", "status": "planned", "target_runtime": "0.2"},
+    {"name": "persistence", "status": "planned", "target_runtime": "0.2"},
+    {"name": "permission_system", "status": "planned", "target_runtime": "0.2"},
+    {"name": "projection", "status": "beta", "target_runtime": "0.3"},
+    {"name": "build_targets", "status": "beta", "target_runtime": "0.3"},
+    {"name": "tep_engine", "status": "beta", "target_runtime": "0.3"}
+  ],
+  "ecosystem_adapters": {
+    "ecommerce": ["Shopify", "Medusa", "Shopware", "Bagisto", "Aimeos"],
+    "cms": ["WordPress", "Strapi", "Contentful"],
+    "erp": ["Odoo", "ERPNext"],
+    "frameworks": ["Laravel", "NestJS", "Django", "Spring Boot"]
+  }
+}

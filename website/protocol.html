@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Protocol 2.0 — TLL OS</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<nav class="nav"><div class="nav-inner">
+  <a href="/" class="nav-brand"><div class="logo">T</div><span>TLL OS</span></a>
+  <div class="nav-links">
+    <a href="/protocol.html" class="active">Protocol</a>
+    <a href="/guide.html">Guide</a>
+    <a href="/examples.html">Examples</a>
+    <a href="/agents.html" style="color:var(--green)">For Agents</a>
+    <a href="/contribute.html">Contribute</a>
+    <a href="https://github.com/tll-os/tll-os" class="nav-cta" target="_blank">GitHub</a>
+  </div>
+</div></nav>
+
+<div class="docs-layout">
+  <aside class="docs-sidebar">
+    <h4>Protocol 2.0</h4>
+    <a href="#overview" class="active">Overview</a>
+    <a href="#principles">Core Principles</a>
+    <a href="#models">Five Models</a>
+    <a href="#contracts">17 Contracts</a>
+    <a href="#graph">Application Graph</a>
+    <a href="#agent">Agent Model</a>
+    <a href="#ecosystem">Ecosystem Model</a>
+    <a href="#build">Build Model</a>
+    <a href="#evolution">Evolution Model</a>
+    <a href="#versioning">Versioning</a>
+    <h4>Resources</h4>
+    <a href="/agent/protocol.json">Structured JSON ↗</a>
+    <a href="https://github.com/tll-os/tll-os/blob/main/protocol/v2/SPECIFICATION.md" target="_blank">Full Spec ↗</a>
+  </aside>
+
+  <main class="docs-content">
+    <h1>TLL OS Protocol 2.0</h1>
+    <div class="doc-meta">Version 2.0.0 · Status: <span class="badge stable">FROZEN</span> · Frozen: 2026-08-22</div>
+
+    <h2 id="overview">Overview</h2>
+    <p>TLL OS is not a web framework. Not a CMS. Not an ecommerce platform. TLL OS is an <strong>AI-Native universal application development protocol</strong> — a shared language that humans and AI Agents can both read, understand, and execute.</p>
+    <p>This specification defines the core concepts, contracts, models, and evolution rules of TLL OS Protocol 2.0. Runtime implementations may vary, but all must follow this protocol.</p>
+
+    <h2 id="principles">Core Principles</h2>
+    <h3>1. Application Graph is the primary source of truth</h3>
+    <p>The Application Graph is a machine-readable description of an application's structure, capabilities, dependencies, and relationships. It is the <strong>primary</strong> source of truth — not the only one. Complex algorithms, UI pixel-level implementation, third-party library usage, and low-level optimizations naturally live in code and are not forced into the Graph.</p>
+
+    <h3>2. AI Agents are first-class citizens</h3>
+    <p>Traditional: Developer → Code → Framework → Application. TLL OS: Developer + AI Agent → TLL OS Protocol → Application → Module / Plugin / Adapter / Tool. Agents can understand applications, discover capabilities, select components, design implementations, test and fix, build and deploy, and discover and propose changes.</p>
+
+    <h3>3. Don't reinvent the wheel</h3>
+    <p>TLL OS controls protocols, lifecycle, extension models, permission models, application models, and agent protocols. TLL OS does <strong>not</strong> control every low-level implementation. HTTP → Fastify, Database → Drizzle, Validation → Zod, Queue → BullMQ, Logging → Pino, Testing → Vitest.</p>
+
+    <h3>4. Protocol and Runtime are separate</h3>
+    <p>The Protocol is a stable specification. The Runtime is an implementation — there can be multiple, they can be rewritten, they can be replaced. Even if the Runtime is completely rewritten, applications and Agents following Protocol 2.0 remain valid.</p>
+
+    <h3>5. Global extension and evolution</h3>
+    <p>TLL OS allows global developers and Agents to jointly discover, validate, and contribute improvements. The Evolution Protocol (TEP) defines the complete flow from "discovering a problem" to "merging into the protocol."</p>
+
+    <h2 id="models">Five Models</h2>
+    <p>Protocol 2.0 consists of five interconnected models:</p>
+    <table>
+      <tr><th>Model</th><th>Core Contracts</th><th>Purpose</th></tr>
+      <tr><td><strong>Application Model</strong></td><td>Application, Application Graph, Module, Plugin, Event, Permission</td><td>Define what an application is and how it's structured</td></tr>
+      <tr><td><strong>AI Development Model</strong></td><td>Agent, Tool, Skill, Context, Workflow</td><td>Define how AI Agents develop and operate applications</td></tr>
+      <tr><td><strong>Ecosystem Model</strong></td><td>Adapter, Compatibility Manifest, Capability</td><td>Define how external systems connect and capabilities are discovered</td></tr>
+      <tr><td><strong>Build Model</strong></td><td>Projection, BuildTarget</td><td>Define how the Graph projects to different output forms and platforms</td></tr>
+      <tr><td><strong>Evolution Model</strong></td><td>Evolution Proposal, TEP</td><td>Define how the protocol and runtime evolve through community contribution</td></tr>
+    </table>
+
+    <h2 id="contracts">17 Core Contracts</h2>
+    <table>
+      <tr><th>#</th><th>Contract</th><th>Model</th><th>Status</th></tr>
+      <tr><td>1</td><td>Application</td><td>Application</td><td><span class="badge stable">stable</span></td></tr>
+      <tr><td>2</td><td>Application Graph</td><td>Application</td><td><span class="badge stable">stable</span></td></tr>
+      <tr><td>3</td><td>Module</td><td>Application</td><td><span class="badge stable">stable</span></td></tr>
+      <tr><td>4</td><td>Plugin</td><td>Application</td><td><span class="badge beta">beta</span></td></tr>
+      <tr><td>5</td><td>Agent</td><td>AI Development</td><td><span class="badge beta">beta</span></td></tr>
+      <tr><td>6</td><td>Tool</td><td>AI Development</td><td><span class="badge stable">stable</span></td></tr>
+      <tr><td>7</td><td>Skill</td><td>AI Development</td><td><span class="badge beta">beta</span></td></tr>
+      <tr><td>8</td><td>Context</td><td>AI Development</td><td><span class="badge beta">beta</span></td></tr>
+      <tr><td>9</td><td>Permission</td><td>Application</td><td><span class="badge stable">stable</span></td></tr>
+      <tr><td>10</td><td>Workflow</td><td>AI Development</td><td><span class="badge beta">beta</span></td></tr>
+      <tr><td>11</td><td>Event</td><td>Application</td><td><span class="badge stable">stable</span></td></tr>
+      <tr><td>12</td><td>Adapter</td><td>Ecosystem</td><td><span class="badge beta">beta</span></td></tr>
+      <tr><td>13</td><td>Projection</td><td>Build</td><td><span class="badge beta">beta</span></td></tr>
+      <tr><td>14</td><td>BuildTarget</td><td>Build</td><td><span class="badge beta">beta</span></td></tr>
+      <tr><td>15</td><td>Capability</td><td>Ecosystem</td><td><span class="badge beta">beta</span></td></tr>
+      <tr><td>16</td><td>Compatibility Manifest</td><td>Ecosystem</td><td><span class="badge beta">beta</span></td></tr>
+      <tr><td>17</td><td>Evolution Proposal</td><td>Evolution</td><td><span class="badge beta">beta</span></td></tr>
+    </table>
+
+    <h2 id="graph">Application Graph</h2>
+    <p>The Application Graph is the machine-readable map of an application. It describes what the application has, what it can do, what it depends on, and how things relate.</p>
+    <h3>Node Types (17)</h3>
+    <p><code>application</code>, <code>module</code>, <code>plugin</code>, <code>adapter</code>, <code>api</code>, <code>model</code>, <code>event</code>, <code>workflow</code>, <code>agent</code>, <code>tool</code>, <code>skill</code>, <code>permission</code>, <code>capability</code>, <code>build_target</code>, <code>config</code>, <code>command</code>, <code>dependency</code></p>
+    <h3>Edge Types (15)</h3>
+    <p><code>belongs_to</code>, <code>depends_on</code>, <code>provides</code>, <code>calls</code>, <code>triggers</code>, <code>requires</code>, <code>uses</code>, <code>extends</code>, <code>conflicts_with</code>, <code>listens_to</code>, <code>implements</code>, <code>exports</code>, <code>imports</code>, <code>builds_for</code>, <code>maps_to</code></p>
+
+    <h2 id="agent">Agent Development Model</h2>
+    <p>Agents operate through a standard development loop:</p>
+    <p><code>Requirement → Understand (read Graph) → Select Capability → Select Module/Plugin/Adapter → Design (Graph nodes) → Implement (Projection → code) → Test → Discover issues → Fix → Verify → BuildTarget → Deploy</code></p>
+    <h3>Agent Capability Levels</h3>
+    <table>
+      <tr><th>Level</th><th>Capability</th></tr>
+      <tr><td>L1</td><td>Understand application (Application Graph)</td></tr>
+      <tr><td>L2</td><td>Discover and select components (Capability, Module, Plugin, Adapter)</td></tr>
+      <tr><td>L3</td><td>Design and implement (Application Graph, Projection)</td></tr>
+      <tr><td>L4</td><td>Test and fix (Testing, Application Graph)</td></tr>
+      <tr><td>L5</td><td>Build and deploy (BuildTarget, Projection)</td></tr>
+      <tr><td>L6</td><td>Discover and propose (Evolution Proposal)</td></tr>
+    </table>
+
+    <h2 id="ecosystem">Ecosystem Model</h2>
+    <p>The ecosystem model defines how external systems connect to TLL OS and how capabilities are discovered.</p>
+    <h3>Adapter</h3>
+    <p>Adapters connect external systems, mapping external concepts to/from the Application Graph. They support read, write, sync, and migrate operations. Migration is a first-class operation — the most valuable capability of an Adapter is migrating from an external system to native TLL OS modules.</p>
+    <h3>Compatibility Manifest</h3>
+    <p>Each Adapter carries a Compatibility Manifest that declares: supported system versions, which capabilities can/cannot be mapped, migration cost, dependencies, and compatibility level (production / beta / experimental / deprecated).</p>
+    <h3>Capability</h3>
+    <p>Applications declare what they can do through Capability nodes. Agents query the Capability Registry to discover available capabilities. Capabilities are provided by Modules, Plugins, or Adapters.</p>
+
+    <h2 id="build">Build Model</h2>
+    <h3>Projection</h3>
+    <p>Projection defines how the Application Graph projects to different output forms: code, OpenAPI, database schema, config, docs, tests. Projection is bidirectional — Graph can generate code, and code changes can sync back to the Graph.</p>
+    <h3>BuildTarget</h3>
+    <p>BuildTargets define the output platforms: web, h5, apk, exe, miniprogram, ai_agent, industrial, iot, cloud, edge. Each BuildTarget has a capability matrix declaring which capabilities are supported. TLL OS defines the contract — web/API is the first reference implementation, other targets are implemented by the community.</p>
+
+    <h2 id="evolution">Evolution Model (TEP)</h2>
+    <p>The TLL Evolution Protocol defines how the protocol and runtime evolve:</p>
+    <p><code>Discover (bug/optimization/new capability) → Evolution Proposal → Auto-generate ChangeSet → Auto-test → Compatibility verification → AI Review → GitHub PR → Maintainer review → Merge → Protocol/Runtime Release</code></p>
+    <p>TEP types: feature, bugfix, breaking, deprecation, refactor. Breaking changes require TEP + RFC + migration guide.</p>
+
+    <h2 id="versioning">Versioning & Compatibility</h2>
+    <ul>
+      <li><strong>Protocol version</strong>: 2.x (stable). Breaking changes require Protocol 3.0.</li>
+      <li><strong>Runtime version</strong>: 0.x (evolving). Runtime 1.0 is the first production-ready release.</li>
+      <li><strong>Contract status</strong>: stable / beta / draft / deprecated.</li>
+      <li><strong>Deprecation</strong>: deprecated contracts remain for 2 MINOR versions.</li>
+      <li><strong>LTS</strong>: Every 4th Runtime MINOR is selected as LTS, supported for 12 months.</li>
+    </ul>
+  </main>
+</div>
+
+<footer class="footer"><div class="footer-inner">
+  <div class="footer-brand"><div class="logo" style="width:24px;height:24px;font-size:0.65rem">T</div><span>TLL OS Protocol 2.0</span></div>
+  <div class="footer-links"><a href="/">Home</a><a href="/agents.html">For Agents</a><a href="https://github.com/tll-os/tll-os" target="_blank">GitHub</a></div>
+</div></footer>
+</body>
+</html>

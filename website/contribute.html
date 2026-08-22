@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contribute — TLL OS</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<nav class="nav"><div class="nav-inner">
+  <a href="/" class="nav-brand"><div class="logo">T</div><span>TLL OS</span></a>
+  <div class="nav-links">
+    <a href="/protocol.html">Protocol</a>
+    <a href="/guide.html">Guide</a>
+    <a href="/examples.html">Examples</a>
+    <a href="/agents.html" style="color:var(--green)">For Agents</a>
+    <a href="/contribute.html" class="active">Contribute</a>
+    <a href="https://github.com/tll-os/tll-os" class="nav-cta" target="_blank">GitHub</a>
+  </div>
+</div></nav>
+
+<section class="hero">
+  <div class="hero-badge"><span class="dot"></span> Humans + AI Agents Welcome</div>
+  <h1>Contribute to <span class="gradient">TLL OS</span></h1>
+  <p>TLL OS evolves through its community. Build modules, plugins, adapters. Propose protocol changes. Fix bugs. Both humans and AI Agents can contribute.</p>
+</section>
+
+<section class="section">
+  <h2 class="section-title">Ways to Contribute</h2>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon blue">📦</div>
+      <h3>Build a Module</h3>
+      <p>Create a first-party module following the Module Contract. Modules ship with routes, services, models, events, commands, and tests. Publish for any TLL OS application to install.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon green">🔌</div>
+      <h3>Build a Plugin</h3>
+      <p>Create a runtime-installable plugin. Plugins extend applications without modifying core. Follow the Plugin Contract with manifest, lifecycle, dependencies, and permissions.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon purple">🔗</div>
+      <h3>Build an Adapter</h3>
+      <p>Connect a new external system. Shopify, WordPress, Medusa, Laravel, any REST/GraphQL/SDK system. Each Adapter needs a Compatibility Manifest declaring support levels and migration cost.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon orange">📜</div>
+      <h3>Propose a TEP</h3>
+      <p>Found a bug? Want a new contract? Have an idea for the protocol? Submit a TLL Evolution Proposal. Auto-test, AI review, human review, merge.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon cyan">🐛</div>
+      <h3>Fix Bugs</h3>
+      <p>Found something broken? Open an issue, then submit a fix. Every bug fix needs a regression test. AI Agents can discover and fix bugs through the TEP process.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon blue">📝</div>
+      <h3>Improve Docs</h3>
+      <p>Documentation is critical for both humans and AI Agents. Improve guides, add examples, clarify contracts. Agent-readable docs are especially valuable.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2 class="section-title">TEP — TLL Evolution Protocol</h2>
+  <p class="section-subtitle">How protocol and runtime changes get proposed, reviewed, and merged.</p>
+
+  <div class="code-block">
+    <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span>TEP Flow</span></div>
+    <pre><code>1. DISCOVER
+   Agent or human finds: bug / optimization / new capability / protocol gap
+
+2. PROPOSE
+   Create Evolution Proposal:
+   - Problem description
+   - Impact analysis (based on Application Graph)
+   - ChangeSet (protocol + runtime + tests + docs)
+   - Auto-generated tests
+
+3. VALIDATE
+   - Run all existing tests
+   - Compatibility verification
+   - AI Review (contract consistency, architecture boundaries, security, performance)
+
+4. REVIEW
+   - GitHub PR created
+   - Maintainer review (human)
+   - Community discussion
+
+5. MERGE
+   - Approved changes merged
+   - Protocol / Runtime release
+
+6. RELEASE
+   - Protocol version: 2.x (stable)
+   - Runtime version: 0.x (evolving)</code></pre>
+  </div>
+
+  <h3 style="margin-top:30px">TEP Types</h3>
+  <table>
+    <tr><th>Type</th><th>Description</th><th>Review Required</th></tr>
+    <tr><td><code>feature</code></td><td>New feature or capability</td><td>AI + Human</td></tr>
+    <tr><td><code>bugfix</code></td><td>Bug fix</td><td>AI + Human (simple: AI only)</td></tr>
+    <tr><td><code>breaking</code></td><td>Breaking change</td><td>AI + Human + RFC + migration guide</td></tr>
+    <tr><td><code>deprecation</code></td><td>Deprecate contract/feature</td><td>AI + Human + replacement plan</td></tr>
+    <tr><td><code>refactor</code></td><td>Refactor (no behavior change)</td><td>AI (Human optional)</td></tr>
+  </table>
+</section>
+
+<section class="section">
+  <h2 class="section-title">Core Principle: Don't Reinvent the Wheel</h2>
+  <p class="section-subtitle">TLL OS unifies standards, not implementations. Before building something new, check if a mature solution exists.</p>
+
+  <div class="comparison">
+    <div class="comparison-col old">
+      <h4>What TLL OS Does NOT Build</h4>
+      <ul>
+        <li>HTTP Server → use Fastify</li>
+        <li>ORM → use Drizzle</li>
+        <li>Validation → use Zod</li>
+        <li>Queue → use BullMQ / NATS</li>
+        <li>Logging → use Pino</li>
+        <li>Testing → use Vitest</li>
+        <li>Cache → use Redis</li>
+        <li>Database → use PostgreSQL</li>
+        <li>Ecommerce → use Shopify / Medusa / Shopware</li>
+        <li>CMS → use WordPress / Strapi</li>
+        <li>ERP → use Odoo / ERPNext</li>
+      </ul>
+    </div>
+    <div class="comparison-col new">
+      <h4>What TLL OS Builds</h4>
+      <ul>
+        <li>Application Graph (shared understanding)</li>
+        <li>Module Contract (standard extension)</li>
+        <li>Plugin Contract (runtime extension)</li>
+        <li>Adapter Contract (connect external systems)</li>
+        <li>Projection (Graph → any output)</li>
+        <li>BuildTarget (multi-platform)</li>
+        <li>Capability Registry (discoverability)</li>
+        <li>Agent Contract (AI-native development)</li>
+        <li>Tool Contract (agent-callable capabilities)</li>
+        <li>Evolution Protocol (community-driven)</li>
+        <li>Permission Contract (secure agent ops)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2 class="section-title">Development Setup</h2>
+  <div class="code-block">
+    <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span>terminal</span></div>
+    <pre><code># Fork and clone
+git clone https://github.com/your-username/tll-os.git
+cd tll-os
+
+# Install
+npm install
+
+# Verify
+npx tsc --noEmit
+→ No errors
+
+# Run examples
+npx tsx examples/hello-tll-agent/agent.ts
+npx tsx examples/autonomous-task-manager/agent.ts
+
+# Create a branch
+git checkout -b feature/my-new-module
+
+# Make changes, then run all tests
+npx tsc --noEmit
+npx tsx examples/hello-tll-agent/agent.ts
+npx tsx examples/autonomous-task-manager/agent.ts
+
+# Commit and push
+git add .
+git commit -m "feat: add my new module"
+git push origin feature/my-new-module
+
+# Open a Pull Request</code></pre>
+  </div>
+</section>
+
+<section class="section" style="text-align:center">
+  <h2 class="section-title">Start Contributing</h2>
+  <p class="section-subtitle" style="margin:0 auto 32px">Join the community. Build the future of AI-native application development.</p>
+  <div class="hero-actions">
+    <a href="https://github.com/tll-os/tll-os" class="btn btn-primary" target="_blank">GitHub Repository</a>
+    <a href="https://github.com/tll-os/tll-os/issues" class="btn btn-secondary" target="_blank">Open Issues</a>
+    <a href="/agent/evolution.json" class="btn btn-agent">TEP for Agents</a>
+  </div>
+</section>
+
+<footer class="footer"><div class="footer-inner">
+  <div class="footer-brand"><div class="logo" style="width:24px;height:24px;font-size:0.65rem">T</div><span>TLL OS — Built by humans and AI Agents</span></div>
+  <div class="footer-links"><a href="/">Home</a><a href="/protocol.html">Protocol</a><a href="https://github.com/tll-os/tll-os" target="_blank">GitHub</a></div>
+</div></footer>
+</body>
+</html>

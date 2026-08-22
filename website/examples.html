@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Examples — TLL OS</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<nav class="nav"><div class="nav-inner">
+  <a href="/" class="nav-brand"><div class="logo">T</div><span>TLL OS</span></a>
+  <div class="nav-links">
+    <a href="/protocol.html">Protocol</a>
+    <a href="/guide.html">Guide</a>
+    <a href="/examples.html" class="active">Examples</a>
+    <a href="/agents.html" style="color:var(--green)">For Agents</a>
+    <a href="/contribute.html">Contribute</a>
+    <a href="https://github.com/tll-os/tll-os" class="nav-cta" target="_blank">GitHub</a>
+  </div>
+</div></nav>
+
+<section class="hero">
+  <div class="hero-badge"><span class="dot"></span> Verified & Tested</div>
+  <h1>Verified <span class="gradient">Examples</span></h1>
+  <p>Every example is built using only the TLL OS Public Contract. No internal imports. No hidden dependencies. Clone, run, and learn.</p>
+</section>
+
+<section class="section">
+  <div class="card-grid">
+    <div class="card" style="grid-column:span 2">
+      <div class="card-icon blue">🧪</div>
+      <h3>hello-tll-agent — Minimal PoC</h3>
+      <p>The first proof that an AI Agent can build a TLL OS application using only the public contract. Single module, complete test-fix-retest loop.</p>
+      <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap">
+        <span class="badge stable">3/3 Tests</span>
+        <span class="badge beta">1 Module</span>
+        <span class="badge beta">1 API</span>
+        <span class="badge beta">1 Tool</span>
+        <span class="badge beta">1 Agent</span>
+      </div>
+      <div class="code-block" style="margin-top:16px">
+        <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span>run</span></div>
+        <pre><code>npx tsx examples/hello-tll-agent/agent.ts
+→ 测试结果: 2/3 通过, 1 失败 (intentional bug)
+→ 修复后重新运行: 3/3 通过, 0 失败
+→ ✅ 全部测试通过！修复成功！
+→ 结论: TLL OS 的 AI-Native 核心设计成立。</code></pre>
+      </div>
+      <p style="margin-top:12px"><strong>What it proves:</strong> An Agent can create an application, write tests, observe a failure, diagnose the bug, fix the code, and re-run until all tests pass — all through the public contract.</p>
+    </div>
+
+    <div class="card" style="grid-column:span 2">
+      <div class="card-icon green">🤖</div>
+      <h3>autonomous-task-manager — Real Agent Development Experiment</h3>
+      <p>The critical validation. An Agent that has never seen TLL OS source code independently builds a multi-module application with cross-module dependencies, 11 REST APIs, a unified Tool, and an intent-parsing Agent. 12 tests, all passing.</p>
+      <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap">
+        <span class="badge stable">12/12 Tests</span>
+        <span class="badge beta">2 Modules</span>
+        <span class="badge beta">11 APIs</span>
+        <span class="badge beta">1 Tool (6 ops)</span>
+        <span class="badge beta">1 Agent</span>
+        <span class="badge beta">Cross-module deps</span>
+      </div>
+      <div class="code-block" style="margin-top:16px">
+        <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span>run</span></div>
+        <pre><code>npx tsx examples/autonomous-task-manager/agent.ts
+→ 结果: 12/12 通过, 0 失败, 0 错误 (6ms)
+→ ✅ PASS: project.create_and_get
+→ ✅ PASS: project.list_filter_update_delete
+→ ✅ PASS: task.create_requires_project
+→ ✅ PASS: task.crud_lifecycle
+→ ✅ PASS: task.list_filters
+→ ✅ PASS: api.project_crud
+→ ✅ PASS: api.task_validates_project
+→ ✅ PASS: api.tasks_by_project
+→ ✅ PASS: tool.manage_task_crud
+→ ✅ PASS: tool.validates_params
+→ ✅ PASS: agent.lists_tasks
+→ ✅ PASS: agent.creates_task</code></pre>
+      </div>
+      <p style="margin-top:12px"><strong>What it proves:</strong></p>
+      <ul style="color:var(--text-muted);margin-left:20px;margin-top:8px">
+        <li>Public Contract is sufficient for real multi-module application development</li>
+        <li>Agent can autonomously design module architecture and cross-module dependencies</li>
+        <li>Agent can implement complete CRUD + cross-module validation</li>
+        <li>Agent can design a unified Tool with multiple operations</li>
+        <li>Agent can design an Agent with intent parsing</li>
+        <li>Application Graph correctly reflects dual-module, API, Tool, Agent, and dependencies</li>
+        <li><strong>Real Agent experiments discover core bugs that unit tests miss</strong> — this experiment found and fixed the path parameter parsing bug</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2 class="section-title">Application Graph of task-manager</h2>
+  <p class="section-subtitle">What the Agent built, visualized as a Graph.</p>
+  <div class="code-block">
+    <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span>graph.json (simplified)</span></div>
+    <pre><code>{
+  "nodes": [
+    { "type": "application", "name": "task-manager-app" },
+    { "type": "module", "name": "project" },
+    { "type": "module", "name": "task" },
+    { "type": "api", "name": "GET /api/projects" },
+    { "type": "api", "name": "GET /api/projects/:id" },
+    { "type": "api", "name": "POST /api/projects" },
+    { "type": "api", "name": "PUT /api/projects/:id" },
+    { "type": "api", "name": "DELETE /api/projects/:id" },
+    { "type": "api", "name": "GET /api/tasks" },
+    { "type": "api", "name": "GET /api/tasks/:id" },
+    { "type": "api", "name": "POST /api/tasks" },
+    { "type": "api", "name": "PUT /api/tasks/:id" },
+    { "type": "api", "name": "DELETE /api/tasks/:id" },
+    { "type": "api", "name": "GET /api/projects/:id/tasks" },
+    { "type": "tool", "name": "manage_task" },
+    { "type": "agent", "name": "task_manager_agent" }
+  ],
+  "edges": [
+    { "from": "module:project", "type": "belongs_to", "to": "application:task-manager-app" },
+    { "from": "module:task", "type": "belongs_to", "to": "application:task-manager-app" },
+    { "from": "module:task", "type": "depends_on", "to": "module:project" },
+    { "from": "api:GET /api/projects", "type": "belongs_to", "to": "module:project" },
+    { "from": "tool:manage_task", "type": "belongs_to", "to": "module:task" },
+    { "from": "agent:task_manager_agent", "type": "calls", "to": "tool:manage_task" }
+  ]
+}</code></pre>
+  </div>
+</section>
+
+<section class="section" style="text-align:center">
+  <h2 class="section-title">Build Your Own Example</h2>
+  <p class="section-subtitle" style="margin:0 auto 32px">Clone the repo, study the examples, then build something amazing.</p>
+  <div class="hero-actions">
+    <a href="https://github.com/tll-os/tll-os" class="btn btn-primary" target="_blank">Clone from GitHub</a>
+    <a href="/guide.html" class="btn btn-secondary">Read the Guide</a>
+  </div>
+</section>
+
+<footer class="footer"><div class="footer-inner">
+  <div class="footer-brand"><div class="logo" style="width:24px;height:24px;font-size:0.65rem">T</div><span>TLL OS</span></div>
+  <div class="footer-links"><a href="/">Home</a><a href="/protocol.html">Protocol</a><a href="https://github.com/tll-os/tll-os" target="_blank">GitHub</a></div>
+</div></footer>
+</body>
+</html>

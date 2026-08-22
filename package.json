@@ -1,0 +1,48 @@
+{
+  "name": "@tll/os",
+  "version": "0.1.0",
+  "description": "TLL OS — AI-Native Universal Application Development Protocol",
+  "type": "module",
+  "main": "src/public/index.ts",
+  "types": "src/public/types.ts",
+  "exports": {
+    ".": "./src/public/index.ts",
+    "./public": "./src/public/index.ts",
+    "./types": "./src/public/types.ts"
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx tests/run-all.ts",
+    "test:hello": "tsx examples/hello-tll-agent/agent.ts",
+    "test:task-manager": "tsx examples/autonomous-task-manager/agent.ts",
+    "test:stranger": "tsx examples/stranger-agent-inventory/agent.ts",
+    "docs": "echo 'Documentation in docs/ directory. Developer Hub: https://ts.knitoem.com'"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.4.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "keywords": [
+    "tll-os",
+    "ai-native",
+    "application-protocol",
+    "application-graph",
+    "agent-protocol",
+    "module-system",
+    "plugin-system",
+    "adapter-system"
+  ],
+  "author": "TLL OS Contributors",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tll-os/tll-os.git"
+  },
+  "homepage": "https://ts.knitoem.com"
+}

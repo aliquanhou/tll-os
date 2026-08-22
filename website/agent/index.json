@@ -1,0 +1,67 @@
+{
+  "name": "TLL OS Agent Documentation Index",
+  "version": "2.0.0",
+  "description": "Entry point for AI Agents to discover all structured TLL OS resources",
+  "protocol": "TLL OS Protocol 2.0",
+  "frozen": "2026-08-22",
+  "resources": [
+    {
+      "name": "Protocol Specification",
+      "path": "/agent/protocol.json",
+      "description": "Full Protocol 2.0 specification: principles, models, contracts, versioning",
+      "content_type": "application/json"
+    },
+    {
+      "name": "Contracts",
+      "path": "/agent/contracts.json",
+      "description": "All 17 core contracts with interfaces, status, and key methods",
+      "content_type": "application/json"
+    },
+    {
+      "name": "Capabilities",
+      "path": "/agent/capabilities.json",
+      "description": "Capability registry and ecosystem map: available modules, plugins, adapters",
+      "content_type": "application/json"
+    },
+    {
+      "name": "Examples",
+      "path": "/agent/examples.json",
+      "description": "Verified, tested examples with source, Graph structure, and test results",
+      "content_type": "application/json"
+    },
+    {
+      "name": "Evolution",
+      "path": "/agent/evolution.json",
+      "description": "TEP process: proposal structure, status flow, AI review checklist, active proposals",
+      "content_type": "application/json"
+    }
+  ],
+  "human_pages": {
+    "home": "/",
+    "protocol": "/protocol.html",
+    "guide": "/guide.html",
+    "examples": "/examples.html",
+    "agents": "/agents.html",
+    "contribute": "/contribute.html"
+  },
+  "getting_started": {
+    "import": "import { createTllOS } from '@tll/os/public';",
+    "rule": "Only import from @tll/os/public. Never import internal implementations.",
+    "first_steps": [
+      "Read /agent/protocol.json to understand Protocol 2.0",
+      "Read /agent/contracts.json for all 17 contracts",
+      "Read /agent/examples.json for verified examples",
+      "Use createTllOS() to build your application"
+    ]
+  },
+  "verification_checklist": [
+    "Can you read and parse the Application Graph?",
+    "Can you create a Module with routes and services?",
+    "Can you create REST API endpoints with path parameters?",
+    "Can you create an Agent-callable Tool?",
+    "Can you create an Agent that uses Tools?",
+    "Can you write and run tests, then interpret failures?",
+    "Can you fix a bug and re-run tests?",
+    "Can you draft an Evolution Proposal?"
+  ]
+}
