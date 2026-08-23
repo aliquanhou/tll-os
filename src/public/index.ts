@@ -13,3 +13,4 @@ export * from './types.js';
 // 导出 createTllOS 工厂函数（内部实现对外部透明）
 export { createTllOS, createApiResponseBuilder } from '../core/index.js';
 export { createMemoryPersistence } from '../core/persistence.js';
+export { createFilePersistence } from '../core/file-persistence.js';
