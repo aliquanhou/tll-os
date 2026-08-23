@@ -365,12 +365,13 @@ export interface ToolContext {
   moduleName?: string;
   agentName?: string;
   requestId: string;
+  permissions?: string[];
 }
 
 export interface ToolResult {
   success: boolean;
   data?: unknown;
-  error?: { code: string; message: string };
+  error?: { code: string; message: string; missingPermissions?: string[] };
 }
 
 export interface Tool {

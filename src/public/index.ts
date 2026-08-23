@@ -15,3 +15,12 @@ export { createTllOS, createApiResponseBuilder } from '../core/index.js';
 export { createMemoryPersistence } from '../core/persistence.js';
 export { createFilePersistence } from '../core/file-persistence.js';
 export { createSqlitePersistence } from '../core/sqlite-persistence.js';
+export {
+  ApiKeyManager, PermissionChecker, SecurityMiddleware, InputValidator,
+  ErrorResponseBuilder, SuccessResponseBuilder, generateRequestId,
+} from '../core/security.js';
+export type {
+  ApiKey, AuthResult, PermissionCheckResult, SecurityConfig,
+  SecurityMiddlewareContext, SecurityMiddlewareResult,
+  ValidationResult, ErrorResponse, SuccessResponse,
+} from '../core/security.js';

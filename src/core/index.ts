@@ -577,11 +577,23 @@ class ToolImpl implements Tool {
       }
     }
 
-    // P0-10: 权限检查（如果 context 提供了 agent 权限）
-    if (this.permissions.length > 0 && context?.agentName) {
-      // 权限检查由调用方（Agent 执行器）在调用前验证，
-      // 这里记录权限要求，实际执行在 Agent Workspace 层完成
-      // （当前 PoC 阶段：权限声明已记录，执行层在 P0-3 Workspace 中实现）
+    // P0-10: 权限检查
+    if (this.permissions.length > 0) {
+      const agentPermissions = context?.permissions ?? [];
+      const hasWildcard = agentPermissions.includes('*');
+      if (!hasWildcard) {
+        const missing = this.permissions.filter(p => !agentPermissions.includes(p));
+        if (missing.length > 0) {
+          return {
+            success: false,
+            error: {
+              code: 'TOOL_PERMISSION_DENIED',
+              message: `Agent lacks required permissions: ${missing.join(', ')}`,
+              missingPermissions: missing,
+            },
+          };
+        }
+      }
     }
 
     try {
