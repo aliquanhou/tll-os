@@ -1,7 +1,9 @@
-﻿// @ts-nocheck
+#!/usr/bin/env tsx
+// @ts-nocheck
 import { createTllOS } from "../core/index.js";
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
+import { pathToFileURL } from "node:url";
 
 const CWD = process.cwd();
 
@@ -22,7 +24,7 @@ async function main() {
 async function cmdCreate(args) {
   const name = args[0];
   if (!name) { console.error("Usage: tll create <project-name>"); process.exit(1); }
-  const projectDir = path.join(CWD, name);
+  const projectDir = path.resolve(name);
   try { await fs.access(projectDir); console.error("Directory exists"); process.exit(1); } catch {}
   console.log("Creating TLL OS project:", name);
   await fs.mkdir(path.join(projectDir, "src/modules"), { recursive: true });
@@ -67,7 +69,7 @@ async function cmdTest(args) {
     for (const file of files) {
       if (filter && !file.includes(filter)) continue;
       console.log("  ", file);
-      try { const mod = await import(path.join(testsDir, file)); if (typeof mod.run === "function") { const r = await mod.run(app); if (r.passed) passed++; else failed++; } }
+      try { const mod = await import(pathToFileURL(path.join(testsDir, file)).href); if (typeof mod.run === "function") { const r = await mod.run(app); if (r.passed) passed++; else failed++; } }
       catch (e) { console.error("    Error:", e.message); failed++; }
     }
   } catch { console.log("  (No tests directory)"); }
