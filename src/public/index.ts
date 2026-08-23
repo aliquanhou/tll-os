@@ -24,3 +24,7 @@ export type {
   SecurityMiddlewareContext, SecurityMiddlewareResult,
   ValidationResult, ErrorResponse, SuccessResponse,
 } from '../core/security.js';
+export { Logger, logger, createLogger } from '../core/logger.js';
+export type { LogLevel, LogEntry, LoggerConfig } from '../core/logger.js';
+export { ConfigurationManager, getConfig, resetConfig } from '../core/config.js';
+export type { Environment, DatabaseConfig, ServerConfig, SecurityConfig as SecurityConfigType, LoggingConfig, TllOSConfig } from '../core/config.js';
