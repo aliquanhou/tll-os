@@ -1,175 +1,34 @@
 {
-  "name": "TLL OS Verified Examples",
-  "protocol_version": "2.0.0",
-  "description": "Verified, tested examples built using only the TLL OS Public Contract",
+  "schema": "tll-os-examples/v1",
+  "count": 4,
   "examples": [
     {
-      "id": "hello-tll-agent",
-      "name": "Hello TLL Agent",
-      "type": "proof_of_concept",
-      "description": "Minimal PoC proving an AI Agent can build a TLL OS application using only the public contract. Single module, complete test-fix-retest loop.",
-      "path": "examples/hello-tll-agent/agent.ts",
-      "source_url": "https://github.com/aliquanhou/tll-os/blob/main/examples/hello-tll-agent/agent.ts",
-      "run_command": "npx tsx examples/hello-tll-agent/agent.ts",
-      "modules": 1,
-      "apis": 1,
-      "tools": 1,
-      "agents": 1,
-      "tests": {"total": 3, "passed": 3, "failed": 0},
-      "graph": {"nodes": 5, "edges": 4},
-      "key_features": [
-        "Agent creates application through public contract only",
-        "Agent writes tests, observes intentional failure",
-        "Agent diagnoses bug, fixes code, re-runs tests",
-        "Complete test-fix-retest loop verified"
-      ],
-      "proves": "An Agent can create an application, write tests, observe failure, diagnose, fix, and re-run until all pass - all through the public contract.",
-      "status": "verified"
+      "name": "autonomous-task-manager",
+      "description": "> 这是 TLL OS Protocol 2.0 的关键验证实验。",
+      "has_agent": true,
+      "has_readme": true,
+      "path": "examples/autonomous-task-manager"
     },
     {
-      "id": "autonomous-task-manager",
-      "name": "Autonomous Task Manager",
-      "type": "real_agent_development_experiment",
-      "description": "Critical validation. An Agent that has never seen TLL OS source code independently builds a multi-module application with cross-module dependencies, 11 REST APIs, a unified Tool (6 operations), and an intent-parsing Agent. 12 tests, all passing.",
-      "path": "examples/autonomous-task-manager/agent.ts",
-      "source_url": "https://github.com/aliquanhou/tll-os/blob/main/examples/autonomous-task-manager/agent.ts",
-      "run_command": "npx tsx examples/autonomous-task-manager/agent.ts",
-      "modules": 2,
-      "module_names": ["project", "task"],
-      "apis": 11,
-      "tools": 1,
-      "tool_operations": 6,
-      "agents": 1,
-      "tests": {"total": 12, "passed": 12, "failed": 0, "errors": 0},
-      "graph": {"nodes": 16, "edges": 14},
-      "cross_module_dependencies": [
-        {"from": "task", "to": "project", "type": "depends_on"},
-        "task module validates project existence when creating tasks"
-      ],
-      "api_endpoints": [
-        "GET /api/projects",
-        "GET /api/projects/:id",
-        "POST /api/projects",
-        "PUT /api/projects/:id",
-        "DELETE /api/projects/:id",
-        "GET /api/tasks",
-        "GET /api/tasks/:id",
-        "POST /api/tasks",
-        "PUT /api/tasks/:id",
-        "DELETE /api/tasks/:id",
-        "GET /api/projects/:id/tasks"
-      ],
-      "tool": {
-        "name": "manage_task",
-        "operations": ["create", "list", "get", "update", "delete", "changeStatus"]
-      },
-      "agent": {
-        "name": "task_manager_agent",
-        "capabilities": ["intent parsing", "tool calling", "task management"]
-      },
-      "bugs_found_and_fixed": [
-        {
-          "id": "path_parameter_parsing",
-          "description": "ApiEndpointImpl.invoke did not parse path parameters. req.params.id was always undefined, causing all :id APIs to return 404.",
-          "severity": "critical",
-          "discovered_by": "autonomous-task-manager experiment",
-          "fix": "Added path parameter extraction in ApiEndpointImpl.invoke using route pattern matching.",
-          "note": "This bug was NOT discovered by hello-tll-agent (which had no path parameters). Real agent experiments with complex applications discover bugs unit tests miss."
-        },
-        {
-          "id": "agent_intent_regex",
-          "description": "Agent intent regex only captured digits, not full task IDs.",
-          "severity": "medium",
-          "fix": "Updated regex to capture full ID strings."
-        }
-      ],
-      "key_features": [
-        "Agent independently designs dual-module architecture",
-        "Cross-module dependency declaration and validation",
-        "Complete CRUD for both modules",
-        "Cross-module query API (/api/projects/:id/tasks)",
-        "Unified Tool with 6 operations",
-        "Intent-parsing Agent that calls Tools",
-        "Comprehensive test coverage (12 tests)",
-        "Application Graph correctly reflects all structure"
-      ],
-      "proves": [
-        "Public Contract is sufficient for real multi-module application development",
-        "Agent can autonomously design module architecture and cross-module dependencies",
-        "Agent can implement complete CRUD + cross-module validation",
-        "Agent can design unified Tool with multiple operations",
-        "Agent can design Agent with intent parsing",
-        "Application Graph correctly reflects dual-module, API, Tool, Agent, dependencies",
-        "Real Agent experiments discover core bugs that unit tests miss"
-      ],
-      "status": "verified"
+      "name": "commerce-migration",
+      "description": "> 基于 TLL OS Runtime 0.1 构建的独立电商平台 — TLL OS 的\"成人礼\"实战项目",
+      "has_agent": true,
+      "has_readme": true,
+      "path": "examples/commerce-migration"
     },
     {
-      "id": "stranger-agent-inventory",
-      "name": "Stranger Agent Inventory Management",
-      "type": "stranger_agent_verification",
-      "description": "Critical public-release verification. An Agent that has NEVER seen TLL OS source code, only the Agent-readable JSON docs and TypeScript type definitions, independently builds a complete inventory management application. Discovered 8 documentation gaps and 1 core bug (query params not passed by aggregating API manager). 8 tests, all passing.",
-      "path": "examples/stranger-agent-inventory/agent.ts",
-      "source_url": "https://github.com/aliquanhou/tll-os/blob/main/examples/stranger-agent-inventory/agent.ts",
-      "run_command": "npx tsx examples/stranger-agent-inventory/agent.ts",
-      "modules": 1,
-      "apis": 6,
-      "tools": 1,
-      "tool_operations": 6,
-      "agents": 0,
-      "tests": {"total": 8, "passed": 8, "failed": 0, "errors": 0},
-      "graph": {"nodes": 9, "edges": 7},
-      "api_endpoints": [
-        "GET /api/items",
-        "GET /api/items/:id",
-        "POST /api/items",
-        "PUT /api/items/:id",
-        "DELETE /api/items/:id",
-        "POST /api/items/:id/restock"
-      ],
-      "tool": {
-        "name": "manage_inventory",
-        "operations": ["create", "list", "get", "update", "delete", "restock"]
-      },
-      "documentation_gaps_discovered": [
-        "createTllOS() returns TllOS, then tll.createApplication() — two-step process not documented",
-        "Need await app.start() before using the app",
-        "app.modules.create() not registerModule()",
-        "app.graph is a property, not getGraph() method",
-        "API handlers return { status, headers, body }",
-        "app.apis.request() not app.request()",
-        "module.tests.create() not module.registerTest()",
-        "Tools use handler (not execute) and tool.invoke() returns { success, data }"
-      ],
-      "bugs_found_and_fixed": [
-        {
-          "id": "aggregating_api_query_params",
-          "description": "AggregatingApiManager.request() did not parse or pass query parameters to API handlers. GET /api/items?lowStock=true always returned all items.",
-          "severity": "high",
-          "discovered_by": "stranger-agent-inventory experiment",
-          "fix": "Added query parameter parsing in AggregatingApiManager.request() matching the ApiManager implementation.",
-          "note": "This bug existed because the aggregating manager was added later and did not replicate the query handling of the per-module ApiManager."
-        }
-      ],
-      "key_features": [
-        "Agent with zero prior knowledge builds complete app from docs only",
-        "Full CRUD + restock + low-stock filter APIs",
-        "Unified Tool with 6 operations",
-        "8 comprehensive tests covering all APIs and tool",
-        "Application Graph correctly reflects all structure",
-        "Discovered real documentation gaps and core bugs"
-      ],
-      "proves": [
-        "A completely unfamiliar Agent can discover and use TLL OS from public docs",
-        "Agent JSON docs + TypeScript types are sufficient for application development",
-        "Stranger agent experiments discover documentation gaps and core bugs",
-        "Public Contract API is consistent enough for external agents to learn"
-      ],
-      "status": "verified"
+      "name": "hello-tll-agent",
+      "description": "> 验证 TLL OS AI-Native 核心设计的最小闭环证明。",
+      "has_agent": true,
+      "has_readme": true,
+      "path": "examples/hello-tll-agent"
+    },
+    {
+      "name": "stranger-agent-inventory",
+      "description": "This example simulates an AI Agent that has **never seen TLL OS source code**.",
+      "has_agent": true,
+      "has_readme": true,
+      "path": "examples/stranger-agent-inventory"
     }
-  ],
-  "how_to_run": "1. Clone: git clone https://github.com/aliquanhou/tll-os.git\n2. Install: cd tll-os && npm install\n3. Run all tests: npm test (expect 23/23)\n4. Run single example: npx tsx examples/<name>/agent.ts",
-  "total_verified_examples": 3,
-  "total_tests": 23,
-  "contributing_examples": "Want to add an example? Build it using only the public contract (src/public/), ensure all tests pass, then submit a PR to https://github.com/aliquanhou/tll-os."
+  ]
 }

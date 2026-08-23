@@ -1,93 +1,127 @@
 {
-  "name": "TLL OS 17 Core Contracts",
+  "schema": "tll-os-contracts/v1",
   "protocol_version": "2.0.0",
+  "total": 17,
+  "implemented": 10,
   "contracts": [
     {
-      "id": 1, "name": "Application", "model": "application", "status": "stable",
-      "description": "The root container of a TLL OS application. Holds modules, plugins, graph, and runtime.",
-      "key_methods": ["registerModule", "registerPlugin", "getGraph", "request", "runTests", "listTools", "registerAgent"]
+      "name": "Application Model",
+      "status": "stable",
+      "runtime_implementation": true,
+      "description": "Application lifecycle, config, state management",
+      "public_api": "src/public/types.ts#ApplicationConfig"
     },
     {
-      "id": 2, "name": "Application Graph", "model": "application", "status": "stable",
-      "description": "Machine-readable map of application structure, capabilities, dependencies, and relationships. Primary source of truth for AI Agents.",
-      "key_methods": ["listNodes", "getNode", "findNodes", "listEdges", "getDependencies", "getImpactAnalysis", "toJSON"]
+      "name": "Application Graph",
+      "status": "stable",
+      "runtime_implementation": true,
+      "description": "Machine-understandable application structure with nodes/edges and impact analysis",
+      "public_api": "src/public/types.ts#ApplicationGraph"
     },
     {
-      "id": 3, "name": "Module", "model": "application", "status": "stable",
-      "description": "First-party building block. Contains routes, services, models, events, commands, config, migrations, tests, resources.",
-      "key_methods": ["registerApi", "registerService", "registerTool", "registerEvent", "registerTest", "registerCommand"]
+      "name": "Module Contract",
+      "status": "stable",
+      "runtime_implementation": true,
+      "description": "Module registration, discovery, lifecycle, routes, services, models",
+      "public_api": "src/public/types.ts#Module"
     },
     {
-      "id": 4, "name": "Plugin", "model": "application", "status": "beta",
-      "description": "Third-party runtime-installable extension. Has manifest, lifecycle (install/enable/disable/upgrade/uninstall), dependencies, permissions.",
-      "key_methods": ["install", "enable", "disable", "upgrade", "uninstall", "getManifest"]
+      "name": "Plugin Contract",
+      "status": "beta",
+      "runtime_implementation": true,
+      "description": "Plugin manifest, install/enable/disable/uninstall, permissions, dependencies",
+      "public_api": "src/public/types.ts#Plugin"
     },
     {
-      "id": 5, "name": "Agent", "model": "ai_development", "status": "beta",
-      "description": "AI entity that can use Tools to accomplish tasks. Has name, description, available tools, and handler.",
-      "key_methods": ["run", "callTool", "getContext", "listAvailableTools"]
+      "name": "Agent Contract",
+      "status": "beta",
+      "runtime_implementation": true,
+      "description": "AI Agent identity, capabilities, tools, permissions, execution context",
+      "public_api": "src/public/types.ts#Agent"
     },
     {
-      "id": 6, "name": "Tool", "model": "ai_development", "status": "stable",
-      "description": "Agent-callable atomic capability. Has name, description, parameter schema (Zod-like), and execute function.",
-      "key_methods": ["execute", "getParameters", "validateParameters"]
+      "name": "Tool Contract",
+      "status": "stable",
+      "runtime_implementation": true,
+      "description": "Tool registration, JSON Schema input validation, permission enforcement, standard output",
+      "public_api": "src/public/types.ts#ToolDefinition"
     },
     {
-      "id": 7, "name": "Skill", "model": "ai_development", "status": "beta",
-      "description": "Reusable recipe for accomplishing a class of tasks using a set of Tools. Contains decision logic, error handling, best practices.",
-      "key_methods": ["execute", "listRequiredTools", "getWorkflow"]
+      "name": "Skill Contract",
+      "status": "draft",
+      "runtime_implementation": false,
+      "description": "Reusable agent capability packages combining tools + decision logic + best practices",
+      "public_api": null
     },
     {
-      "id": 8, "name": "Context", "model": "ai_development", "status": "beta",
-      "description": "Execution context for Agents. Contains application reference, graph snapshot, available tools, permissions, conversation history.",
-      "key_methods": ["getGraph", "callTool", "getApplication", "getPermissions", "getHistory"]
+      "name": "Context Contract",
+      "status": "draft",
+      "runtime_implementation": false,
+      "description": "AI context management, request ID, module/agent scoping",
+      "public_api": null
     },
     {
-      "id": 9, "name": "Permission", "model": "application", "status": "stable",
-      "description": "Access control for Agents and operations. Defines what an Agent can read, write, execute. Scoped to modules, tools, APIs.",
-      "key_methods": ["check", "grant", "revoke", "listPermissions"]
+      "name": "Permission Contract",
+      "status": "stable",
+      "runtime_implementation": true,
+      "description": "Permission declaration, checking, wildcard support, API key auth",
+      "public_api": "src/core/security.ts#PermissionChecker"
     },
     {
-      "id": 10, "name": "Workflow", "model": "ai_development", "status": "beta",
-      "description": "Orchestrated sequence of operations. Can be agent-driven (requirement->plan->execute->test->deploy) or business-driven (order->payment->inventory->shipping).",
-      "key_methods": ["start", "step", "complete", "cancel", "getStatus"]
+      "name": "Workflow Contract",
+      "status": "draft",
+      "runtime_implementation": false,
+      "description": "Agent development workflow and business workflow orchestration",
+      "public_api": null
     },
     {
-      "id": 11, "name": "Event", "model": "application", "status": "stable",
-      "description": "Pub/sub event system. Modules and plugins can emit and listen to events. Agents can subscribe to application events.",
-      "key_methods": ["emit", "on", "off", "once", "listListeners"]
+      "name": "Event Contract",
+      "status": "stable",
+      "runtime_implementation": true,
+      "description": "Event bus, event emission/listening, event types",
+      "public_api": "src/public/types.ts#EventDispatcher"
     },
     {
-      "id": 12, "name": "Adapter", "model": "ecosystem", "status": "beta",
-      "description": "Bridge to external systems. Maps external concepts to/from Application Graph. Supports read, write, sync, migrate operations.",
-      "key_methods": ["configure", "connect", "disconnect", "read", "write", "sync", "migrate", "healthCheck"]
+      "name": "Adapter Contract",
+      "status": "beta",
+      "runtime_implementation": true,
+      "description": "Adapter system for external world: database, HTTP, storage, queue, cache",
+      "public_api": "src/public/types.ts#Adapter"
     },
     {
-      "id": 13, "name": "Projection", "model": "build", "status": "beta",
-      "description": "Rules for projecting Application Graph to output forms: code, OpenAPI, database schema, config, docs, tests. Bidirectional.",
-      "key_methods": ["project", "projectNode", "validate", "syncFromCode"]
+      "name": "Projection Contract",
+      "status": "beta",
+      "runtime_implementation": true,
+      "description": "Graph ↔ code/OpenAPI/DB Schema/config/docs/tests bidirectional projection",
+      "public_api": "src/core/projection.ts#ProjectionEngine"
     },
     {
-      "id": 14, "name": "BuildTarget", "model": "build", "status": "beta",
-      "description": "Output platform definition: web, h5, apk, exe, miniprogram, ai_agent, industrial, iot, cloud, edge. Has capability matrix.",
-      "key_methods": ["build", "devServe", "validate", "getCapabilityMatrix"]
+      "name": "BuildTarget Contract",
+      "status": "draft",
+      "runtime_implementation": false,
+      "description": "Build targets: web, H5, APK, EXE, mini-program, IoT, edge",
+      "public_api": null
     },
     {
-      "id": 15, "name": "Capability", "model": "ecosystem", "status": "beta",
-      "description": "Declaration of what an application can do. Provided by Modules, Plugins, or Adapters. Agents query Capability Registry to discover available capabilities.",
-      "key_methods": ["list", "get", "has", "findByCategory", "findByProvider", "check", "findMissing", "register"]
+      "name": "Capability Contract",
+      "status": "beta",
+      "runtime_implementation": false,
+      "description": "Capability registry for application feature declaration and discovery",
+      "public_api": null
     },
     {
-      "id": 16, "name": "Compatibility Manifest", "model": "ecosystem", "status": "beta",
-      "description": "Adapter's declaration of external system compatibility: supported versions, mappable/unmappable capabilities, migration cost, dependencies, compatibility level.",
-      "key_fields": ["adapter", "externalSystem", "capabilityMapping", "migration", "dependencies", "compatibilityLevel", "tested"]
+      "name": "Compatibility Manifest",
+      "status": "draft",
+      "runtime_implementation": false,
+      "description": "Adapter compatibility declaration and assessment for mature ecosystem integration",
+      "public_api": null
     },
     {
-      "id": 17, "name": "Evolution Proposal", "model": "evolution", "status": "beta",
-      "description": "TEP (TLL Evolution Proposal). Structured proposal for protocol/runtime changes. Includes problem, impact analysis, ChangeSet, validation, AI review, human review.",
-      "key_methods": ["create", "submitForReview", "runAIReview", "merge", "reject"],
-      "types": ["feature", "bugfix", "breaking", "deprecation", "refactor"],
-      "statuses": ["draft", "review", "approved", "rejected", "merged"]
+      "name": "Evolution Proposal",
+      "status": "beta",
+      "runtime_implementation": false,
+      "description": "TEP process for protocol/runtime evolution by global agents and developers",
+      "public_api": null
     }
   ]
 }

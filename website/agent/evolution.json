@@ -1,89 +1,26 @@
 {
-  "name": "TLL OS Evolution Protocol (TEP)",
+  "schema": "tll-os-evolution/v1",
+  "tep": {
+    "name": "TLL Evolution Proposal",
+    "description": "Process for agents and developers to propose protocol/runtime improvements",
+    "directory": "proposals/",
+    "documentation": "docs/evolution/TEP.md",
+    "status": "protocol-defined, runtime-engine-pending",
+    "lifecycle": [
+      "Agent discovers issue or improvement opportunity",
+      "Create TEP proposal in proposals/ directory",
+      "AI Review by other agents",
+      "Human maintainer review",
+      "Approve / Reject / Request changes",
+      "Merge to protocol/runtime",
+      "Release new version"
+    ]
+  },
+  "current_version": "0.2.0",
   "protocol_version": "2.0.0",
-  "description": "How TLL OS protocol and runtime evolve through community contribution from humans and AI Agents",
-  "flow": [
-    {"step": 1, "name": "DISCOVER", "description": "Agent or human finds: bug / optimization / new capability / protocol gap"},
-    {"step": 2, "name": "PROPOSE", "description": "Create Evolution Proposal with problem, impact analysis, ChangeSet, auto-generated tests"},
-    {"step": 3, "name": "VALIDATE", "description": "Run all existing tests, compatibility verification, AI Review"},
-    {"step": 4, "name": "REVIEW", "description": "GitHub PR, maintainer review (human), community discussion"},
-    {"step": 5, "name": "MERGE", "description": "Approved changes merged"},
-    {"step": 6, "name": "RELEASE", "description": "Protocol / Runtime release"}
-  ],
-  "proposal_structure": {
-    "id": "TEP-XXXX",
-    "title": "string",
-    "type": "feature | bugfix | breaking | deprecation | refactor",
-    "status": "draft | review | approved | rejected | merged",
-    "created": "timestamp",
-    "updated": "timestamp",
-    "author": {"type": "agent | human", "id": "string", "source": "string"},
-    "problem": "string - detailed description of the problem",
-    "impactAnalysis": {
-      "affectedContracts": ["string"],
-      "affectedNodes": ["string"],
-      "affectedModules": ["string"],
-      "breaking": "boolean",
-      "backwardCompatible": "boolean",
-      "migrationRequired": "boolean",
-      "riskLevel": "low | medium | high | critical",
-      "graphChanges": [{"operation": "string", "target": "string", "description": "string"}]
-    },
-    "changeSet": {
-      "protocolChanges": [{"file": "string", "change": "string", "operation": "create|modify|delete"}],
-      "runtimeChanges": [{"file": "string", "change": "string", "operation": "create|modify|delete"}],
-      "testChanges": [{"file": "string", "change": "string", "operation": "create|modify|delete"}],
-      "docChanges": [{"file": "string", "change": "string", "operation": "create|modify|delete"}]
-    },
-    "validation": {
-      "testsPassed": "boolean",
-      "testCount": "number",
-      "testCoverage": "string",
-      "compatibilityVerified": "boolean",
-      "aiReview": "approved | rejected | pending",
-      "aiReviewNotes": "string",
-      "humanReview": "approved | rejected | pending"
-    },
-    "references": ["string"],
-    "discussionUrl": "string",
-    "prUrl": "string"
-  },
-  "tep_types": {
-    "feature": {"description": "New feature or capability", "review": "AI + Human"},
-    "bugfix": {"description": "Bug fix", "review": "AI + Human (simple: AI only)"},
-    "breaking": {"description": "Breaking change", "review": "AI + Human + RFC + migration guide"},
-    "deprecation": {"description": "Deprecate contract/feature", "review": "AI + Human + replacement plan"},
-    "refactor": {"description": "Refactor (no behavior change)", "review": "AI (Human optional)"}
-  },
-  "status_flow": "draft -> review -> approved -> merged (or rejected)",
-  "ai_review_checklist": [
-    "Contract consistency: Does implementation match Contract types?",
-    "Architecture boundaries: Any out-of-bounds operations?",
-    "Test sufficiency: Does new code have enough tests?",
-    "Wheel reinvention: Is there a mature open source alternative?",
-    "Security: Any vulnerabilities (injection, privilege escalation, sensitive data)?",
-    "Compatibility: Does it break existing Contracts or APIs?",
-    "Performance: Any obvious performance issues?",
-    "Graph consistency: Are Graph changes verified?",
-    "Documentation: Are there corresponding doc updates?"
-  ],
-  "versioning": {
-    "protocol": "2.x stable. Breaking changes require Protocol 3.0.",
-    "runtime": "0.x evolving. Runtime 1.0 is first production-ready.",
-    "separation": "Protocol and Runtime versions are independent. Runtime can be rewritten without breaking Protocol 2.0 applications."
-  },
-  "active_proposals": [],
-  "how_to_propose_as_agent": [
-    "1. Identify the problem (bug, gap, optimization) while using TLL OS",
-    "2. Read /agent/contracts.json to understand affected contracts",
-    "3. Create an Evolution Proposal following the structure above",
-    "4. Implement the ChangeSet (protocol + runtime + tests + docs)",
-    "5. Run all existing tests to verify no regressions",
-    "6. Run AI Review checklist",
-    "7. Submit GitHub PR with the proposal",
-    "8. Respond to maintainer feedback",
-    "9. After approval, changes are merged and released"
-  ],
-  "lts_policy": "Every 4th Runtime MINOR release is selected as LTS, supported for 12 months.",
-  "deprecation_policy": "Deprecated contracts remain for 2 MINOR versions before removal."
+  "roadmap": {
+    "0.2.0": "Foundation hardening: Persistence, HTTP, CLI, Testing, Security, Logger, Config, Projection",
+    "0.3.0": "Adapter system, Projection enhancement, Workflow engine, Skill system, TEP runtime",
+    "1.0.0": "Stable API, LTS, production deployment, full 17 contracts runtime implementation"
+  }
 }

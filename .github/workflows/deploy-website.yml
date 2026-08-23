@@ -1,0 +1,79 @@
+name: Deploy Website
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'website/**'
+      - 'scripts/sync-website.mjs'
+      - 'scripts/deploy-website.mjs'
+      - 'package.json'
+      - 'src/**'
+      - 'tests/**'
+      - 'examples/**'
+      - 'protocol/**'
+  workflow_dispatch:
+
+jobs:
+  test-and-sync:
+    name: Test, Sync & Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Run tests
+        run: npm test
+
+      - name: Sync website from repository
+        run: npm run sync:website
+
+      - name: Verify generated files
+        run: |
+          echo "Checking generated Agent JSON files..."
+          test -f website/agent/index.json && echo "✓ index.json"
+          test -f website/agent/protocol.json && echo "✓ protocol.json"
+          test -f website/agent/contracts.json && echo "✓ contracts.json"
+          test -f website/agent/capabilities.json && echo "✓ capabilities.json"
+          test -f website/agent/examples.json && echo "✓ examples.json"
+          test -f website/agent/evolution.json && echo "✓ evolution.json"
+
+      - name: Setup SSH
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
+
+      - name: Deploy to server
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          ssh -o StrictHostKeyChecking=no root@1.117.221.61 "mkdir -p /www/wwwroot/ts.knitoem.com"
+          rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" website/ root@1.117.221.61:/www/wwwroot/ts.knitoem.com/
+
+      - name: Verify deployment
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          echo "Verifying deployment..."
+          curl -s https://ts.knitoem.com/agent/index.json | head -c 200
+          echo ""
+          echo "✓ Website deployed and accessible"
+
+      - name: Upload website artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: website-build
+          path: website/
+          retention-days: 30

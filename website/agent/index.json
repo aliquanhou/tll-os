@@ -1,212 +1,320 @@
 {
-  "name": "TLL OS Agent Documentation Index",
-  "version": "2.0.1",
-  "description": "Entry point for AI Agents to discover all structured TLL OS resources. This is the single starting point for any agent that wants to use, develop, or extend TLL OS.",
-  "protocol": "TLL OS Protocol 2.0",
-  "protocol_frozen": "2026-08-22",
-  "last_updated": "2026-08-22",
-
-  "official_identity": {
-    "name": "TLL OS",
-    "tagline": "AI-Native Universal Application Development Protocol",
-    "website": "https://ts.knitoem.com",
-    "repository": {
-      "provider": "github",
-      "url": "https://github.com/aliquanhou/tll-os",
-      "clone_url": "https://github.com/aliquanhou/tll-os.git",
-      "default_branch": "main",
-      "owner": "aliquanhou",
-      "repo": "tll-os"
+  "schema": "tll-os-agent-index/v1",
+  "generatedAt": "2026-08-23T03:47:44.593Z",
+  "project": {
+    "name": "@tll/os",
+    "version": "0.2.0",
+    "description": "TLL OS — AI-Native Universal Application Development Protocol",
+    "protocol": {
+      "version": "2.0.0",
+      "status": "FROZEN"
     },
     "license": "Apache-2.0",
-    "trademark": "TLL OS and TLL are trademarks. Code is open source, trademark is protected. See TRADEMARK.md."
+    "repository": "https://github.com/aliquanhou/tll-os.git",
+    "homepage": "https://ts.knitoem.com",
+    "engines": {
+      "node": ">=20.0.0"
+    }
   },
-
-  "runtime": {
-    "name": "TLL OS Runtime",
-    "version": "0.1.0",
-    "status": "available",
-    "language": "TypeScript",
-    "language_version": ">=5.4",
-    "platform": "Node.js >=20",
-    "implementation": "in-memory reference implementation",
-    "capabilities": [
-      "Application lifecycle",
-      "Module system",
-      "REST API routing",
-      "Tool system (Agent-callable)",
-      "Test runner",
-      "Application Graph"
-    ],
-    "not_yet_implemented": [
-      "Plugin system",
-      "HTTP server (Fastify adapter)",
-      "CLI",
-      "Persistence / Database",
-      "Permission system",
-      "LLM adapter",
-      "WebSocket",
-      "Build targets (H5/APK/EXE)"
-    ],
-    "source_entry": "src/public/index.ts",
-    "types_entry": "src/public/types.ts",
-    "core_implementation": "src/core/index.ts (internal — do not import directly)"
-  },
-
-  "package": {
-    "npm": {
+  "official_identity": {
+    "website": "https://ts.knitoem.com",
+    "repository": "https://github.com/aliquanhou/tll-os",
+    "clone_url": "https://github.com/aliquanhou/tll-os.git",
+    "owner": "aliquanhou",
+    "repo": "tll-os",
+    "branch": "main",
+    "license": "Apache-2.0",
+    "runtime": {
       "name": "@tll/os",
-      "status": "planned",
-      "published": false,
-      "note": "Not yet published on npm. Install via git clone until npm release. See install field below."
+      "version": "0.2.0",
+      "package_manager": "npm"
+    },
+    "package": {
+      "name": "@tll/os",
+      "registry": "npm",
+      "install_command": "npm install @tll/os"
+    },
+    "install": {
+      "clone": "git clone https://github.com/aliquanhou/tll-os.git",
+      "install": "npm install",
+      "test": "npm test",
+      "dev": "npx tll dev"
+    },
+    "tep": {
+      "directory": "proposals/",
+      "doc": "docs/evolution/TEP.md"
     }
   },
-
-  "install": {
-    "method": "git_clone",
-    "steps": [
+  "capabilities": {
+    "total": 12,
+    "stable": 8,
+    "beta": 4,
+    "list": [
       {
-        "step": 1,
-        "action": "clone",
-        "command": "git clone https://github.com/aliquanhou/tll-os.git",
-        "description": "Clone the TLL OS repository"
+        "name": "persistence",
+        "description": "Data persistence with Memory/File/SQLite adapters",
+        "status": "stable"
       },
       {
-        "step": 2,
-        "action": "enter_directory",
-        "command": "cd tll-os",
-        "description": "Enter the project directory"
+        "name": "http-server",
+        "description": "HTTP server with routing, CORS, health checks",
+        "status": "stable"
       },
       {
-        "step": 3,
-        "action": "install_dependencies",
-        "command": "npm install",
-        "description": "Install dev dependencies (typescript, tsx, @types/node)"
+        "name": "cli",
+        "description": "Command-line interface (create/dev/test/graph/inspect)",
+        "status": "stable"
       },
       {
-        "step": 4,
-        "action": "verify_installation",
-        "command": "npm test",
-        "description": "Run the full test suite. Expected: 23/23 tests passed."
+        "name": "testing",
+        "description": "Unified test runner with auto-discovery",
+        "status": "stable"
+      },
+      {
+        "name": "security",
+        "description": "API Key auth, permission enforcement, input validation",
+        "status": "stable"
+      },
+      {
+        "name": "logging",
+        "description": "Structured 5-level logging with JSON/text output",
+        "status": "stable"
+      },
+      {
+        "name": "configuration",
+        "description": "Multi-environment config with env var overrides",
+        "status": "stable"
+      },
+      {
+        "name": "application-graph",
+        "description": "Graph-based application structure with impact analysis",
+        "status": "stable"
+      },
+      {
+        "name": "changeset",
+        "description": "Change tracking with preview/apply/rollback",
+        "status": "beta"
+      },
+      {
+        "name": "multi-agent",
+        "description": "Workspace, lock, handoff, review for multi-agent collaboration",
+        "status": "beta"
+      },
+      {
+        "name": "projection",
+        "description": "Graph ↔ code/OpenAPI/DB Schema bidirectional projection",
+        "status": "beta"
+      },
+      {
+        "name": "plugin",
+        "description": "Plugin manifest, lifecycle, permission management",
+        "status": "beta"
       }
+    ]
+  },
+  "contracts": {
+    "total": 17,
+    "implemented": 10,
+    "list": [
+      {
+        "name": "Application Model",
+        "status": "stable",
+        "runtime": true
+      },
+      {
+        "name": "Application Graph",
+        "status": "stable",
+        "runtime": true
+      },
+      {
+        "name": "Module Contract",
+        "status": "stable",
+        "runtime": true
+      },
+      {
+        "name": "Plugin Contract",
+        "status": "beta",
+        "runtime": true
+      },
+      {
+        "name": "Agent Contract",
+        "status": "beta",
+        "runtime": true
+      },
+      {
+        "name": "Tool Contract",
+        "status": "stable",
+        "runtime": true
+      },
+      {
+        "name": "Skill Contract",
+        "status": "draft",
+        "runtime": false
+      },
+      {
+        "name": "Context Contract",
+        "status": "draft",
+        "runtime": false
+      },
+      {
+        "name": "Permission Contract",
+        "status": "stable",
+        "runtime": true
+      },
+      {
+        "name": "Workflow Contract",
+        "status": "draft",
+        "runtime": false
+      },
+      {
+        "name": "Event Contract",
+        "status": "stable",
+        "runtime": true
+      },
+      {
+        "name": "Adapter Contract",
+        "status": "beta",
+        "runtime": true
+      },
+      {
+        "name": "Projection Contract",
+        "status": "beta",
+        "runtime": true
+      },
+      {
+        "name": "BuildTarget Contract",
+        "status": "draft",
+        "runtime": false
+      },
+      {
+        "name": "Capability Contract",
+        "status": "beta",
+        "runtime": false
+      },
+      {
+        "name": "Compatibility Manifest",
+        "status": "draft",
+        "runtime": false
+      },
+      {
+        "name": "Evolution Proposal",
+        "status": "beta",
+        "runtime": false
+      }
+    ]
+  },
+  "runtime": {
+    "version": "0.2.0",
+    "core_modules": 10,
+    "core_module_list": [
+      "collaboration",
+      "config",
+      "file-persistence",
+      "index",
+      "logger",
+      "persistence",
+      "plugin",
+      "projection",
+      "security",
+      "sqlite-persistence"
     ],
-    "import_statement": "import { createTllOS } from './src/public/index.js';",
-    "import_note": "Use relative path to src/public/index.js from within the cloned repository. The npm package @tll/os is not yet published.",
-    "prerequisites": [
-      "Node.js >= 20",
-      "npm >= 9",
-      "git"
-    ]
-  },
-
-  "cli": {
-    "status": "planned",
-    "note": "CLI (tll new, tll serve, tll module, tll plugin, tll test) is not yet implemented. Use the programmatic API via createTllOS() for now.",
-    "planned_commands": ["tll new", "tll serve", "tll module", "tll plugin", "tll route", "tll test", "tll ai"]
-  },
-
-  "resources": [
-    {
-      "name": "Protocol Specification",
-      "path": "/agent/protocol.json",
-      "description": "Full Protocol 2.0 specification: principles, models, contracts, versioning",
-      "content_type": "application/json"
+    "dependencies": {
+      "better-sqlite3": "^12.11.1"
     },
-    {
-      "name": "Contracts",
-      "path": "/agent/contracts.json",
-      "description": "All 17 core contracts with interfaces, status, and key methods",
-      "content_type": "application/json"
-    },
-    {
-      "name": "Capabilities",
-      "path": "/agent/capabilities.json",
-      "description": "Capability registry and ecosystem map: available modules, plugins, adapters",
-      "content_type": "application/json"
-    },
-    {
-      "name": "Examples",
-      "path": "/agent/examples.json",
-      "description": "Verified, tested examples with source paths, Graph structure, and test results",
-      "content_type": "application/json"
-    },
-    {
-      "name": "Evolution",
-      "path": "/agent/evolution.json",
-      "description": "TEP process: proposal structure, status flow, AI review checklist, active proposals",
-      "content_type": "application/json"
+    "devDependencies": {
+      "@types/better-sqlite3": "^9.6.0",
+      "@types/node": "^20.0.0",
+      "tsx": "^4.0.0",
+      "typescript": "^5.4.0"
     }
-  ],
-
-  "human_pages": {
-    "home": "/",
-    "protocol": "/protocol.html",
-    "guide": "/guide.html",
-    "examples": "/examples.html",
-    "agents": "/agents.html",
-    "contribute": "/contribute.html"
   },
-
-  "agent_discovery_flow": {
-    "description": "The recommended flow for a stranger agent to discover and start using TLL OS",
-    "steps": [
-      "Fetch this index.json from https://ts.knitoem.com/agent/index.json",
-      "Read official_identity.repository.url to find the source code",
-      "Read install.steps to clone and install the runtime",
-      "Read runtime.source_entry to know what to import",
-      "Read /agent/protocol.json to understand Protocol 2.0 principles",
-      "Read /agent/contracts.json for all 17 contract interfaces",
-      "Read /agent/examples.json for verified working examples",
-      "Clone the repository, npm install, npm test to verify",
-      "Start building your application using createTllOS()"
+  "testing": {
+    "suites": 7,
+    "total_tests": 268,
+    "suites_list": [
+      {
+        "name": "cli-toolchain.test",
+        "tests": 45
+      },
+      {
+        "name": "foundation-p0.test",
+        "tests": 42
+      },
+      {
+        "name": "http-service.test",
+        "tests": 31
+      },
+      {
+        "name": "logger-config.test",
+        "tests": 54
+      },
+      {
+        "name": "run-all",
+        "tests": 0
+      },
+      {
+        "name": "security.test",
+        "tests": 61
+      },
+      {
+        "name": "sqlite-persistence.test",
+        "tests": 35
+      }
     ]
   },
-
-  "getting_started": {
-    "import": "import { createTllOS } from './src/public/index.js';",
-    "rule": "Only import from src/public/. Never import internal implementations from src/core/.",
-    "first_steps": [
-      "Clone: git clone https://github.com/aliquanhou/tll-os.git",
-      "Install: cd tll-os && npm install",
-      "Verify: npm test (expect 23/23 passed)",
-      "Read /agent/protocol.json to understand Protocol 2.0",
-      "Read /agent/contracts.json for all 17 contracts",
-      "Read /agent/examples.json for verified examples",
-      "Use createTllOS() to build your application"
+  "examples": {
+    "count": 4,
+    "list": [
+      {
+        "name": "autonomous-task-manager",
+        "description": "> 这是 TLL OS Protocol 2.0 的关键验证实验。",
+        "has_agent": true
+      },
+      {
+        "name": "commerce-migration",
+        "description": "> 基于 TLL OS Runtime 0.1 构建的独立电商平台 — TLL OS 的\"成人礼\"实战项目",
+        "has_agent": true
+      },
+      {
+        "name": "hello-tll-agent",
+        "description": "> 验证 TLL OS AI-Native 核心设计的最小闭环证明。",
+        "has_agent": true
+      },
+      {
+        "name": "stranger-agent-inventory",
+        "description": "This example simulates an AI Agent that has **never seen TLL OS source code**.",
+        "has_agent": true
+      }
     ]
   },
-
-  "verification_checklist": [
-    "Can you discover the repository URL from this index.json?",
-    "Can you clone the repository and run npm install?",
-    "Can you run npm test and see all tests pass?",
-    "Can you read and parse the Application Graph?",
-    "Can you create a Module with routes and services?",
-    "Can you create REST API endpoints with path parameters?",
-    "Can you create an Agent-callable Tool?",
-    "Can you write and run tests, then interpret failures?",
-    "Can you fix a bug and re-run tests?",
-    "Can you modify an existing application and run regression tests?",
-    "Can you draft an Evolution Proposal (TEP)?"
-  ],
-
+  "agent_guide": {
+    "quick_start": [
+      "Read /agent/protocol.json for Protocol 2.0 specification",
+      "Read /agent/contracts.json for 17 Public Contracts",
+      "Read /agent/capabilities.json for available runtime capabilities",
+      "Read /agent/examples.json for reference applications",
+      "Clone repository: git clone https://github.com/aliquanhou/tll-os.git",
+      "Install: npm install",
+      "Create app: npx tll create my-app",
+      "Run tests: npm test"
+    ],
+    "entry_points": {
+      "public_api": "src/public/index.ts",
+      "types": "src/public/types.ts",
+      "cli": "src/cli/index.ts",
+      "examples": "examples/",
+      "docs": "docs/"
+    }
+  },
   "known_limitations": [
-    "Runtime 0.1 is in-memory only — no persistence across restarts",
-    "No HTTP server — API calls are programmatic via app.apis.request()",
-    "No CLI — use programmatic API",
-    "No Plugin system yet",
-    "No Permission system yet",
-    "npm package @tll/os not yet published — install via git clone"
-  ],
-
-  "active_teps": [
-    {
-      "id": "TEP-0001",
-      "title": "Runtime Public Distribution",
-      "status": "draft",
-      "description": "Define how TLL OS Runtime is distributed to agents and developers: npm package, versioning, install protocol, discovery endpoints.",
-      "proposed_by": "external_agent",
-      "related": "This index.json update is part of TEP-0001 implementation"
-    }
+    "Skill Contract has no runtime implementation yet",
+    "Context Contract has no runtime implementation yet",
+    "Workflow Contract has no runtime implementation yet",
+    "BuildTarget Contract has no runtime implementation yet",
+    "Capability Contract has no runtime implementation yet",
+    "Compatibility Manifest has no runtime implementation yet",
+    "Evolution Proposal (TEP) has no runtime engine yet",
+    "No real LLM integration — Agent.run() requires external executor",
+    "Persistence supports Memory, File, and SQLite — PostgreSQL planned"
   ]
 }

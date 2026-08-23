@@ -29,7 +29,9 @@
     "test:hello": "tsx examples/hello-tll-agent/agent.ts",
     "test:task-manager": "tsx examples/autonomous-task-manager/agent.ts",
     "test:stranger": "tsx examples/stranger-agent-inventory/agent.ts",
-    "docs": "echo 'Documentation in docs/ directory. Developer Hub: https://ts.knitoem.com'"
+    "docs": "echo 'Documentation in docs/ directory. Developer Hub: https://ts.knitoem.com'",
+    "sync:website": "node scripts/sync-website.mjs",
+    "deploy:website": "node scripts/deploy-website.mjs"
   },
   "dependencies": {
     "better-sqlite3": "^12.11.1"
