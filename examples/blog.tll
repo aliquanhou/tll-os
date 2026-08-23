@@ -1,0 +1,358 @@
+// TLL Blog Application
+// 示例：用 TLL 语言开发一个博客应用
+
+application Blog {
+    identity {
+        name: "TLL Blog"
+        version: "1.0.0"
+        description: "A simple blog application built with TLL"
+        author: "TLL OS"
+        license: "Apache-2.0"
+    }
+
+    module User {
+        entity User {
+            id: uuid
+            name: text
+            email: email @unique
+            password: text
+            role: enum(admin, author, reader) @default(reader)
+            bio?: text
+            createdAt: datetime @default(now)
+            updatedAt: datetime @default(now)
+        }
+
+        api POST "/auth/register" {
+            description: "Register a new user"
+            body {
+                name: text
+                email: email
+                password: text
+            }
+            return User.create(body)
+        }
+
+        api POST "/auth/login" {
+            description: "User login"
+            body {
+                email: email
+                password: text
+            }
+        }
+
+        api GET "/users" {
+            description: "List all users"
+            permission: user.read
+            query {
+                page?: integer
+                limit?: integer
+            }
+            return User.list(query)
+        }
+
+        api GET "/users/:id" {
+            description: "Get user by ID"
+            permission: user.read
+            params { id: uuid }
+            return User.findById(params.id)
+        }
+    }
+
+    module Content {
+        entity Post {
+            id: uuid
+            title: text
+            slug: text @unique
+            content: text
+            excerpt?: text
+            status: enum(draft, published, archived) @default(draft)
+            author: relation(User)
+            category: relation(Category)
+            tags: list(text)
+            views: integer @default(0)
+            publishedAt?: datetime
+            createdAt: datetime @default(now)
+            updatedAt: datetime @default(now)
+        }
+
+        entity Category {
+            id: uuid
+            name: text
+            slug: text @unique
+            description?: text
+            createdAt: datetime @default(now)
+        }
+
+        entity Comment {
+            id: uuid
+            post: relation(Post)
+            author: relation(User)
+            content: text
+            status: enum(pending, approved, rejected) @default(pending)
+            createdAt: datetime @default(now)
+        }
+
+        api GET "/posts" {
+            description: "List published posts"
+            query {
+                page?: integer @default(1)
+                limit?: integer @default(10)
+                category?: uuid
+                tag?: text
+                search?: text
+            }
+            return Post.list({ status: published })
+        }
+
+        api GET "/posts/:slug" {
+            description: "Get a post by slug"
+            params { slug: text }
+            return Post.findBySlug(params.slug)
+        }
+
+        api POST "/posts" {
+            description: "Create a new post"
+            permission: post.write
+            body {
+                title: text
+                content: text
+                excerpt?: text
+                categoryId?: uuid
+                tags?: list(text)
+            }
+            return Post.create({ title: body.title, content: body.content, author: context.userId, status: draft })
+        }
+
+        api PUT "/posts/:id" {
+            description: "Update a post"
+            permission: post.write
+            params { id: uuid }
+            body {
+                title?: text
+                content?: text
+                excerpt?: text
+                status?: enum(draft, published, archived)
+                categoryId?: uuid
+                tags?: list(text)
+            }
+            return Post.update(params.id, body)
+        }
+
+        api DELETE "/posts/:id" {
+            description: "Delete a post"
+            permission: post.delete
+            params { id: uuid }
+            return Post.delete(params.id)
+        }
+
+        api GET "/categories" {
+            description: "List all categories"
+            return Category.list()
+        }
+
+        api POST "/posts/:id/comments" {
+            description: "Add a comment to a post"
+            permission: comment.create
+            params { id: uuid }
+            body { content: text }
+            return Comment.create({ post: params.id, author: context.userId, content: body.content })
+        }
+
+        api GET "/posts/:id/comments" {
+            description: "Get comments for a post"
+            params { id: uuid }
+            return Comment.list({ post: params.id, status: approved })
+        }
+    }
+
+    module Security {
+        permission post.read {
+            description: "Read posts"
+        }
+
+        permission post.write {
+            description: "Create or update posts"
+        }
+
+        permission post.delete {
+            description: "Delete posts"
+        }
+
+        permission comment.create {
+            description: "Create comments"
+        }
+
+        permission user.read {
+            description: "Read user profiles"
+        }
+
+        role Admin {
+            allow: *
+        }
+
+        role Author {
+            allow:
+                post.read
+                post.write
+                comment.create
+            deny:
+                post.delete
+        }
+
+        role Reader {
+            allow:
+                post.read
+                comment.create
+        }
+    }
+
+    module Agent {
+        agent ContentEditor {
+            description: "AI agent that helps edit and optimize content"
+            goal: "Help authors write better content and improve SEO"
+            tools:
+                searchPost
+                optimizeContent
+                suggestTags
+                checkGrammar
+            permissions:
+                post.read
+                post.write
+            policy: "neverPublishWithoutReview, maxSuggestionsPerPost=10"
+        }
+
+        tool searchPost {
+            description: "Search posts by keyword"
+            input {
+                keyword: text
+                category?: uuid
+                status?: enum(draft, published, archived)
+            }
+            output {
+                posts: list(Post)
+                total: integer
+            }
+            permission: post.read
+            execute: Post.search(input)
+        }
+
+        tool optimizeContent {
+            description: "Optimize post content for readability and SEO"
+            input {
+                postId: uuid
+            }
+            output {
+                optimizedTitle: text
+                optimizedContent: text
+                seoScore: integer
+                suggestions: list(text)
+            }
+            permission: post.write
+        }
+    }
+
+    module UI {
+        view PostList {
+            description: "Blog post list page"
+            layout: default
+            source: Post
+            columns:
+                title
+                author
+                category
+                status
+                views
+                createdAt
+            actions:
+                view
+                edit
+                delete
+            filters:
+                category
+                status
+                dateRange
+            search: title
+        }
+
+        view PostEditor {
+            description: "Post editor with live preview"
+            layout: editor
+            source: Post
+            cards:
+                Content
+                SEO
+                Categories
+                Tags
+        }
+
+        view Dashboard {
+            description: "Admin dashboard"
+            layout: admin
+            cards:
+                TotalPosts
+                TotalComments
+                TotalUsers
+                PopularPosts
+            table: RecentPosts
+        }
+    }
+
+    module Test {
+        test "create and publish post" {
+            description: "Verify post creation and publishing workflow"
+            setup {
+                create User { name: "Test Author", email: "author@test.com", role: author }
+                create Category { name: "Technology", slug: "technology" }
+            }
+            action {
+                const post = Post.create({
+                    title: "Hello TLL"
+                    content: "This is a test post written in TLL language"
+                    author: User.find("author@test.com").id
+                    category: Category.find("technology").id
+                    status: draft
+                })
+                Post.update(post.id, { status: published, publishedAt: now })
+            }
+            assert {
+                Post.count() == 1
+                Post.findBySlug("hello-tll").status == published
+            }
+        }
+
+        test "add comment to post" {
+            description: "Verify comment creation on a post"
+            setup {
+                create User { name: "Reader", email: "reader@test.com", role: reader }
+                create Post { title: "Test Post", slug: "test-post", content: "Test", status: published }
+            }
+            action {
+                Comment.create({
+                    post: Post.findBySlug("test-post").id
+                    author: User.find("reader@test.com").id
+                    content: "Great post!"
+                })
+            }
+            assert {
+                Comment.count() == 1
+            }
+        }
+    }
+
+    deployment production {
+        target: cloud
+        runtime: tll-runtime
+        database {
+            type: postgresql
+            version: "16"
+        }
+        domains:
+            - "blog.example.com"
+        ssl: auto
+        scaling {
+            min: 1
+            max: 3
+            cpuThreshold: 70
+        }
+    }
+}
