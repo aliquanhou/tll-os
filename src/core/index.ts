@@ -677,14 +677,14 @@ class TestAssertionsImpl implements TestAssertions {
   }
 
   true(value: unknown, message?: string): void {
-    if (value !== true) {
-      throw new Error(message ?? `Expected true, got ${JSON.stringify(value)}`);
+    if (!value) {
+      throw new Error(message ?? `Expected truthy value, got ${JSON.stringify(value)}`);
     }
   }
 
   false(value: unknown, message?: string): void {
-    if (value !== false) {
-      throw new Error(message ?? `Expected false, got ${JSON.stringify(value)}`);
+    if (value) {
+      throw new Error(message ?? `Expected falsy value, got ${JSON.stringify(value)}`);
     }
   }
 
