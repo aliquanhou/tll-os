@@ -14,3 +14,4 @@ export * from './types.js';
 export { createTllOS, createApiResponseBuilder } from '../core/index.js';
 export { createMemoryPersistence } from '../core/persistence.js';
 export { createFilePersistence } from '../core/file-persistence.js';
+export { createSqlitePersistence } from '../core/sqlite-persistence.js';
