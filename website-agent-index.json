@@ -1,0 +1,386 @@
+{
+  "name": "TLL OS Agent Documentation Index",
+  "version": "2.0.1",
+  "description": "Entry point for AI Agents to discover all structured TLL OS resources. This is the single starting point for any agent that wants to use, develop, or extend TLL OS.",
+  "protocol": "TLL OS Protocol 2.0",
+  "protocol_frozen": "2026-08-22",
+  "last_updated": "2026-08-23",
+  "foundation_version": "0.2.0",
+  "foundation_status": "commerce-verified",
+  "foundation_note": "Foundation 0.2 core verified by full Commerce migration. 18 modules / 248 APIs / 38 tests all pass on real TLL OS 0.2 Public API. File Persistence verified across process restarts.",
+  "official_identity": {
+    "name": "TLL OS",
+    "tagline": "AI-Native Universal Application Development Protocol",
+    "website": "https://ts.knitoem.com",
+    "repository": {
+      "provider": "github",
+      "url": "https://github.com/aliquanhou/tll-os",
+      "clone_url": "https://github.com/aliquanhou/tll-os.git",
+      "default_branch": "main",
+      "owner": "aliquanhou",
+      "repo": "tll-os"
+    },
+    "license": "Apache-2.0",
+    "trademark": "TLL OS and TLL are trademarks. Code is open source, trademark is protected. See TRADEMARK.md.",
+    "last_commit": "d5341d5",
+    "last_commit_msg": "feat: add Commerce migration example - 18 modules on TLL OS 0.2 Public API"
+  },
+  "runtime": {
+    "name": "TLL OS Runtime",
+    "version": "0.2.0",
+    "status": "available",
+    "language": "TypeScript",
+    "language_version": ">=5.4",
+    "platform": "Node.js >=20",
+    "implementation": "reference implementation",
+    "capabilities": [
+      "Application lifecycle",
+      "Module system",
+      "REST API routing",
+      "Tool system (Agent-callable)",
+      "Test runner",
+      "Application Graph",
+      "Graph Impact Analysis",
+      "ChangeSet tracking",
+      "Agent Workspace isolation",
+      "Agent Lock / Version conflict",
+      "Agent Handoff",
+      "Review / Merge workflow",
+      "Plugin system (install/enable/disable/uninstall)",
+      "HTTP server (built-in node:http)",
+      "CLI (tll create/dev/test/graph/inspect)",
+      "Persistence (Memory adapter + File adapter)",
+      "Unified API Contract (ApiResponseBuilder)",
+      "Tool input validation (JSON Schema)",
+      "Event system"
+    ],
+    "not_yet_implemented": [
+      "Permission system (declared but full execution pending)",
+      "LLM adapter (Agent.run with real LLM)",
+      "WebSocket",
+      "Build targets (H5/APK/EXE/mini-program)",
+      "SQLite / PostgreSQL adapter (File adapter available for real persistence)",
+      "Projection system (Graph <-> code)",
+      "Workflow engine",
+      "Skill system",
+      "Capability registry",
+      "Evolution Proposal (TEP) engine",
+      "Compatibility manifest",
+      "Security (Auth/Secret/Audit/Sandbox)"
+    ],
+    "source_entry": "src/public/index.ts",
+    "types_entry": "src/public/types.ts",
+    "core_implementation": "src/core/ (internal — do not import directly)",
+    "public_exports": [
+      "createTllOS",
+      "createApiResponseBuilder",
+      "createMemoryPersistence",
+      "createFilePersistence"
+    ],
+    "tests_passed": 101,
+    "tests_total": 101,
+    "reference_apps": 1,
+    "commerce_verified": true
+  },
+  "package": {
+    "npm": {
+      "name": "@tll/os",
+      "status": "planned",
+      "published": false,
+      "note": "Not yet published on npm. Install via git clone until npm release. See install field below."
+    }
+  },
+  "install": {
+    "method": "git_clone",
+    "steps": [
+      {
+        "step": 1,
+        "action": "clone",
+        "command": "git clone https://github.com/aliquanhou/tll-os.git",
+        "description": "Clone the TLL OS repository"
+      },
+      {
+        "step": 2,
+        "action": "enter_directory",
+        "command": "cd tll-os",
+        "description": "Enter the project directory"
+      },
+      {
+        "step": 3,
+        "action": "install_dependencies",
+        "command": "npm install",
+        "description": "Install dev dependencies (typescript, tsx, @types/node)"
+      },
+      {
+        "step": 4,
+        "action": "verify_installation",
+        "command": "npm test",
+        "description": "Run the full test suite. Expected: 23/23 original tests + 40 Foundation P0 tests = 63 total."
+      }
+    ],
+    "import_statement": "import { createTllOS } from './src/public/index.js';",
+    "import_note": "Use relative path to src/public/index.js from within the cloned repository. The npm package @tll/os is not yet published.",
+    "prerequisites": [
+      "Node.js >= 20",
+      "npm >= 9",
+      "git"
+    ]
+  },
+  "cli": {
+    "status": "available",
+    "version": "0.2.0",
+    "bin": "tll",
+    "entry": "src/cli/index.ts",
+    "commands": [
+      {
+        "name": "tll create <name>",
+        "description": "Create a new TLL OS application project"
+      },
+      {
+        "name": "tll dev [--port N]",
+        "description": "Start development HTTP server (default port 3000)"
+      },
+      {
+        "name": "tll test [filter]",
+        "description": "Run tests"
+      },
+      {
+        "name": "tll graph [--json]",
+        "description": "View Application Graph"
+      },
+      {
+        "name": "tll inspect",
+        "description": "Inspect application state (modules/APIs/tools/agents/plugins/workspaces/graph)"
+      },
+      {
+        "name": "tll version",
+        "description": "Show CLI and runtime version"
+      },
+      {
+        "name": "tll help",
+        "description": "Show help"
+      }
+    ],
+    "note": "CLI is available via npx tsx src/cli/index.ts. npm global install (tll command) pending npm package release."
+  },
+  "persistence": {
+    "adapters": [
+      {
+        "name": "memory",
+        "factory": "createMemoryPersistence()",
+        "description": "In-memory storage. Fast, but data lost on process restart. For development and testing only.",
+        "survives_restart": false
+      },
+      {
+        "name": "file",
+        "factory": "createFilePersistence(baseDir)",
+        "description": "JSON file-based storage. Data persists across process restarts. For small-to-medium applications and prototyping.",
+        "survives_restart": true
+      }
+    ],
+    "planned_adapters": [
+      "SQLite",
+      "PostgreSQL",
+      "MongoDB"
+    ],
+    "contract": "Repository / Query / Pagination / Transaction / Migration — all adapters implement the same PersistenceAdapter interface"
+  },
+  "resources": [
+    {
+      "name": "Protocol Specification",
+      "path": "/agent/protocol.json",
+      "description": "Full Protocol 2.0 specification: principles, models, contracts, versioning",
+      "content_type": "application/json"
+    },
+    {
+      "name": "Contracts",
+      "path": "/agent/contracts.json",
+      "description": "All 17 core contracts with interfaces, status, and key methods",
+      "content_type": "application/json"
+    },
+    {
+      "name": "Capabilities",
+      "path": "/agent/capabilities.json",
+      "description": "Capability registry and ecosystem map: available modules, plugins, adapters",
+      "content_type": "application/json"
+    },
+    {
+      "name": "Examples",
+      "path": "/agent/examples.json",
+      "description": "Verified, tested examples with source paths, Graph structure, and test results",
+      "content_type": "application/json"
+    },
+    {
+      "name": "Evolution",
+      "path": "/agent/evolution.json",
+      "description": "TEP process: proposal structure, status flow, AI review checklist, active proposals",
+      "content_type": "application/json"
+    }
+  ],
+  "human_pages": {
+    "home": "/",
+    "protocol": "/protocol.html",
+    "guide": "/guide.html",
+    "examples": "/examples.html",
+    "agents": "/agents.html",
+    "contribute": "/contribute.html"
+  },
+  "agent_discovery_flow": {
+    "description": "The recommended flow for a stranger agent to discover and start using TLL OS",
+    "steps": [
+      "Fetch this index.json from https://ts.knitoem.com/agent/index.json",
+      "Read official_identity.repository.url to find the source code",
+      "Read install.steps to clone and install the runtime",
+      "Read runtime.source_entry to know what to import",
+      "Read runtime.capabilities to see what is available",
+      "Read runtime.not_yet_implemented to see what is NOT available",
+      "Read persistence.adapters to choose a persistence layer",
+      "Read /agent/protocol.json to understand Protocol 2.0 principles",
+      "Read /agent/contracts.json for all 17 contract interfaces",
+      "Read /agent/examples.json for verified working examples",
+      "Clone the repository, npm install, npm test to verify (63 tests)",
+      "Start building your application using createTllOS()"
+    ]
+  },
+  "getting_started": {
+    "import": "import { createTllOS, createFilePersistence } from './src/public/index.js';",
+    "rule": "Only import from src/public/. Never import internal implementations from src/core/.",
+    "first_steps": [
+      "Clone: git clone https://github.com/aliquanhou/tll-os.git",
+      "Install: cd tll-os && npm install",
+      "Verify: npm test (expect 63/63 passed)",
+      "Read /agent/protocol.json to understand Protocol 2.0",
+      "Read /agent/contracts.json for all 17 contracts",
+      "Read /agent/examples.json for verified examples",
+      "Use createTllOS() to build your application",
+      "Use createFilePersistence('./data') for real persistence"
+    ],
+    "quick_example": "const tll = createTllOS(); const app = tll.createApplication({ name: 'my-app', version: '0.1.0' }); await app.start(); await app.startHttp(3000);"
+  },
+  "verification_checklist": [
+    "Can you discover the repository URL from this index.json?",
+    "Can you clone the repository and run npm install?",
+    "Can you run npm test and see all 63 tests pass?",
+    "Can you read and parse the Application Graph?",
+    "Can you create a Module with routes and services?",
+    "Can you create REST API endpoints with path parameters?",
+    "Can you create an Agent-callable Tool with input validation?",
+    "Can you create an Agent Workspace and verify isolation?",
+    "Can you create a ChangeSet and preview its impact?",
+    "Can you acquire a Lock and detect VERSION_CONFLICT?",
+    "Can you create a Handoff between two agents?",
+    "Can you create a Review and Merge request?",
+    "Can you install/enable/disable a Plugin?",
+    "Can you start an HTTP server and access /health and /graph?",
+    "Can you use File persistence and verify data survives restart?",
+    "Can you use the CLI (tll create/dev/test/graph/inspect)?",
+    "Can you write and run tests, then interpret failures?",
+    "Can you fix a bug and re-run tests?",
+    "Can you modify an existing application and run regression tests?",
+    "Can you draft an Evolution Proposal (TEP)?"
+  ],
+  "known_limitations": [
+    "Foundation 0.2 is a code candidate, not a production release. API may change in 0.3.",
+    "Persistence: Memory adapter loses data on restart. File adapter survives restart but is JSON-based (not suitable for high-concurrency or large datasets). SQLite/PostgreSQL adapters planned.",
+    "ChangeSet: create/addEntry/preview implemented, but apply() and rollback() to main Application are not yet implemented. Review/Merge creates records but does not execute actual merge.",
+    "Permission: permissions are declared on Tools and Agents, but full execution/authorization is not yet implemented.",
+    "Agent: Agent.create and Agent.run (with scripted executor) implemented. Real LLM adapter not yet integrated.",
+    "No WebSocket support yet.",
+    "No BuildTarget system (H5/APK/EXE/mini-program) yet.",
+    "No Projection system (Graph <-> code generation) yet.",
+    "No Workflow engine yet.",
+    "No Skill system yet.",
+    "No Security system (Auth/Secret/Audit/Sandbox) yet.",
+    "npm package @tll/os not yet published — install via git clone.",
+    "Commerce reference application currently runs on a forked 0.1.0 runtime. Migration to real 0.2.0 runtime is in progress."
+  ],
+  "active_teps": [
+    {
+      "id": "TEP-0001",
+      "title": "Runtime Public Distribution",
+      "status": "draft",
+      "description": "Define how TLL OS Runtime is distributed to agents and developers: npm package, versioning, install protocol, discovery endpoints.",
+      "proposed_by": "external_agent",
+      "related": "This index.json update is part of TEP-0001 implementation"
+    }
+  ],
+  "test_summary": {
+    "total": 101,
+    "passed": 101,
+    "failed": 0,
+    "suites": [
+      {
+        "name": "hello-tll-agent",
+        "tests": 3,
+        "passed": 3
+      },
+      {
+        "name": "autonomous-task-manager",
+        "tests": 12,
+        "passed": 12
+      },
+      {
+        "name": "stranger-agent-inventory",
+        "tests": 8,
+        "passed": 8
+      },
+      {
+        "name": "foundation-p0",
+        "tests": 40,
+        "passed": 40,
+        "description": "Foundation 0.2 P0 capability verification"
+      },
+      {
+        "name": "commerce-migration",
+        "tests": 38,
+        "passed": 38,
+        "description": "Full Commerce Reference Application on TLL OS 0.2 Public API"
+      }
+    ]
+  },
+  "examples": [
+    {
+      "name": "hello-tll-agent",
+      "path": "examples/hello-tll-agent/",
+      "description": "Minimal TLL OS application demonstrating Agent + Tool + Test workflow.",
+      "tests": 3,
+      "status": "passing"
+    },
+    {
+      "name": "autonomous-task-manager",
+      "path": "examples/autonomous-task-manager/",
+      "description": "Multi-module task management app with Agent E2E workflow, demonstrating Module/API/Tool/Graph/Test integration.",
+      "tests": 12,
+      "status": "passing"
+    },
+    {
+      "name": "stranger-agent-inventory",
+      "path": "examples/stranger-agent-inventory/",
+      "description": "Inventory management app built by a stranger Agent with no prior TLL OS knowledge, validating Agent discoverability.",
+      "tests": 8,
+      "status": "passing"
+    },
+    {
+      "name": "commerce-migration",
+      "path": "examples/commerce-migration/",
+      "description": "Full cross-border e-commerce SaaS (18 modules / 248 APIs / 76 tools / 38 tests) migrated from standalone Runtime to real TLL OS 0.2 Public API. Reference Application proving TLL OS can host complex real-world applications.",
+      "modules": 18,
+      "apis": 248,
+      "tools": 76,
+      "tests": 38,
+      "graph_nodes": 219,
+      "graph_edges": 200,
+      "persistence": "file (verified across restarts)",
+      "agent_e2e": "passing",
+      "status": "passing",
+      "tags": [
+        "commerce",
+        "saas",
+        "cross-border",
+        "b2b",
+        "b2c",
+        "reference-application"
+      ]
+    }
+  ]
+}
