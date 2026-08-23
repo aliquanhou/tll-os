@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TLL商城 - 首页</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="header">
+    <h1>🛒 TLL商城</h1>
+    <div class="cart-icon" onclick="location.href='cart.html'">
+      🛒<span class="cart-badge" id="cartBadge">0</span>
+    </div>
+  </div>
+
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="搜索商品..." onkeypress="if(event.key==='Enter')doSearch()">
+    <button onclick="doSearch()">搜索</button>
+  </div>
+
+  <div class="banner" id="banner">
+    <span>🎉 新品上市 限时特惠</span>
+    <div class="banner-dots">
+      <span class="active"></span><span></span><span></span>
+    </div>
+  </div>
+
+  <div class="categories" id="categories">
+    <div class="loading"><div class="spinner"></div></div>
+  </div>
+
+  <div class="section-title">
+    <span>🔥 热门商品</span>
+    <span class="more" onclick="loadAllProducts()">查看更多</span>
+  </div>
+
+  <div class="product-grid" id="productGrid">
+    <div class="loading" style="grid-column:1/-1"><div class="spinner"></div><p>加载中...</p></div>
+  </div>
+
+  <div class="bottom-bar" style="justify-content:center">
+    <div style="text-align:center;font-size:12px;color:var(--text-light)">
+      TLL Commerce v0.1.0 | Powered by TLL OS
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    let currentUserId = Store.getUserId();
+
+    async function init() {
+      await loadCategories();
+      await loadProducts();
+      await updateCartBadge();
+    }
+
+    async function loadCategories() {
+      const resp = await API.getCategories();
+      const container = document.getElementById('categories');
+      if (resp.status !== 200 || !resp.data.categories) {
+        container.innerHTML = '<div style="padding:16px;color:#888">分类加载失败</div>';
+        return;
+      }
+      container.innerHTML = resp.data.categories.map(cat => `
+        <div class="category-item" onclick="filterByCategory('${cat.id}')">
+          <div class="icon">${cat.icon || '📁'}</div>
+          <div class="name">${cat.name}</div>
+        </div>
+      `).join('');
+    }
+
+    async function loadProducts(params = {}) {
+      const container = document.getElementById('productGrid');
+      container.innerHTML = '<div class="loading" style="grid-column:1/-1"><div class="spinner"></div><p>加载中...</p></div>';
+      const resp = await API.getProducts({ pageSize: 20, ...params });
+      if (resp.status !== 200 || !resp.data.items) {
+        container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#888">商品加载失败</div>';
+        return;
+      }
+      if (resp.data.items.length === 0) {
+        container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#888">暂无商品</div>';
+        return;
+      }
+      container.innerHTML = resp.data.items.map(p => `
+        <div class="product-card" onclick="location.href='product.html?id=${p.id}'">
+          <div class="image">${getProductEmoji(p)}</div>
+          <div class="info">
+            <div class="name">${p.name}</div>
+            <div class="price"><small>¥</small>${p.price}</div>
+            <div class="sales">${p.skuCount || 1}个规格</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function loadAllProducts() {
+      await loadProducts({ pageSize: 50 });
+    }
+
+    function filterByCategory(catId) {
+      loadProducts({ categoryId: catId });
+    }
+
+    function doSearch() {
+      const kw = document.getElementById('searchInput').value.trim();
+      loadProducts({ keyword: kw });
+    }
+
+    async function updateCartBadge() {
+      const resp = await API.getCart(currentUserId);
+      const badge = document.getElementById('cartBadge');
+      if (resp.status === 200 && resp.data.items) {
+        const count = resp.data.items.reduce((s, i) => s + i.quantity, 0);
+        badge.textContent = count;
+        badge.style.display = count > 0 ? 'block' : 'none';
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>

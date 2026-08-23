@@ -1,0 +1,11 @@
+node_modules/
+*.log
+.DS_Store
+.env
+.env.local
+docs/
+proposals/
+*.md
+!README.md
+.git/
+.gitignore

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>确认订单 - TLL商城</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="header">
+    <span class="back" onclick="location.href='cart.html'">←</span>
+    <h1>确认订单</h1>
+  </div>
+
+  <div id="checkoutContent">
+    <div class="loading"><div class="spinner"></div><p>加载中...</p></div>
+  </div>
+
+  <div class="bottom-bar" id="bottomBar" style="display:none">
+    <div class="total-info">
+      <span class="total-label">实付</span>
+      <span class="total-price" id="finalPrice">¥0.00</span>
+    </div>
+    <button class="btn btn-checkout" onclick="submitOrder()">提交订单</button>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    const userId = Store.getUserId();
+    let checkoutData = null;
+    let selectedAddressId = null;
+    let selectedPayment = 'alipay';
+    let couponCode = '';
+
+    async function init() {
+      const resp = await API.getCheckout(userId);
+      if (resp.status !== 200 || !resp.data.cart) {
+        document.getElementById('checkoutContent').innerHTML = '<div class="empty-state"><div class="icon">😕</div><div class="text">结算信息加载失败</div></div>';
+        return;
+      }
+      checkoutData = resp.data;
+      if (checkoutData.addresses && checkoutData.addresses.length > 0) {
+        selectedAddressId = checkoutData.addresses.find(a => a.isDefault)?.id || checkoutData.addresses[0].id;
+      }
+      renderCheckout();
+    }
+
+    function renderCheckout() {
+      const container = document.getElementById('checkoutContent');
+      const cart = checkoutData.cart;
+      if (!cart.items || cart.items.length === 0) {
+        container.innerHTML = '<div class="empty-state"><div class="icon">🛒</div><div class="text">购物车是空的</div><div class="btn" onclick="location.href=\'index.html\'">去购物</div></div>';
+        return;
+      }
+
+      const subtotal = cart.subtotal || cart.totalAmount;
+      const shipping = subtotal >= 99 ? 0 : 10;
+      let discount = 0;
+      if (couponCode) {
+        // Simple coupon calculation
+        const coupon = checkoutData.coupons?.find(c => c.code === couponCode);
+        if (coupon) {
+          if (coupon.type === 'fixed') discount = coupon.value;
+          else discount = Math.round(subtotal * coupon.value / 100);
+        }
+      }
+      const total = subtotal - discount + shipping;
+
+      container.innerHTML = `
+        <div class="checkout-section">
+          <div class="title">📍 收货地址</div>
+          ${checkoutData.addresses && checkoutData.addresses.length > 0 ? checkoutData.addresses.map(addr => `
+            <div class="address-card" style="${addr.id === selectedAddressId ? 'border:1px solid var(--primary);border-radius:8px;padding:8px;margin-bottom:8px' : 'margin-bottom:8px;cursor:pointer'}" onclick="selectAddress('${addr.id}')">
+              <div class="addr-icon">📍</div>
+              <div class="addr-info">
+                <div class="name-row"><span>${addr.recipient}</span><span>${addr.phone}</span></div>
+                <div class="detail">${addr.province}${addr.city}${addr.district}${addr.detail}</div>
+              </div>
+              ${addr.id === selectedAddressId ? '<div style="color:var(--primary)">✓</div>' : ''}
+            </div>
+          `).join('') : '<div style="color:#888;font-size:13px">暂无收货地址，请先添加</div>'}
+        </div>
+
+        <div class="checkout-section">
+          <div class="title">📦 商品清单</div>
+          ${cart.items.map(item => `
+            <div class="order-summary-item">
+              <div class="thumb">📦</div>
+              <div class="info">
+                <div class="name">${item.productName || '商品'}</div>
+                <div class="qty-price"><span>x${item.quantity}</span><span>¥${item.price}</span></div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="checkout-section">
+          <div class="title">💰 支付方式</div>
+          <div class="payment-methods">
+            ${(checkoutData.paymentMethods || []).map(m => `
+              <div class="payment-method ${m.id === selectedPayment ? 'active' : ''}" onclick="selectPayment('${m.id}')">
+                <div class="icon">${m.icon || '💳'}</div>
+                <div class="name">${m.name}</div>
+                ${m.id === selectedPayment ? '<div class="check">✓</div>' : ''}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="checkout-section">
+          <div class="title">🎟️ 优惠券</div>
+          <div style="display:flex;gap:8px">
+            <input type="text" id="couponInput" placeholder="输入优惠券码" value="${couponCode}" style="flex:1;padding:8px 12px;border:1px solid #e8e8e8;border-radius:6px;font-size:13px;outline:none">
+            <button onclick="applyCoupon()" style="padding:8px 16px;background:var(--primary);color:white;border:none;border-radius:6px;font-size:13px;cursor:pointer">使用</button>
+          </div>
+          <div style="margin-top:8px;font-size:12px;color:#888">可用: ${(checkoutData.coupons || []).map(c => c.code + '(' + c.name + ')').join(', ') || '暂无'}</div>
+        </div>
+
+        <div class="checkout-section">
+          <div class="title">📊 金额明细</div>
+          <div class="price-breakdown">
+            <div class="row"><span>商品总额</span><span>¥${subtotal.toFixed(2)}</span></div>
+            <div class="row"><span>运费</span><span>${shipping === 0 ? '免运费' : '¥' + shipping.toFixed(2)}</span></div>
+            ${discount > 0 ? `<div class="row"><span>优惠</span><span>-¥${discount.toFixed(2)}</span></div>` : ''}
+            <div class="row total"><span>实付金额</span><span>¥${total.toFixed(2)}</span></div>
+          </div>
+        </div>
+      `;
+      document.getElementById('finalPrice').textContent = '¥' + total.toFixed(2);
+      document.getElementById('bottomBar').style.display = 'flex';
+      window._orderTotal = total;
+    }
+
+    function selectAddress(id) { selectedAddressId = id; renderCheckout(); }
+    function selectPayment(id) { selectedPayment = id; renderCheckout(); }
+    function applyCoupon() { couponCode = document.getElementById('couponInput').value.trim(); renderCheckout(); }
+
+    async function submitOrder() {
+      if (!selectedAddressId) { toast('请选择收货地址'); return; }
+      const btn = document.querySelector('.btn-checkout');
+      btn.disabled = true;
+      btn.textContent = '提交中...';
+
+      try {
+        const orderResp = await API.createOrder({
+          userId, addressId: selectedAddressId, couponCode, paymentMethod: selectedPayment,
+        });
+        if (orderResp.status !== 201) {
+          toast(orderResp.data?.message || '下单失败');
+          btn.disabled = false;
+          btn.textContent = '提交订单';
+          return;
+        }
+        const order = orderResp.data;
+        // Pay
+        await API.payOrder(order.id, selectedPayment);
+        // Show result
+        document.body.innerHTML = `
+          <div class="header"><h1>下单成功</h1></div>
+          <div class="order-result">
+            <div class="success-icon">✅</div>
+            <div class="title">订单提交成功</div>
+            <div class="order-no">订单号: ${order.orderNo}</div>
+            <div class="amount">¥${order.totalAmount.toFixed(2)}</div>
+            <div style="font-size:13px;color:#888;margin-bottom:24px">支付方式: ${selectedPayment} | 状态: 已支付</div>
+            <div class="actions">
+              <button class="btn btn-outline" onclick="location.href='index.html'">继续购物</button>
+              <button class="btn btn-primary" onclick="location.href='orders.html'">查看订单</button>
+            </div>
+          </div>`;
+      } catch (err) {
+        toast('下单异常: ' + err.message);
+        btn.disabled = false;
+        btn.textContent = '提交订单';
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>

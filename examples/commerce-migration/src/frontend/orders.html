@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>我的订单 - TLL商城</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="header">
+    <span class="back" onclick="location.href='index.html'">←</span>
+    <h1>我的订单</h1>
+  </div>
+  <div id="orderList">
+    <div class="loading"><div class="spinner"></div><p>加载中...</p></div>
+  </div>
+  <script src="js/api.js"></script>
+  <script>
+    const userId = Store.getUserId();
+    const statusMap = { pending: '待支付', paid: '已支付', shipped: '已发货', completed: '已完成', cancelled: '已取消', refunded: '已退款' };
+    async function loadOrders() {
+      const resp = await API.getOrders({ userId, pageSize: 20 });
+      const container = document.getElementById('orderList');
+      if (resp.status !== 200 || !resp.data.items) {
+        container.innerHTML = '<div class="empty-state"><div class="icon">📋</div><div class="text">订单加载失败</div></div>';
+        return;
+      }
+      if (resp.data.items.length === 0) {
+        container.innerHTML = '<div class="empty-state"><div class="icon">📋</div><div class="text">暂无订单</div><div class="btn" onclick="location.href=\'index.html\'">去购物</div></div>';
+        return;
+      }
+      container.innerHTML = resp.data.items.map(o => `
+        <div class="checkout-section" onclick="location.href='order.html?id=${o.id}'">
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+            <span style="font-size:13px;color:#888">${o.orderNo}</span>
+            <span style="font-size:13px;color:var(--primary);font-weight:600">${statusMap[o.status] || o.status}</span>
+          </div>
+          <div style="font-size:14px;margin-bottom:8px">共 ${o.items?.length || 0} 件商品</div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:12px;color:#888">${new Date(o.createdAt).toLocaleString()}</span>
+            <span style="font-size:16px;color:var(--primary);font-weight:700">¥${o.totalAmount.toFixed(2)}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+    loadOrders();
+  </script>
+</body>
+</html>

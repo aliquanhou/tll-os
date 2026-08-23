@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>购物车 - TLL商城</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="header">
+    <span class="back" onclick="location.href='index.html'">←</span>
+    <h1>购物车</h1>
+  </div>
+
+  <div id="cartContent">
+    <div class="loading"><div class="spinner"></div><p>加载中...</p></div>
+  </div>
+
+  <div class="bottom-bar" id="bottomBar" style="display:none">
+    <div class="total-info">
+      <span class="total-label">合计</span>
+      <span class="total-price" id="totalPrice">¥0.00</span>
+    </div>
+    <button class="btn btn-checkout" onclick="goCheckout()">去结算 (<span id="itemCount">0</span>)</button>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    const userId = Store.getUserId();
+
+    async function loadCart() {
+      const container = document.getElementById('cartContent');
+      const resp = await API.getCart(userId);
+      if (resp.status !== 200 || !resp.data.items) {
+        container.innerHTML = '<div class="empty-state"><div class="icon">🛒</div><div class="text">购物车加载失败</div></div>';
+        return;
+      }
+      if (resp.data.items.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="icon">🛒</div>
+            <div class="text">购物车是空的</div>
+            <div class="btn" onclick="location.href='index.html'">去逛逛</div>
+          </div>`;
+        document.getElementById('bottomBar').style.display = 'none';
+        return;
+      }
+      renderCart(resp.data);
+    }
+
+    function renderCart(cart) {
+      const container = document.getElementById('cartContent');
+      container.innerHTML = `<div class="cart-list">${cart.items.map(item => `
+        <div class="cart-item">
+          <div class="thumb" onclick="location.href='product.html?id=${item.productId || ''}'">${item.productImage ? `<img src="${item.productImage}">` : '📦'}</div>
+          <div class="details">
+            <div class="name">${item.productName || item.sku?.name || '商品'}</div>
+            <div class="sku-info">${item.sku?.skuCode || ''} ${Object.entries(item.sku?.attributes || {}).map(([k,v])=>v).join(' / ')}</div>
+            <div class="bottom-row">
+              <span class="price">¥${item.price}</span>
+              <div class="qty-control">
+                <button onclick="updateQty('${item.id}', ${item.quantity - 1})">−</button>
+                <span>${item.quantity}</span>
+                <button onclick="updateQty('${item.id}', ${item.quantity + 1})">+</button>
+                <span class="delete" onclick="removeItem('${item.id}')">删除</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('')}</div>`;
+      document.getElementById('totalPrice').textContent = '¥' + cart.totalAmount.toFixed(2);
+      document.getElementById('itemCount').textContent = cart.totalQuantity;
+      document.getElementById('bottomBar').style.display = 'flex';
+    }
+
+    async function updateQty(itemId, qty) {
+      if (qty <= 0) { removeItem(itemId); return; }
+      await API.updateCartItem(itemId, qty);
+      loadCart();
+    }
+
+    async function removeItem(itemId) {
+      await API.removeCartItem(itemId);
+      loadCart();
+    }
+
+    function goCheckout() {
+      location.href = 'checkout.html';
+    }
+
+    loadCart();
+  </script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>商品详情 - TLL商城</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="header">
+    <span class="back" onclick="history.back()">←</span>
+    <h1>商品详情</h1>
+    <div class="cart-icon" onclick="location.href='cart.html'">🛒</div>
+  </div>
+
+  <div id="productContent">
+    <div class="loading"><div class="spinner"></div><p>加载中...</p></div>
+  </div>
+
+  <div class="bottom-bar" id="bottomBar" style="display:none">
+    <button class="btn btn-cart" onclick="addToCart()">加入购物车</button>
+    <button class="btn btn-buy" onclick="buyNow()">立即购买</button>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    const productId = new URLSearchParams(location.search).get('id');
+    const userId = Store.getUserId();
+    let product = null;
+    let selectedSku = null;
+    let quantity = 1;
+
+    async function init() {
+      if (!productId) { document.getElementById('productContent').innerHTML = '<div class="empty-state"><div class="icon">😕</div><div class="text">商品不存在</div></div>'; return; }
+      const resp = await API.getProduct(productId);
+      if (resp.status !== 200) {
+        document.getElementById('productContent').innerHTML = '<div class="empty-state"><div class="icon">😕</div><div class="text">商品加载失败</div></div>';
+        return;
+      }
+      product = resp.data;
+      renderProduct();
+    }
+
+    function renderProduct() {
+      const container = document.getElementById('productContent');
+      const skuGroups = groupSkusByAttr(product.skus || []);
+      container.innerHTML = `
+        <div class="product-detail">
+          <div class="main-image">${getProductEmoji(product)}</div>
+          <div class="info-block">
+            <div class="price-row">
+              <span class="price">¥${product.price}</span>
+              ${product.costPrice ? `<span class="original-price">¥${Math.round(product.price * 1.3)}</span>` : ''}
+            </div>
+            <div class="title">${product.name}</div>
+            <div class="desc">${product.description || product.shortDescription || ''}</div>
+          </div>
+        </div>
+        <div class="sku-selector" id="skuSelector">
+          ${renderSkuOptions(skuGroups)}
+          <div class="quantity-selector">
+            <span class="label">数量</span>
+            <button class="qty-btn" onclick="changeQty(-1)">−</button>
+            <span class="qty-value" id="qtyValue">1</span>
+            <button class="qty-btn" onclick="changeQty(1)">+</button>
+            <span style="font-size:12px;color:#888;margin-left:auto">库存: <span id="stockText">${selectedSku ? selectedSku.stock : '-'}</span></span>
+          </div>
+        </div>
+        <div class="info-block">
+          <div style="font-size:14px;font-weight:600;margin-bottom:8px">商品详情</div>
+          <div style="font-size:13px;color:#666;line-height:1.8">
+            ${product.description || '暂无详细描述'}
+          </div>
+          <div style="margin-top:12px;display:flex;gap:16px;font-size:12px;color:#888">
+            <span>品牌: ${product.brand?.name || '-'}</span>
+            <span>分类: ${product.category?.name || '-'}</span>
+            <span>重量: ${product.weight || 0}g</span>
+          </div>
+        </div>
+        ${product.relatedProducts && product.relatedProducts.length ? `
+        <div class="section-title"><span>相关推荐</span></div>
+        <div class="product-grid" style="padding-bottom:16px">
+          ${product.relatedProducts.map(p => `
+            <div class="product-card" onclick="location.href='product.html?id=${p.id}'">
+              <div class="image">${getProductEmoji(p)}</div>
+              <div class="info">
+                <div class="name">${p.name}</div>
+                <div class="price"><small>¥</small>${p.price}</div>
+              </div>
+            </div>
+          `).join('')}
+        </div>` : ''}
+      `;
+      document.getElementById('bottomBar').style.display = 'flex';
+      // Auto-select first SKU
+      if (product.skus && product.skus.length > 0) {
+        selectSku(product.skus[0].id);
+      }
+    }
+
+    function groupSkusByAttr(skus) {
+      const groups = {};
+      for (const sku of skus) {
+        for (const [key, val] of Object.entries(sku.attributes || {})) {
+          if (!groups[key]) groups[key] = new Set();
+          groups[key].add(val);
+        }
+      }
+      return groups;
+    }
+
+    function renderSkuOptions(groups) {
+      if (Object.keys(groups).length === 0) {
+        return `<div class="label">规格</div><div class="sku-options"><div class="sku-option active" onclick="selectSku('${product.skus[0]?.id}')">默认规格</div></div>`;
+      }
+      return Object.entries(groups).map(([attr, values]) => `
+        <div class="label">${attr}</div>
+        <div class="sku-options">
+          ${Array.from(values).map(v => `<div class="sku-option" onclick="this.parentElement.querySelectorAll('.sku-option').forEach(o=>o.classList.remove('active'));this.classList.add('active');selectSkuByAttr('${attr}','${v}')">${v}</div>`).join('')}
+        </div>
+      `).join('');
+    }
+
+    function selectSku(skuId) {
+      selectedSku = product.skus.find(s => s.id === skuId);
+      if (selectedSku) {
+        document.getElementById('stockText').textContent = selectedSku.stock;
+      }
+    }
+
+    function selectSkuByAttr(attr, val) {
+      const sku = product.skus.find(s => s.attributes && s.attributes[attr] === val);
+      if (sku) selectSku(sku.id);
+    }
+
+    function changeQty(delta) {
+      quantity = Math.max(1, Math.min(selectedSku?.stock || 99, quantity + delta));
+      document.getElementById('qtyValue').textContent = quantity;
+    }
+
+    async function addToCart() {
+      if (!selectedSku) { toast('请选择规格'); return; }
+      const resp = await API.addToCart(userId, selectedSku.id, quantity);
+      if (resp.status === 200) {
+        toast('已加入购物车');
+      } else {
+        toast(resp.data?.message || '添加失败');
+      }
+    }
+
+    async function buyNow() {
+      if (!selectedSku) { toast('请选择规格'); return; }
+      await API.addToCart(userId, selectedSku.id, quantity);
+      location.href = 'checkout.html';
+    }
+
+    init();
+  </script>
+</body>
+</html>

@@ -1,0 +1,4857 @@
+{
+  "version": "1.0.0",
+  "application": {
+    "name": "tll-commerce",
+    "version": "0.2.0"
+  },
+  "nodes": [
+    {
+      "id": "application:root",
+      "type": "application",
+      "name": "tll-commerce",
+      "version": "0.2.0",
+      "status": "active",
+      "metadata": {
+        "runtime": "node"
+      },
+      "createdAt": 1787452570937,
+      "updatedAt": 1787452570937
+    },
+    {
+      "id": "module:commerce-catalog",
+      "type": "module",
+      "name": "commerce-catalog",
+      "description": "商品目录管理：商品、SKU、分类、品牌、库存",
+      "version": "0.1.0",
+      "status": "active",
+      "capabilities": [],
+      "metadata": {
+        "namespace": "catalog"
+      },
+      "createdAt": 1787452570952,
+      "updatedAt": 1787452570952
+    },
+    {
+      "id": "api:listCategories",
+      "type": "api",
+      "name": "listCategories",
+      "description": "获取分类列表（树形结构）",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/catalog/categories",
+        "module": "commerce-catalog"
+      },
+      "createdAt": 1787452570952,
+      "updatedAt": 1787452570952
+    },
+    {
+      "id": "api:getCategory",
+      "type": "api",
+      "name": "getCategory",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/catalog/categories/:id",
+        "module": "commerce-catalog"
+      },
+      "createdAt": 1787452570952,
+      "updatedAt": 1787452570952
+    },
+    {
+      "id": "api:createCategory",
+      "type": "api",
+      "name": "createCategory",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/catalog/categories",
+        "module": "commerce-catalog"
+      },
+      "createdAt": 1787452570952,
+      "updatedAt": 1787452570952
+    },
+    {
+      "id": "api:listBrands",
+      "type": "api",
+      "name": "listBrands",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/catalog/brands",
+        "module": "commerce-catalog"
+      },
+      "createdAt": 1787452570952,
+      "updatedAt": 1787452570952
+    },
+    {
+      "id": "api:getBrand",
+      "type": "api",
+      "name": "getBrand",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/catalog/brands/:id",
+        "module": "commerce-catalog"
+      },
+      "createdAt": 1787452570952,
+      "updatedAt": 1787452570952
+    },
+    {
+      "id": "api:createBrand",
+      "type": "api",
+      "name": "createBrand",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/catalog/brands",
+        "module": "commerce-catalog"
+      },
+      "createdAt": 1787452570952,
+      "updatedAt": 1787452570952
+    },
+    {
+      "id": "api:listProducts",
+      "type": "api",
+      "name": "listProducts",
+      "description": "商品列表，支持分类、品牌、关键词、分页筛选",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/catalog/products",
+        "module": "commerce-catalog"
+      },
+      "createdAt": 1787452570952,
+      "updatedAt": 1787452570952
+    },
+    {
+      "id": "api:getProduct",
+      "type": "api",
+      "name": "getProduct",
+      "description": "商品详情，包含SKU列表",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/catalog/products/:id",
+        "module": "commerce-catalog"
+      },
+      "createdAt": 1787452570952,
+      "updatedAt": 1787452570952
+    },
+    {
+      "id": "api:createProduct",
+      "type": "api",
+      "name": "createProduct",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/catalog/products",
+        "module": "commerce-catalog"
+      },
+      "createdAt": 1787452570952,
+      "updatedAt": 1787452570952
+    },
+    {
+      "id": "api:updateProduct",
+      "type": "api",
+      "name": "updateProduct",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "PUT",
+        "path": "/api/catalog/products/:id",
+        "module": "commerce-catalog"
+      },
+      "createdAt": 1787452570952,
+      "updatedAt": 1787452570952
+    },
+    {
+      "id": "api:listProductSkus",
+      "type": "api",
+      "name": "listProductSkus",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/catalog/products/:productId/skus",
+        "module": "commerce-catalog"
+      },
+      "createdAt": 1787452570952,
+      "updatedAt": 1787452570952
+    },
+    {
+      "id": "api:getSku",
+      "type": "api",
+      "name": "getSku",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/catalog/skus/:id",
+        "module": "commerce-catalog"
+      },
+      "createdAt": 1787452570952,
+      "updatedAt": 1787452570952
+    },
+    {
+      "id": "api:createSku",
+      "type": "api",
+      "name": "createSku",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/catalog/skus",
+        "module": "commerce-catalog"
+      },
+      "createdAt": 1787452570952,
+      "updatedAt": 1787452570952
+    },
+    {
+      "id": "api:getInventory",
+      "type": "api",
+      "name": "getInventory",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/catalog/inventory/:skuId",
+        "module": "commerce-catalog"
+      },
+      "createdAt": 1787452570952,
+      "updatedAt": 1787452570952
+    },
+    {
+      "id": "api:adjustInventory",
+      "type": "api",
+      "name": "adjustInventory",
+      "description": "调整库存（入库/出库）",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/catalog/inventory/:skuId/adjust",
+        "module": "commerce-catalog"
+      },
+      "createdAt": 1787452570952,
+      "updatedAt": 1787452570952
+    },
+    {
+      "id": "tool:catalog_search_products",
+      "type": "tool",
+      "name": "catalog_search_products",
+      "description": "搜索商品，支持关键词、分类、品牌、价格范围筛选",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "catalog"
+      ],
+      "metadata": {
+        "category": "catalog",
+        "module": "commerce-catalog",
+        "parameters": {
+          "keyword": "string",
+          "categoryId": "string",
+          "brandId": "string",
+          "minPrice": "number",
+          "maxPrice": "number",
+          "page": "number",
+          "pageSize": "number"
+        }
+      },
+      "createdAt": 1787452570952,
+      "updatedAt": 1787452570952
+    },
+    {
+      "id": "tool:catalog_get_product",
+      "type": "tool",
+      "name": "catalog_get_product",
+      "description": "获取商品详情，包含SKU信息",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "catalog"
+      ],
+      "metadata": {
+        "category": "catalog",
+        "module": "commerce-catalog",
+        "parameters": {
+          "productId": "string (required)"
+        }
+      },
+      "createdAt": 1787452570952,
+      "updatedAt": 1787452570952
+    },
+    {
+      "id": "tool:catalog_create_product",
+      "type": "tool",
+      "name": "catalog_create_product",
+      "description": "创建新商品",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "catalog"
+      ],
+      "metadata": {
+        "category": "catalog",
+        "module": "commerce-catalog",
+        "parameters": {
+          "name": "string (required)",
+          "price": "number (required)",
+          "brandId": "string",
+          "categoryId": "string",
+          "description": "string"
+        }
+      },
+      "createdAt": 1787452570952,
+      "updatedAt": 1787452570952
+    },
+    {
+      "id": "tool:catalog_check_stock",
+      "type": "tool",
+      "name": "catalog_check_stock",
+      "description": "检查SKU库存",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "catalog"
+      ],
+      "metadata": {
+        "category": "catalog",
+        "module": "commerce-catalog",
+        "parameters": {
+          "skuId": "string (required)"
+        }
+      },
+      "createdAt": 1787452570952,
+      "updatedAt": 1787452570952
+    },
+    {
+      "id": "test:catalog - 商品列表和详情",
+      "type": "command",
+      "name": "catalog - 商品列表和详情",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-catalog"
+      },
+      "createdAt": 1787452570953,
+      "updatedAt": 1787452570953
+    },
+    {
+      "id": "test:catalog - 分类树形结构",
+      "type": "command",
+      "name": "catalog - 分类树形结构",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-catalog"
+      },
+      "createdAt": 1787452570953,
+      "updatedAt": 1787452570953
+    },
+    {
+      "id": "test:catalog - 库存调整",
+      "type": "command",
+      "name": "catalog - 库存调整",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-catalog"
+      },
+      "createdAt": 1787452570953,
+      "updatedAt": 1787452570953
+    },
+    {
+      "id": "module:commerce-customer",
+      "type": "module",
+      "name": "commerce-customer",
+      "description": "用户管理：注册登录、地址、会员等级、权限",
+      "version": "0.1.0",
+      "status": "active",
+      "capabilities": [],
+      "metadata": {
+        "namespace": "customer"
+      },
+      "createdAt": 1787452570953,
+      "updatedAt": 1787452570953
+    },
+    {
+      "id": "api:register",
+      "type": "api",
+      "name": "register",
+      "description": "用户注册",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/customer/auth/register",
+        "module": "commerce-customer"
+      },
+      "createdAt": 1787452570953,
+      "updatedAt": 1787452570953
+    },
+    {
+      "id": "api:login",
+      "type": "api",
+      "name": "login",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/customer/auth/login",
+        "module": "commerce-customer"
+      },
+      "createdAt": 1787452570953,
+      "updatedAt": 1787452570953
+    },
+    {
+      "id": "api:logout",
+      "type": "api",
+      "name": "logout",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/customer/auth/logout",
+        "module": "commerce-customer"
+      },
+      "createdAt": 1787452570953,
+      "updatedAt": 1787452570953
+    },
+    {
+      "id": "api:getCurrentUser",
+      "type": "api",
+      "name": "getCurrentUser",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/customer/auth/me",
+        "module": "commerce-customer"
+      },
+      "createdAt": 1787452570953,
+      "updatedAt": 1787452570953
+    },
+    {
+      "id": "api:listUsers",
+      "type": "api",
+      "name": "listUsers",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/customer/users",
+        "module": "commerce-customer"
+      },
+      "createdAt": 1787452570953,
+      "updatedAt": 1787452570953
+    },
+    {
+      "id": "api:getUser",
+      "type": "api",
+      "name": "getUser",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/customer/users/:id",
+        "module": "commerce-customer"
+      },
+      "createdAt": 1787452570953,
+      "updatedAt": 1787452570953
+    },
+    {
+      "id": "api:updateUser",
+      "type": "api",
+      "name": "updateUser",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "PUT",
+        "path": "/api/customer/users/:id",
+        "module": "commerce-customer"
+      },
+      "createdAt": 1787452570953,
+      "updatedAt": 1787452570953
+    },
+    {
+      "id": "api:listAddresses",
+      "type": "api",
+      "name": "listAddresses",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/customer/addresses",
+        "module": "commerce-customer"
+      },
+      "createdAt": 1787452570953,
+      "updatedAt": 1787452570953
+    },
+    {
+      "id": "api:createAddress",
+      "type": "api",
+      "name": "createAddress",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/customer/addresses",
+        "module": "commerce-customer"
+      },
+      "createdAt": 1787452570953,
+      "updatedAt": 1787452570953
+    },
+    {
+      "id": "api:updateAddress",
+      "type": "api",
+      "name": "updateAddress",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "PUT",
+        "path": "/api/customer/addresses/:id",
+        "module": "commerce-customer"
+      },
+      "createdAt": 1787452570953,
+      "updatedAt": 1787452570953
+    },
+    {
+      "id": "api:deleteAddress",
+      "type": "api",
+      "name": "deleteAddress",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "DELETE",
+        "path": "/api/customer/addresses/:id",
+        "module": "commerce-customer"
+      },
+      "createdAt": 1787452570953,
+      "updatedAt": 1787452570953
+    },
+    {
+      "id": "api:listMembershipLevels",
+      "type": "api",
+      "name": "listMembershipLevels",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/customer/membership-levels",
+        "module": "commerce-customer"
+      },
+      "createdAt": 1787452570953,
+      "updatedAt": 1787452570953
+    },
+    {
+      "id": "api:getMyMembership",
+      "type": "api",
+      "name": "getMyMembership",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/customer/membership/me",
+        "module": "commerce-customer"
+      },
+      "createdAt": 1787452570953,
+      "updatedAt": 1787452570953
+    },
+    {
+      "id": "tool:customer_login",
+      "type": "tool",
+      "name": "customer_login",
+      "description": "用户登录，返回token和用户信息",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "customer"
+      ],
+      "metadata": {
+        "category": "customer",
+        "module": "commerce-customer",
+        "parameters": {
+          "email": "string (required)",
+          "password": "string (required)"
+        }
+      },
+      "createdAt": 1787452570953,
+      "updatedAt": 1787452570953
+    },
+    {
+      "id": "tool:customer_get_user",
+      "type": "tool",
+      "name": "customer_get_user",
+      "description": "获取用户信息",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "customer"
+      ],
+      "metadata": {
+        "category": "customer",
+        "module": "commerce-customer",
+        "parameters": {
+          "userId": "string (required)"
+        }
+      },
+      "createdAt": 1787452570953,
+      "updatedAt": 1787452570953
+    },
+    {
+      "id": "tool:customer_list_addresses",
+      "type": "tool",
+      "name": "customer_list_addresses",
+      "description": "获取用户地址列表",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "customer"
+      ],
+      "metadata": {
+        "category": "customer",
+        "module": "commerce-customer",
+        "parameters": {
+          "userId": "string (required)"
+        }
+      },
+      "createdAt": 1787452570953,
+      "updatedAt": 1787452570953
+    },
+    {
+      "id": "test:customer - 用户注册和登录",
+      "type": "command",
+      "name": "customer - 用户注册和登录",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-customer"
+      },
+      "createdAt": 1787452570953,
+      "updatedAt": 1787452570953
+    },
+    {
+      "id": "test:customer - 地址管理",
+      "type": "command",
+      "name": "customer - 地址管理",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-customer"
+      },
+      "createdAt": 1787452570953,
+      "updatedAt": 1787452570953
+    },
+    {
+      "id": "test:customer - 会员等级",
+      "type": "command",
+      "name": "customer - 会员等级",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-customer"
+      },
+      "createdAt": 1787452570953,
+      "updatedAt": 1787452570953
+    },
+    {
+      "id": "module:commerce-cart",
+      "type": "module",
+      "name": "commerce-cart",
+      "description": "购物车管理：添加、删除、修改数量、价格计算",
+      "version": "0.1.0",
+      "status": "active",
+      "capabilities": [],
+      "metadata": {
+        "namespace": "cart"
+      },
+      "createdAt": 1787452570955,
+      "updatedAt": 1787452570955
+    },
+    {
+      "id": "api:getCart",
+      "type": "api",
+      "name": "getCart",
+      "description": "获取当前用户购物车",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/cart",
+        "module": "commerce-cart"
+      },
+      "createdAt": 1787452570955,
+      "updatedAt": 1787452570955
+    },
+    {
+      "id": "api:addToCart",
+      "type": "api",
+      "name": "addToCart",
+      "description": "添加商品到购物车",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/cart/items",
+        "module": "commerce-cart"
+      },
+      "createdAt": 1787452570955,
+      "updatedAt": 1787452570955
+    },
+    {
+      "id": "api:updateCartItem",
+      "type": "api",
+      "name": "updateCartItem",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "PUT",
+        "path": "/api/cart/items/:itemId",
+        "module": "commerce-cart"
+      },
+      "createdAt": 1787452570955,
+      "updatedAt": 1787452570955
+    },
+    {
+      "id": "api:removeCartItem",
+      "type": "api",
+      "name": "removeCartItem",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "DELETE",
+        "path": "/api/cart/items/:itemId",
+        "module": "commerce-cart"
+      },
+      "createdAt": 1787452570955,
+      "updatedAt": 1787452570955
+    },
+    {
+      "id": "api:clearCart",
+      "type": "api",
+      "name": "clearCart",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/cart/clear",
+        "module": "commerce-cart"
+      },
+      "createdAt": 1787452570955,
+      "updatedAt": 1787452570955
+    },
+    {
+      "id": "tool:cart_add",
+      "type": "tool",
+      "name": "cart_add",
+      "description": "添加商品到购物车",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "cart"
+      ],
+      "metadata": {
+        "category": "cart",
+        "module": "commerce-cart",
+        "parameters": {
+          "userId": "string",
+          "skuId": "string (required)",
+          "quantity": "number (required)"
+        }
+      },
+      "createdAt": 1787452570955,
+      "updatedAt": 1787452570955
+    },
+    {
+      "id": "tool:cart_get",
+      "type": "tool",
+      "name": "cart_get",
+      "description": "获取购物车详情",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "cart"
+      ],
+      "metadata": {
+        "category": "cart",
+        "module": "commerce-cart",
+        "parameters": {
+          "userId": "string"
+        }
+      },
+      "createdAt": 1787452570955,
+      "updatedAt": 1787452570955
+    },
+    {
+      "id": "tool:cart_clear",
+      "type": "tool",
+      "name": "cart_clear",
+      "description": "清空购物车",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "cart"
+      ],
+      "metadata": {
+        "category": "cart",
+        "module": "commerce-cart",
+        "parameters": {
+          "userId": "string"
+        }
+      },
+      "createdAt": 1787452570955,
+      "updatedAt": 1787452570955
+    },
+    {
+      "id": "test:cart - 添加和获取购物车",
+      "type": "command",
+      "name": "cart - 添加和获取购物车",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-cart"
+      },
+      "createdAt": 1787452570955,
+      "updatedAt": 1787452570955
+    },
+    {
+      "id": "test:cart - 修改数量和删除",
+      "type": "command",
+      "name": "cart - 修改数量和删除",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-cart"
+      },
+      "createdAt": 1787452570955,
+      "updatedAt": 1787452570955
+    },
+    {
+      "id": "module:commerce-order",
+      "type": "module",
+      "name": "commerce-order",
+      "description": "订单管理：创建、列表、详情、状态流转、取消",
+      "version": "0.1.0",
+      "status": "active",
+      "capabilities": [],
+      "metadata": {
+        "namespace": "order"
+      },
+      "createdAt": 1787452570956,
+      "updatedAt": 1787452570956
+    },
+    {
+      "id": "api:createOrder",
+      "type": "api",
+      "name": "createOrder",
+      "description": "从购物车创建订单",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/orders",
+        "module": "commerce-order"
+      },
+      "createdAt": 1787452570956,
+      "updatedAt": 1787452570956
+    },
+    {
+      "id": "api:listOrders",
+      "type": "api",
+      "name": "listOrders",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/orders",
+        "module": "commerce-order"
+      },
+      "createdAt": 1787452570956,
+      "updatedAt": 1787452570956
+    },
+    {
+      "id": "api:getOrder",
+      "type": "api",
+      "name": "getOrder",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/orders/:id",
+        "module": "commerce-order"
+      },
+      "createdAt": 1787452570956,
+      "updatedAt": 1787452570956
+    },
+    {
+      "id": "api:cancelOrder",
+      "type": "api",
+      "name": "cancelOrder",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/orders/:id/cancel",
+        "module": "commerce-order"
+      },
+      "createdAt": 1787452570956,
+      "updatedAt": 1787452570956
+    },
+    {
+      "id": "api:shipOrder",
+      "type": "api",
+      "name": "shipOrder",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/orders/:id/ship",
+        "module": "commerce-order"
+      },
+      "createdAt": 1787452570956,
+      "updatedAt": 1787452570956
+    },
+    {
+      "id": "api:completeOrder",
+      "type": "api",
+      "name": "completeOrder",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/orders/:id/complete",
+        "module": "commerce-order"
+      },
+      "createdAt": 1787452570956,
+      "updatedAt": 1787452570956
+    },
+    {
+      "id": "tool:order_create",
+      "type": "tool",
+      "name": "order_create",
+      "description": "从购物车创建订单",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "order"
+      ],
+      "metadata": {
+        "category": "order",
+        "module": "commerce-order",
+        "parameters": {
+          "userId": "string",
+          "addressId": "string (required)",
+          "couponCode": "string",
+          "remark": "string"
+        }
+      },
+      "createdAt": 1787452570956,
+      "updatedAt": 1787452570956
+    },
+    {
+      "id": "tool:order_get",
+      "type": "tool",
+      "name": "order_get",
+      "description": "获取订单详情",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "order"
+      ],
+      "metadata": {
+        "category": "order",
+        "module": "commerce-order",
+        "parameters": {
+          "orderId": "string (required)"
+        }
+      },
+      "createdAt": 1787452570956,
+      "updatedAt": 1787452570956
+    },
+    {
+      "id": "tool:order_list",
+      "type": "tool",
+      "name": "order_list",
+      "description": "获取订单列表",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "order"
+      ],
+      "metadata": {
+        "category": "order",
+        "module": "commerce-order",
+        "parameters": {
+          "userId": "string",
+          "status": "string",
+          "page": "number",
+          "pageSize": "number"
+        }
+      },
+      "createdAt": 1787452570956,
+      "updatedAt": 1787452570956
+    },
+    {
+      "id": "test:order - 创建订单完整流程",
+      "type": "command",
+      "name": "order - 创建订单完整流程",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-order"
+      },
+      "createdAt": 1787452570956,
+      "updatedAt": 1787452570956
+    },
+    {
+      "id": "test:order - 取消订单释放库存",
+      "type": "command",
+      "name": "order - 取消订单释放库存",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-order"
+      },
+      "createdAt": 1787452570957,
+      "updatedAt": 1787452570957
+    },
+    {
+      "id": "module:commerce-payment",
+      "type": "module",
+      "name": "commerce-payment",
+      "description": "支付管理：Mock支付网关、支付记录、退款",
+      "version": "0.1.0",
+      "status": "active",
+      "capabilities": [],
+      "metadata": {
+        "namespace": "payment"
+      },
+      "createdAt": 1787452570957,
+      "updatedAt": 1787452570957
+    },
+    {
+      "id": "api:listPaymentMethods",
+      "type": "api",
+      "name": "listPaymentMethods",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/payment/methods",
+        "module": "commerce-payment"
+      },
+      "createdAt": 1787452570957,
+      "updatedAt": 1787452570957
+    },
+    {
+      "id": "api:createPayment",
+      "type": "api",
+      "name": "createPayment",
+      "description": "创建支付订单（Mock）",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/payment/create",
+        "module": "commerce-payment"
+      },
+      "createdAt": 1787452570957,
+      "updatedAt": 1787452570957
+    },
+    {
+      "id": "api:paymentNotify",
+      "type": "api",
+      "name": "paymentNotify",
+      "description": "支付回调（Mock，模拟支付成功）",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/payment/notify",
+        "module": "commerce-payment"
+      },
+      "createdAt": 1787452570957,
+      "updatedAt": 1787452570957
+    },
+    {
+      "id": "api:refundPayment",
+      "type": "api",
+      "name": "refundPayment",
+      "description": "退款（Mock）",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/payment/refund",
+        "module": "commerce-payment"
+      },
+      "createdAt": 1787452570957,
+      "updatedAt": 1787452570957
+    },
+    {
+      "id": "api:getPaymentStatus",
+      "type": "api",
+      "name": "getPaymentStatus",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/payment/:orderId",
+        "module": "commerce-payment"
+      },
+      "createdAt": 1787452570957,
+      "updatedAt": 1787452570957
+    },
+    {
+      "id": "tool:payment_pay",
+      "type": "tool",
+      "name": "payment_pay",
+      "description": "模拟支付订单（创建支付并自动回调成功）",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "payment"
+      ],
+      "metadata": {
+        "category": "payment",
+        "module": "commerce-payment",
+        "parameters": {
+          "orderId": "string (required)",
+          "method": "string (default: mock)"
+        }
+      },
+      "createdAt": 1787452570957,
+      "updatedAt": 1787452570957
+    },
+    {
+      "id": "tool:payment_status",
+      "type": "tool",
+      "name": "payment_status",
+      "description": "查询支付状态",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "payment"
+      ],
+      "metadata": {
+        "category": "payment",
+        "module": "commerce-payment",
+        "parameters": {
+          "orderId": "string (required)"
+        }
+      },
+      "createdAt": 1787452570957,
+      "updatedAt": 1787452570957
+    },
+    {
+      "id": "test:payment - 支付流程",
+      "type": "command",
+      "name": "payment - 支付流程",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-payment"
+      },
+      "createdAt": 1787452570957,
+      "updatedAt": 1787452570957
+    },
+    {
+      "id": "module:commerce-marketing",
+      "type": "module",
+      "name": "commerce-marketing",
+      "description": "营销管理：优惠券、促销活动",
+      "version": "0.1.0",
+      "status": "active",
+      "capabilities": [],
+      "metadata": {
+        "namespace": "marketing"
+      },
+      "createdAt": 1787452570958,
+      "updatedAt": 1787452570958
+    },
+    {
+      "id": "api:listCoupons",
+      "type": "api",
+      "name": "listCoupons",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/marketing/coupons",
+        "module": "commerce-marketing"
+      },
+      "createdAt": 1787452570958,
+      "updatedAt": 1787452570958
+    },
+    {
+      "id": "api:getCoupon",
+      "type": "api",
+      "name": "getCoupon",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/marketing/coupons/:id",
+        "module": "commerce-marketing"
+      },
+      "createdAt": 1787452570958,
+      "updatedAt": 1787452570958
+    },
+    {
+      "id": "api:createCoupon",
+      "type": "api",
+      "name": "createCoupon",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/marketing/coupons",
+        "module": "commerce-marketing"
+      },
+      "createdAt": 1787452570958,
+      "updatedAt": 1787452570958
+    },
+    {
+      "id": "api:validateCoupon",
+      "type": "api",
+      "name": "validateCoupon",
+      "description": "验证优惠券是否可用并计算优惠金额",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/marketing/coupons/validate",
+        "module": "commerce-marketing"
+      },
+      "createdAt": 1787452570958,
+      "updatedAt": 1787452570958
+    },
+    {
+      "id": "api:listUserCoupons",
+      "type": "api",
+      "name": "listUserCoupons",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/marketing/user-coupons",
+        "module": "commerce-marketing"
+      },
+      "createdAt": 1787452570958,
+      "updatedAt": 1787452570958
+    },
+    {
+      "id": "tool:marketing_validate_coupon",
+      "type": "tool",
+      "name": "marketing_validate_coupon",
+      "description": "验证优惠券并计算优惠",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "marketing"
+      ],
+      "metadata": {
+        "category": "marketing",
+        "module": "commerce-marketing",
+        "parameters": {
+          "code": "string (required)",
+          "orderAmount": "number (required)"
+        }
+      },
+      "createdAt": 1787452570958,
+      "updatedAt": 1787452570958
+    },
+    {
+      "id": "tool:marketing_list_coupons",
+      "type": "tool",
+      "name": "marketing_list_coupons",
+      "description": "获取可用优惠券列表",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "marketing"
+      ],
+      "metadata": {
+        "category": "marketing",
+        "module": "commerce-marketing",
+        "parameters": {
+          "type": "string"
+        }
+      },
+      "createdAt": 1787452570958,
+      "updatedAt": 1787452570958
+    },
+    {
+      "id": "test:marketing - 优惠券验证",
+      "type": "command",
+      "name": "marketing - 优惠券验证",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-marketing"
+      },
+      "createdAt": 1787452570958,
+      "updatedAt": 1787452570958
+    },
+    {
+      "id": "test:marketing - 优惠券列表",
+      "type": "command",
+      "name": "marketing - 优惠券列表",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-marketing"
+      },
+      "createdAt": 1787452570958,
+      "updatedAt": 1787452570958
+    },
+    {
+      "id": "module:commerce-locale",
+      "type": "module",
+      "name": "commerce-locale",
+      "description": "多语言和多币种支持",
+      "version": "0.1.0",
+      "status": "active",
+      "capabilities": [],
+      "metadata": {
+        "namespace": "locale"
+      },
+      "createdAt": 1787452570959,
+      "updatedAt": 1787452570959
+    },
+    {
+      "id": "api:listLanguages",
+      "type": "api",
+      "name": "listLanguages",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/locale/languages",
+        "module": "commerce-locale"
+      },
+      "createdAt": 1787452570959,
+      "updatedAt": 1787452570959
+    },
+    {
+      "id": "api:listCurrencies",
+      "type": "api",
+      "name": "listCurrencies",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/locale/currencies",
+        "module": "commerce-locale"
+      },
+      "createdAt": 1787452570959,
+      "updatedAt": 1787452570959
+    },
+    {
+      "id": "api:getTranslations",
+      "type": "api",
+      "name": "getTranslations",
+      "description": "获取指定语言的翻译字典",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/locale/translations",
+        "module": "commerce-locale"
+      },
+      "createdAt": 1787452570959,
+      "updatedAt": 1787452570959
+    },
+    {
+      "id": "api:convertCurrency",
+      "type": "api",
+      "name": "convertCurrency",
+      "description": "货币转换",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/locale/convert",
+        "module": "commerce-locale"
+      },
+      "createdAt": 1787452570959,
+      "updatedAt": 1787452570959
+    },
+    {
+      "id": "tool:locale_convert_currency",
+      "type": "tool",
+      "name": "locale_convert_currency",
+      "description": "货币转换",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "locale"
+      ],
+      "metadata": {
+        "category": "locale",
+        "module": "commerce-locale",
+        "parameters": {
+          "amount": "number (required)",
+          "from": "string (default: CNY)",
+          "to": "string (default: USD)"
+        }
+      },
+      "createdAt": 1787452570959,
+      "updatedAt": 1787452570959
+    },
+    {
+      "id": "tool:locale_get_translations",
+      "type": "tool",
+      "name": "locale_get_translations",
+      "description": "获取翻译字典",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "locale"
+      ],
+      "metadata": {
+        "category": "locale",
+        "module": "commerce-locale",
+        "parameters": {
+          "lang": "string (default: zh-CN)"
+        }
+      },
+      "createdAt": 1787452570959,
+      "updatedAt": 1787452570959
+    },
+    {
+      "id": "test:locale - 语言和币种列表",
+      "type": "command",
+      "name": "locale - 语言和币种列表",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-locale"
+      },
+      "createdAt": 1787452570959,
+      "updatedAt": 1787452570959
+    },
+    {
+      "id": "test:locale - 货币转换",
+      "type": "command",
+      "name": "locale - 货币转换",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-locale"
+      },
+      "createdAt": 1787452570959,
+      "updatedAt": 1787452570959
+    },
+    {
+      "id": "test:locale - 翻译字典",
+      "type": "command",
+      "name": "locale - 翻译字典",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-locale"
+      },
+      "createdAt": 1787452570959,
+      "updatedAt": 1787452570959
+    },
+    {
+      "id": "module:commerce-b2b",
+      "type": "module",
+      "name": "commerce-b2b",
+      "description": "B2B企业采购：公司账户、批量定价、信用额度、账期",
+      "version": "0.1.0",
+      "status": "active",
+      "capabilities": [],
+      "metadata": {
+        "namespace": "b2b"
+      },
+      "createdAt": 1787452570959,
+      "updatedAt": 1787452570959
+    },
+    {
+      "id": "api:listCompanies",
+      "type": "api",
+      "name": "listCompanies",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/b2b/companies",
+        "module": "commerce-b2b"
+      },
+      "createdAt": 1787452570959,
+      "updatedAt": 1787452570959
+    },
+    {
+      "id": "api:getCompany",
+      "type": "api",
+      "name": "getCompany",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/b2b/companies/:id",
+        "module": "commerce-b2b"
+      },
+      "createdAt": 1787452570959,
+      "updatedAt": 1787452570959
+    },
+    {
+      "id": "api:createCompany",
+      "type": "api",
+      "name": "createCompany",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/b2b/companies",
+        "module": "commerce-b2b"
+      },
+      "createdAt": 1787452570959,
+      "updatedAt": 1787452570959
+    },
+    {
+      "id": "api:addCompanyMember",
+      "type": "api",
+      "name": "addCompanyMember",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/b2b/companies/:id/members",
+        "module": "commerce-b2b"
+      },
+      "createdAt": 1787452570959,
+      "updatedAt": 1787452570959
+    },
+    {
+      "id": "api:getB2BQuote",
+      "type": "api",
+      "name": "getB2BQuote",
+      "description": "获取B2B批量报价（基于数量阶梯和企业折扣）",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/b2b/quote",
+        "module": "commerce-b2b"
+      },
+      "createdAt": 1787452570959,
+      "updatedAt": 1787452570959
+    },
+    {
+      "id": "tool:b2b_get_quote",
+      "type": "tool",
+      "name": "b2b_get_quote",
+      "description": "获取B2B批量报价",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "b2b"
+      ],
+      "metadata": {
+        "category": "b2b",
+        "module": "commerce-b2b",
+        "parameters": {
+          "companyId": "string (required)",
+          "items": "array (required)"
+        }
+      },
+      "createdAt": 1787452570959,
+      "updatedAt": 1787452570959
+    },
+    {
+      "id": "test:b2b - 企业列表和详情",
+      "type": "command",
+      "name": "b2b - 企业列表和详情",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-b2b"
+      },
+      "createdAt": 1787452570959,
+      "updatedAt": 1787452570959
+    },
+    {
+      "id": "test:b2b - 批量报价",
+      "type": "command",
+      "name": "b2b - 批量报价",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-b2b"
+      },
+      "createdAt": 1787452570959,
+      "updatedAt": 1787452570959
+    },
+    {
+      "id": "module:commerce-file",
+      "type": "module",
+      "name": "commerce-file",
+      "description": "文件管理：内存文件存储、上传、下载",
+      "version": "0.1.0",
+      "status": "active",
+      "capabilities": [],
+      "metadata": {
+        "namespace": "file"
+      },
+      "createdAt": 1787452570959,
+      "updatedAt": 1787452570959
+    },
+    {
+      "id": "api:uploadFile",
+      "type": "api",
+      "name": "uploadFile",
+      "description": "上传文件（base64编码内容）",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/files/upload",
+        "module": "commerce-file"
+      },
+      "createdAt": 1787452570959,
+      "updatedAt": 1787452570959
+    },
+    {
+      "id": "api:getFile",
+      "type": "api",
+      "name": "getFile",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/files/:id",
+        "module": "commerce-file"
+      },
+      "createdAt": 1787452570959,
+      "updatedAt": 1787452570959
+    },
+    {
+      "id": "api:listFiles",
+      "type": "api",
+      "name": "listFiles",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/files",
+        "module": "commerce-file"
+      },
+      "createdAt": 1787452570959,
+      "updatedAt": 1787452570959
+    },
+    {
+      "id": "api:deleteFile",
+      "type": "api",
+      "name": "deleteFile",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "DELETE",
+        "path": "/api/files/:id",
+        "module": "commerce-file"
+      },
+      "createdAt": 1787452570959,
+      "updatedAt": 1787452570959
+    },
+    {
+      "id": "tool:file_upload",
+      "type": "tool",
+      "name": "file_upload",
+      "description": "上传文件",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "file"
+      ],
+      "metadata": {
+        "category": "file",
+        "module": "commerce-file",
+        "parameters": {
+          "name": "string (required)",
+          "content": "string (base64, required)",
+          "mimeType": "string",
+          "category": "string"
+        }
+      },
+      "createdAt": 1787452570959,
+      "updatedAt": 1787452570959
+    },
+    {
+      "id": "test:file - 上传和获取文件",
+      "type": "command",
+      "name": "file - 上传和获取文件",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-file"
+      },
+      "createdAt": 1787452570959,
+      "updatedAt": 1787452570959
+    },
+    {
+      "id": "module:commerce-shipping",
+      "type": "module",
+      "name": "commerce-shipping",
+      "description": "跨境物流模块：物流方式、运费模板、发货、轨迹追踪",
+      "version": "0.1.0",
+      "status": "active",
+      "capabilities": [],
+      "metadata": {
+        "namespace": "shipping"
+      },
+      "createdAt": 1787452570960,
+      "updatedAt": 1787452570960
+    },
+    {
+      "id": "api:list_shipping_methods",
+      "type": "api",
+      "name": "list_shipping_methods",
+      "description": "获取物流方式列表",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/shipping/methods",
+        "module": "commerce-shipping"
+      },
+      "createdAt": 1787452570960,
+      "updatedAt": 1787452570960
+    },
+    {
+      "id": "api:create_shipping_method",
+      "type": "api",
+      "name": "create_shipping_method",
+      "description": "创建物流方式",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/shipping/methods",
+        "module": "commerce-shipping"
+      },
+      "createdAt": 1787452570960,
+      "updatedAt": 1787452570960
+    },
+    {
+      "id": "api:list_shipping_zones",
+      "type": "api",
+      "name": "list_shipping_zones",
+      "description": "获取物流区域列表",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/shipping/zones",
+        "module": "commerce-shipping"
+      },
+      "createdAt": 1787452570960,
+      "updatedAt": 1787452570960
+    },
+    {
+      "id": "api:create_shipping_zone",
+      "type": "api",
+      "name": "create_shipping_zone",
+      "description": "创建物流区域（国家分组）",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/shipping/zones",
+        "module": "commerce-shipping"
+      },
+      "createdAt": 1787452570960,
+      "updatedAt": 1787452570960
+    },
+    {
+      "id": "api:list_shipping_rates",
+      "type": "api",
+      "name": "list_shipping_rates",
+      "description": "获取运费规则列表",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/shipping/rates",
+        "module": "commerce-shipping"
+      },
+      "createdAt": 1787452570960,
+      "updatedAt": 1787452570960
+    },
+    {
+      "id": "api:create_shipping_rate",
+      "type": "api",
+      "name": "create_shipping_rate",
+      "description": "创建运费规则",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/shipping/rates",
+        "module": "commerce-shipping"
+      },
+      "createdAt": 1787452570960,
+      "updatedAt": 1787452570960
+    },
+    {
+      "id": "api:calculate_shipping",
+      "type": "api",
+      "name": "calculate_shipping",
+      "description": "计算运费（根据目的国、重量、金额、物流方式）",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/shipping/calculate",
+        "module": "commerce-shipping"
+      },
+      "createdAt": 1787452570960,
+      "updatedAt": 1787452570960
+    },
+    {
+      "id": "api:create_shipment",
+      "type": "api",
+      "name": "create_shipment",
+      "description": "创建发货记录",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/shipping/shipments",
+        "module": "commerce-shipping"
+      },
+      "createdAt": 1787452570960,
+      "updatedAt": 1787452570960
+    },
+    {
+      "id": "api:get_shipment",
+      "type": "api",
+      "name": "get_shipment",
+      "description": "获取发货详情和轨迹",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/shipping/shipments/:id",
+        "module": "commerce-shipping"
+      },
+      "createdAt": 1787452570960,
+      "updatedAt": 1787452570960
+    },
+    {
+      "id": "api:add_tracking",
+      "type": "api",
+      "name": "add_tracking",
+      "description": "添加物流轨迹节点",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/shipping/shipments/:id/track",
+        "module": "commerce-shipping"
+      },
+      "createdAt": 1787452570960,
+      "updatedAt": 1787452570960
+    },
+    {
+      "id": "api:list_shipments",
+      "type": "api",
+      "name": "list_shipments",
+      "description": "获取发货记录列表",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/shipping/shipments",
+        "module": "commerce-shipping"
+      },
+      "createdAt": 1787452570960,
+      "updatedAt": 1787452570960
+    },
+    {
+      "id": "tool:shipping_calculate",
+      "type": "tool",
+      "name": "shipping_calculate",
+      "description": "计算跨境运费（根据目的国、重量、订单金额）",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "shipping"
+      ],
+      "metadata": {
+        "category": "shipping",
+        "module": "commerce-shipping",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "country": {
+              "type": "string",
+              "description": "目的国家代码，如 CN/US/JP"
+            },
+            "weight": {
+              "type": "number",
+              "description": "重量（克）"
+            },
+            "orderAmount": {
+              "type": "number",
+              "description": "订单金额"
+            },
+            "methodId": {
+              "type": "string",
+              "description": "指定物流方式ID（可选）"
+            }
+          },
+          "required": [
+            "country",
+            "weight",
+            "orderAmount"
+          ]
+        }
+      },
+      "createdAt": 1787452570960,
+      "updatedAt": 1787452570960
+    },
+    {
+      "id": "tool:shipping_create_shipment",
+      "type": "tool",
+      "name": "shipping_create_shipment",
+      "description": "为订单创建发货记录",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "shipping"
+      ],
+      "metadata": {
+        "category": "shipping",
+        "module": "commerce-shipping",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "orderId": {
+              "type": "string"
+            },
+            "methodId": {
+              "type": "string"
+            },
+            "trackingNo": {
+              "type": "string"
+            },
+            "weight": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "orderId"
+          ]
+        }
+      },
+      "createdAt": 1787452570960,
+      "updatedAt": 1787452570960
+    },
+    {
+      "id": "tool:shipping_track",
+      "type": "tool",
+      "name": "shipping_track",
+      "description": "查询发货物流轨迹",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "shipping"
+      ],
+      "metadata": {
+        "category": "shipping",
+        "module": "commerce-shipping",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "shipmentId": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "shipmentId"
+          ]
+        }
+      },
+      "createdAt": 1787452570960,
+      "updatedAt": 1787452570960
+    },
+    {
+      "id": "test:shipping - 运费计算",
+      "type": "command",
+      "name": "shipping - 运费计算",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-shipping"
+      },
+      "createdAt": 1787452570960,
+      "updatedAt": 1787452570960
+    },
+    {
+      "id": "test:shipping - 发货和轨迹",
+      "type": "command",
+      "name": "shipping - 发货和轨迹",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-shipping"
+      },
+      "createdAt": 1787452570960,
+      "updatedAt": 1787452570960
+    },
+    {
+      "id": "module:commerce-supplier",
+      "type": "module",
+      "name": "commerce-supplier",
+      "description": "供应商模块：供应商管理、供应商商品、采购单",
+      "version": "0.1.0",
+      "status": "active",
+      "capabilities": [],
+      "metadata": {
+        "namespace": "supplier"
+      },
+      "createdAt": 1787452570962,
+      "updatedAt": 1787452570962
+    },
+    {
+      "id": "api:list_suppliers",
+      "type": "api",
+      "name": "list_suppliers",
+      "description": "获取供应商列表",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/supplier/suppliers",
+        "module": "commerce-supplier"
+      },
+      "createdAt": 1787452570962,
+      "updatedAt": 1787452570962
+    },
+    {
+      "id": "api:get_supplier",
+      "type": "api",
+      "name": "get_supplier",
+      "description": "获取供应商详情",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/supplier/suppliers/:id",
+        "module": "commerce-supplier"
+      },
+      "createdAt": 1787452570962,
+      "updatedAt": 1787452570962
+    },
+    {
+      "id": "api:create_supplier",
+      "type": "api",
+      "name": "create_supplier",
+      "description": "创建供应商",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/supplier/suppliers",
+        "module": "commerce-supplier"
+      },
+      "createdAt": 1787452570962,
+      "updatedAt": 1787452570962
+    },
+    {
+      "id": "api:update_supplier",
+      "type": "api",
+      "name": "update_supplier",
+      "description": "更新供应商",
+      "status": "active",
+      "metadata": {
+        "method": "PUT",
+        "path": "/api/supplier/suppliers/:id",
+        "module": "commerce-supplier"
+      },
+      "createdAt": 1787452570962,
+      "updatedAt": 1787452570962
+    },
+    {
+      "id": "api:list_supplier_products",
+      "type": "api",
+      "name": "list_supplier_products",
+      "description": "获取供应商的商品列表",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/supplier/suppliers/:id/products",
+        "module": "commerce-supplier"
+      },
+      "createdAt": 1787452570962,
+      "updatedAt": 1787452570962
+    },
+    {
+      "id": "api:create_supplier_product",
+      "type": "api",
+      "name": "create_supplier_product",
+      "description": "添加供应商商品关联",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/supplier/supplier-products",
+        "module": "commerce-supplier"
+      },
+      "createdAt": 1787452570962,
+      "updatedAt": 1787452570962
+    },
+    {
+      "id": "api:list_purchase_orders",
+      "type": "api",
+      "name": "list_purchase_orders",
+      "description": "获取采购单列表",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/supplier/purchase-orders",
+        "module": "commerce-supplier"
+      },
+      "createdAt": 1787452570962,
+      "updatedAt": 1787452570962
+    },
+    {
+      "id": "api:create_purchase_order",
+      "type": "api",
+      "name": "create_purchase_order",
+      "description": "创建采购单",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/supplier/purchase-orders",
+        "module": "commerce-supplier"
+      },
+      "createdAt": 1787452570962,
+      "updatedAt": 1787452570962
+    },
+    {
+      "id": "api:get_purchase_order",
+      "type": "api",
+      "name": "get_purchase_order",
+      "description": "获取采购单详情",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/supplier/purchase-orders/:id",
+        "module": "commerce-supplier"
+      },
+      "createdAt": 1787452570962,
+      "updatedAt": 1787452570962
+    },
+    {
+      "id": "api:update_po_status",
+      "type": "api",
+      "name": "update_po_status",
+      "description": "更新采购单状态（提交/确认/发货/收货/关闭）",
+      "status": "active",
+      "metadata": {
+        "method": "PUT",
+        "path": "/api/supplier/purchase-orders/:id/status",
+        "module": "commerce-supplier"
+      },
+      "createdAt": 1787452570962,
+      "updatedAt": 1787452570962
+    },
+    {
+      "id": "tool:supplier_list",
+      "type": "tool",
+      "name": "supplier_list",
+      "description": "获取供应商列表",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "supplier"
+      ],
+      "metadata": {
+        "category": "supplier",
+        "module": "commerce-supplier",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "keyword": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "createdAt": 1787452570962,
+      "updatedAt": 1787452570962
+    },
+    {
+      "id": "tool:supplier_create_po",
+      "type": "tool",
+      "name": "supplier_create_po",
+      "description": "创建采购单",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "supplier"
+      ],
+      "metadata": {
+        "category": "supplier",
+        "module": "commerce-supplier",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "supplierId": {
+              "type": "string"
+            },
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "productId": {
+                    "type": "string"
+                  },
+                  "quantity": {
+                    "type": "number"
+                  },
+                  "price": {
+                    "type": "number"
+                  }
+                }
+              }
+            },
+            "expectedDate": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "supplierId",
+            "items"
+          ]
+        }
+      },
+      "createdAt": 1787452570962,
+      "updatedAt": 1787452570962
+    },
+    {
+      "id": "test:supplier - 供应商CRUD",
+      "type": "command",
+      "name": "supplier - 供应商CRUD",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-supplier"
+      },
+      "createdAt": 1787452570962,
+      "updatedAt": 1787452570962
+    },
+    {
+      "id": "test:supplier - 采购单流程",
+      "type": "command",
+      "name": "supplier - 采购单流程",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-supplier"
+      },
+      "createdAt": 1787452570962,
+      "updatedAt": 1787452570962
+    },
+    {
+      "id": "module:commerce-merchant",
+      "type": "module",
+      "name": "commerce-merchant",
+      "description": "多商户/SaaS模块：商户管理、商户用户、商户商品、费率配置",
+      "version": "0.1.0",
+      "status": "active",
+      "capabilities": [],
+      "metadata": {
+        "namespace": "merchant"
+      },
+      "createdAt": 1787452570963,
+      "updatedAt": 1787452570963
+    },
+    {
+      "id": "api:list_merchants",
+      "type": "api",
+      "name": "list_merchants",
+      "description": "获取商户列表",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/merchant/merchants",
+        "module": "commerce-merchant"
+      },
+      "createdAt": 1787452570963,
+      "updatedAt": 1787452570963
+    },
+    {
+      "id": "api:get_merchant",
+      "type": "api",
+      "name": "get_merchant",
+      "description": "获取商户详情",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/merchant/merchants/:id",
+        "module": "commerce-merchant"
+      },
+      "createdAt": 1787452570963,
+      "updatedAt": 1787452570963
+    },
+    {
+      "id": "api:create_merchant",
+      "type": "api",
+      "name": "create_merchant",
+      "description": "创建商户（SaaS入驻）",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/merchant/merchants",
+        "module": "commerce-merchant"
+      },
+      "createdAt": 1787452570963,
+      "updatedAt": 1787452570963
+    },
+    {
+      "id": "api:update_merchant",
+      "type": "api",
+      "name": "update_merchant",
+      "description": "更新商户信息",
+      "status": "active",
+      "metadata": {
+        "method": "PUT",
+        "path": "/api/merchant/merchants/:id",
+        "module": "commerce-merchant"
+      },
+      "createdAt": 1787452570963,
+      "updatedAt": 1787452570963
+    },
+    {
+      "id": "api:audit_merchant",
+      "type": "api",
+      "name": "audit_merchant",
+      "description": "审核商户入驻申请",
+      "status": "active",
+      "metadata": {
+        "method": "PUT",
+        "path": "/api/merchant/merchants/:id/audit",
+        "module": "commerce-merchant"
+      },
+      "createdAt": 1787452570963,
+      "updatedAt": 1787452570963
+    },
+    {
+      "id": "api:list_merchant_users",
+      "type": "api",
+      "name": "list_merchant_users",
+      "description": "获取商户用户列表",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/merchant/merchants/:id/users",
+        "module": "commerce-merchant"
+      },
+      "createdAt": 1787452570963,
+      "updatedAt": 1787452570963
+    },
+    {
+      "id": "api:add_merchant_user",
+      "type": "api",
+      "name": "add_merchant_user",
+      "description": "添加商户用户（员工）",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/merchant/merchant-users",
+        "module": "commerce-merchant"
+      },
+      "createdAt": 1787452570963,
+      "updatedAt": 1787452570963
+    },
+    {
+      "id": "api:list_merchant_products",
+      "type": "api",
+      "name": "list_merchant_products",
+      "description": "获取商户商品列表",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/merchant/merchants/:id/products",
+        "module": "commerce-merchant"
+      },
+      "createdAt": 1787452570963,
+      "updatedAt": 1787452570963
+    },
+    {
+      "id": "api:add_merchant_product",
+      "type": "api",
+      "name": "add_merchant_product",
+      "description": "商户上架商品",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/merchant/merchant-products",
+        "module": "commerce-merchant"
+      },
+      "createdAt": 1787452570963,
+      "updatedAt": 1787452570963
+    },
+    {
+      "id": "api:merchant_dashboard",
+      "type": "api",
+      "name": "merchant_dashboard",
+      "description": "商户仪表盘数据",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/merchant/merchants/:id/dashboard",
+        "module": "commerce-merchant"
+      },
+      "createdAt": 1787452570963,
+      "updatedAt": 1787452570963
+    },
+    {
+      "id": "tool:merchant_list",
+      "type": "tool",
+      "name": "merchant_list",
+      "description": "获取商户列表",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "merchant"
+      ],
+      "metadata": {
+        "category": "merchant",
+        "module": "commerce-merchant",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "keyword": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            },
+            "plan": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "createdAt": 1787452570963,
+      "updatedAt": 1787452570963
+    },
+    {
+      "id": "tool:merchant_dashboard",
+      "type": "tool",
+      "name": "merchant_dashboard",
+      "description": "获取商户仪表盘数据",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "merchant"
+      ],
+      "metadata": {
+        "category": "merchant",
+        "module": "commerce-merchant",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "merchantId": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "merchantId"
+          ]
+        }
+      },
+      "createdAt": 1787452570963,
+      "updatedAt": 1787452570963
+    },
+    {
+      "id": "test:merchant - 商户入驻和审核",
+      "type": "command",
+      "name": "merchant - 商户入驻和审核",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-merchant"
+      },
+      "createdAt": 1787452570963,
+      "updatedAt": 1787452570963
+    },
+    {
+      "id": "test:merchant - 商户商品和仪表盘",
+      "type": "command",
+      "name": "merchant - 商户商品和仪表盘",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-merchant"
+      },
+      "createdAt": 1787452570963,
+      "updatedAt": 1787452570963
+    },
+    {
+      "id": "module:commerce-settlement",
+      "type": "module",
+      "name": "commerce-settlement",
+      "description": "结算分账模块：结算单生成、分账计算、资金流水",
+      "version": "0.1.0",
+      "status": "active",
+      "capabilities": [],
+      "metadata": {
+        "namespace": "settlement"
+      },
+      "createdAt": 1787452570964,
+      "updatedAt": 1787452570964
+    },
+    {
+      "id": "api:list_settlements",
+      "type": "api",
+      "name": "list_settlements",
+      "description": "获取结算单列表",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/settlement/settlements",
+        "module": "commerce-settlement"
+      },
+      "createdAt": 1787452570964,
+      "updatedAt": 1787452570964
+    },
+    {
+      "id": "api:get_settlement",
+      "type": "api",
+      "name": "get_settlement",
+      "description": "获取结算单详情（含明细）",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/settlement/settlements/:id",
+        "module": "commerce-settlement"
+      },
+      "createdAt": 1787452570964,
+      "updatedAt": 1787452570964
+    },
+    {
+      "id": "api:generate_settlement",
+      "type": "api",
+      "name": "generate_settlement",
+      "description": "为商户生成结算单（按周期汇总已完成订单）",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/settlement/settlements/generate",
+        "module": "commerce-settlement"
+      },
+      "createdAt": 1787452570964,
+      "updatedAt": 1787452570964
+    },
+    {
+      "id": "api:pay_settlement",
+      "type": "api",
+      "name": "pay_settlement",
+      "description": "结算单打款（标记为已支付）",
+      "status": "active",
+      "metadata": {
+        "method": "PUT",
+        "path": "/api/settlement/settlements/:id/pay",
+        "module": "commerce-settlement"
+      },
+      "createdAt": 1787452570964,
+      "updatedAt": 1787452570964
+    },
+    {
+      "id": "api:list_transactions",
+      "type": "api",
+      "name": "list_transactions",
+      "description": "获取资金流水列表",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/settlement/transactions",
+        "module": "commerce-settlement"
+      },
+      "createdAt": 1787452570964,
+      "updatedAt": 1787452570964
+    },
+    {
+      "id": "api:create_transaction",
+      "type": "api",
+      "name": "create_transaction",
+      "description": "创建资金流水（充值/提现/调整）",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/settlement/transactions",
+        "module": "commerce-settlement"
+      },
+      "createdAt": 1787452570964,
+      "updatedAt": 1787452570964
+    },
+    {
+      "id": "api:settlement_overview",
+      "type": "api",
+      "name": "settlement_overview",
+      "description": "商户结算概览（可结算/在途/已结算）",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/settlement/settlements/overview/:merchantId",
+        "module": "commerce-settlement"
+      },
+      "createdAt": 1787452570964,
+      "updatedAt": 1787452570964
+    },
+    {
+      "id": "tool:settlement_generate",
+      "type": "tool",
+      "name": "settlement_generate",
+      "description": "为商户生成结算单",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "settlement"
+      ],
+      "metadata": {
+        "category": "settlement",
+        "module": "commerce-settlement",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "merchantId": {
+              "type": "string"
+            },
+            "periodStart": {
+              "type": "string"
+            },
+            "periodEnd": {
+              "type": "string"
+            },
+            "cycle": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "merchantId"
+          ]
+        }
+      },
+      "createdAt": 1787452570964,
+      "updatedAt": 1787452570964
+    },
+    {
+      "id": "tool:settlement_overview",
+      "type": "tool",
+      "name": "settlement_overview",
+      "description": "获取商户结算概览",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "settlement"
+      ],
+      "metadata": {
+        "category": "settlement",
+        "module": "commerce-settlement",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "merchantId": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "merchantId"
+          ]
+        }
+      },
+      "createdAt": 1787452570964,
+      "updatedAt": 1787452570964
+    },
+    {
+      "id": "test:settlement - 结算单生成和打款",
+      "type": "command",
+      "name": "settlement - 结算单生成和打款",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-settlement"
+      },
+      "createdAt": 1787452570964,
+      "updatedAt": 1787452570964
+    },
+    {
+      "id": "test:settlement - 资金流水",
+      "type": "command",
+      "name": "settlement - 资金流水",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-settlement"
+      },
+      "createdAt": 1787452570964,
+      "updatedAt": 1787452570964
+    },
+    {
+      "id": "module:commerce-analytics",
+      "type": "module",
+      "name": "commerce-analytics",
+      "description": "数据分析模块：销售报表、商品分析、用户分析、趋势",
+      "version": "0.1.0",
+      "status": "active",
+      "capabilities": [],
+      "metadata": {
+        "namespace": "analytics"
+      },
+      "createdAt": 1787452570964,
+      "updatedAt": 1787452570964
+    },
+    {
+      "id": "api:sales_overview",
+      "type": "api",
+      "name": "sales_overview",
+      "description": "销售概览（GMV、订单数、客单价、转化率）",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/analytics/sales/overview",
+        "module": "commerce-analytics"
+      },
+      "createdAt": 1787452570965,
+      "updatedAt": 1787452570965
+    },
+    {
+      "id": "api:sales_trend",
+      "type": "api",
+      "name": "sales_trend",
+      "description": "销售趋势（按日/周/月）",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/analytics/sales/trend",
+        "module": "commerce-analytics"
+      },
+      "createdAt": 1787452570965,
+      "updatedAt": 1787452570965
+    },
+    {
+      "id": "api:product_analytics",
+      "type": "api",
+      "name": "product_analytics",
+      "description": "商品分析（热销、滞销、库存周转）",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/analytics/products",
+        "module": "commerce-analytics"
+      },
+      "createdAt": 1787452570965,
+      "updatedAt": 1787452570965
+    },
+    {
+      "id": "api:user_analytics",
+      "type": "api",
+      "name": "user_analytics",
+      "description": "用户分析（新增、留存、复购、会员分布）",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/analytics/users",
+        "module": "commerce-analytics"
+      },
+      "createdAt": 1787452570965,
+      "updatedAt": 1787452570965
+    },
+    {
+      "id": "api:order_status_analytics",
+      "type": "api",
+      "name": "order_status_analytics",
+      "description": "订单状态分布",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/analytics/orders/status",
+        "module": "commerce-analytics"
+      },
+      "createdAt": 1787452570965,
+      "updatedAt": 1787452570965
+    },
+    {
+      "id": "api:full_report",
+      "type": "api",
+      "name": "full_report",
+      "description": "综合数据分析报表",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/analytics/report",
+        "module": "commerce-analytics"
+      },
+      "createdAt": 1787452570965,
+      "updatedAt": 1787452570965
+    },
+    {
+      "id": "tool:analytics_sales_overview",
+      "type": "tool",
+      "name": "analytics_sales_overview",
+      "description": "获取销售概览数据",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "analytics"
+      ],
+      "metadata": {
+        "category": "analytics",
+        "module": "commerce-analytics",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "days": {
+              "type": "number"
+            },
+            "merchantId": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "createdAt": 1787452570965,
+      "updatedAt": 1787452570965
+    },
+    {
+      "id": "tool:analytics_full_report",
+      "type": "tool",
+      "name": "analytics_full_report",
+      "description": "获取综合数据分析报表",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "analytics"
+      ],
+      "metadata": {
+        "category": "analytics",
+        "module": "commerce-analytics",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "days": {
+              "type": "number"
+            },
+            "merchantId": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "createdAt": 1787452570965,
+      "updatedAt": 1787452570965
+    },
+    {
+      "id": "test:analytics - 销售概览和趋势",
+      "type": "command",
+      "name": "analytics - 销售概览和趋势",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-analytics"
+      },
+      "createdAt": 1787452570965,
+      "updatedAt": 1787452570965
+    },
+    {
+      "id": "test:analytics - 商品和用户分析",
+      "type": "command",
+      "name": "analytics - 商品和用户分析",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-analytics"
+      },
+      "createdAt": 1787452570965,
+      "updatedAt": 1787452570965
+    },
+    {
+      "id": "module:commerce-promotion",
+      "type": "module",
+      "name": "commerce-promotion",
+      "description": "促销活动模块：满减、限时折扣、组合套餐",
+      "version": "0.1.0",
+      "status": "active",
+      "capabilities": [],
+      "metadata": {
+        "namespace": "promotion"
+      },
+      "createdAt": 1787452570965,
+      "updatedAt": 1787452570965
+    },
+    {
+      "id": "api:list_promotions",
+      "type": "api",
+      "name": "list_promotions",
+      "description": "获取促销活动列表",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/promotion/promotions",
+        "module": "commerce-promotion"
+      },
+      "createdAt": 1787452570965,
+      "updatedAt": 1787452570965
+    },
+    {
+      "id": "api:get_promotion",
+      "type": "api",
+      "name": "get_promotion",
+      "description": "获取促销活动详情（含商品）",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/promotion/promotions/:id",
+        "module": "commerce-promotion"
+      },
+      "createdAt": 1787452570965,
+      "updatedAt": 1787452570965
+    },
+    {
+      "id": "api:create_promotion",
+      "type": "api",
+      "name": "create_promotion",
+      "description": "创建促销活动",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/promotion/promotions",
+        "module": "commerce-promotion"
+      },
+      "createdAt": 1787452570965,
+      "updatedAt": 1787452570965
+    },
+    {
+      "id": "api:update_promotion",
+      "type": "api",
+      "name": "update_promotion",
+      "description": "更新促销活动",
+      "status": "active",
+      "metadata": {
+        "method": "PUT",
+        "path": "/api/promotion/promotions/:id",
+        "module": "commerce-promotion"
+      },
+      "createdAt": 1787452570965,
+      "updatedAt": 1787452570965
+    },
+    {
+      "id": "api:update_promotion_status",
+      "type": "api",
+      "name": "update_promotion_status",
+      "description": "更新活动状态（上线/下线/暂停）",
+      "status": "active",
+      "metadata": {
+        "method": "PUT",
+        "path": "/api/promotion/promotions/:id/status",
+        "module": "commerce-promotion"
+      },
+      "createdAt": 1787452570965,
+      "updatedAt": 1787452570965
+    },
+    {
+      "id": "api:add_promotion_item",
+      "type": "api",
+      "name": "add_promotion_item",
+      "description": "添加活动商品",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/promotion/promotion-items",
+        "module": "commerce-promotion"
+      },
+      "createdAt": 1787452570965,
+      "updatedAt": 1787452570965
+    },
+    {
+      "id": "api:calculate_promotion",
+      "type": "api",
+      "name": "calculate_promotion",
+      "description": "计算订单可享受的促销优惠",
+      "status": "active",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/promotion/promotions/calculate",
+        "module": "commerce-promotion"
+      },
+      "createdAt": 1787452570965,
+      "updatedAt": 1787452570965
+    },
+    {
+      "id": "api:active_promotion_items",
+      "type": "api",
+      "name": "active_promotion_items",
+      "description": "获取当前活跃活动的商品列表（前台展示）",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/promotion/promotions/active/items",
+        "module": "commerce-promotion"
+      },
+      "createdAt": 1787452570965,
+      "updatedAt": 1787452570965
+    },
+    {
+      "id": "tool:promotion_calculate",
+      "type": "tool",
+      "name": "promotion_calculate",
+      "description": "计算订单可享受的促销优惠",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "promotion"
+      ],
+      "metadata": {
+        "category": "promotion",
+        "module": "commerce-promotion",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            },
+            "orderAmount": {
+              "type": "number"
+            },
+            "userId": {
+              "type": "string"
+            },
+            "merchantId": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "createdAt": 1787452570965,
+      "updatedAt": 1787452570965
+    },
+    {
+      "id": "tool:promotion_list_active",
+      "type": "tool",
+      "name": "promotion_list_active",
+      "description": "获取当前活跃的促销活动",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "promotion"
+      ],
+      "metadata": {
+        "category": "promotion",
+        "module": "commerce-promotion",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "createdAt": 1787452570965,
+      "updatedAt": 1787452570965
+    },
+    {
+      "id": "test:promotion - 满减活动",
+      "type": "command",
+      "name": "promotion - 满减活动",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-promotion"
+      },
+      "createdAt": 1787452570965,
+      "updatedAt": 1787452570965
+    },
+    {
+      "id": "test:promotion - 限时折扣和活动商品",
+      "type": "command",
+      "name": "promotion - 限时折扣和活动商品",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-promotion"
+      },
+      "createdAt": 1787452570965,
+      "updatedAt": 1787452570965
+    },
+    {
+      "id": "module:commerce-admin",
+      "type": "module",
+      "name": "commerce-admin",
+      "description": "后台管理：仪表盘、订单管理、商品管理、用户管理、销售报表",
+      "version": "0.1.0",
+      "status": "active",
+      "capabilities": [],
+      "metadata": {
+        "namespace": "admin"
+      },
+      "createdAt": 1787452570965,
+      "updatedAt": 1787452570965
+    },
+    {
+      "id": "api:getDashboard",
+      "type": "api",
+      "name": "getDashboard",
+      "description": "后台仪表盘统计数据",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/admin/dashboard",
+        "module": "commerce-admin"
+      },
+      "createdAt": 1787452570965,
+      "updatedAt": 1787452570965
+    },
+    {
+      "id": "api:adminListOrders",
+      "type": "api",
+      "name": "adminListOrders",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/admin/orders",
+        "module": "commerce-admin"
+      },
+      "createdAt": 1787452570965,
+      "updatedAt": 1787452570965
+    },
+    {
+      "id": "api:adminListProducts",
+      "type": "api",
+      "name": "adminListProducts",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/admin/products",
+        "module": "commerce-admin"
+      },
+      "createdAt": 1787452570965,
+      "updatedAt": 1787452570965
+    },
+    {
+      "id": "api:adminListUsers",
+      "type": "api",
+      "name": "adminListUsers",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/admin/users",
+        "module": "commerce-admin"
+      },
+      "createdAt": 1787452570965,
+      "updatedAt": 1787452570965
+    },
+    {
+      "id": "api:getSystemInfo",
+      "type": "api",
+      "name": "getSystemInfo",
+      "description": "",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/admin/system",
+        "module": "commerce-admin"
+      },
+      "createdAt": 1787452570965,
+      "updatedAt": 1787452570965
+    },
+    {
+      "id": "tool:admin_dashboard",
+      "type": "tool",
+      "name": "admin_dashboard",
+      "description": "获取后台仪表盘统计",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "admin"
+      ],
+      "metadata": {
+        "category": "admin",
+        "module": "commerce-admin",
+        "parameters": {}
+      },
+      "createdAt": 1787452570966,
+      "updatedAt": 1787452570966
+    },
+    {
+      "id": "tool:admin_system_info",
+      "type": "tool",
+      "name": "admin_system_info",
+      "description": "获取系统信息",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "admin"
+      ],
+      "metadata": {
+        "category": "admin",
+        "module": "commerce-admin",
+        "parameters": {}
+      },
+      "createdAt": 1787452570966,
+      "updatedAt": 1787452570966
+    },
+    {
+      "id": "test:admin - 仪表盘数据",
+      "type": "command",
+      "name": "admin - 仪表盘数据",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-admin"
+      },
+      "createdAt": 1787452570966,
+      "updatedAt": 1787452570966
+    },
+    {
+      "id": "test:admin - 系统信息",
+      "type": "command",
+      "name": "admin - 系统信息",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-admin"
+      },
+      "createdAt": 1787452570966,
+      "updatedAt": 1787452570966
+    },
+    {
+      "id": "module:commerce-agent",
+      "type": "module",
+      "name": "commerce-agent",
+      "description": "Agent工具和工作流编排：端到端购物流程自动化",
+      "version": "0.1.0",
+      "status": "active",
+      "capabilities": [],
+      "metadata": {
+        "namespace": "agent"
+      },
+      "createdAt": 1787452570966,
+      "updatedAt": 1787452570966
+    },
+    {
+      "id": "tool:agent_full_shopping_flow",
+      "type": "tool",
+      "name": "agent_full_shopping_flow",
+      "description": "执行完整购物流程：搜索商品 -> 查看详情 -> 加入购物车 -> 创建订单 -> 支付 -> 查看订单。这是TLL OS Agent能力的核心验证工具。",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "agent"
+      ],
+      "metadata": {
+        "category": "agent",
+        "module": "commerce-agent",
+        "parameters": {
+          "keyword": "string - 搜索关键词",
+          "userId": "string - 用户ID（可选，默认创建新用户）",
+          "quantity": "number - 购买数量（默认1）",
+          "paymentMethod": "string - 支付方式（默认alipay）"
+        }
+      },
+      "createdAt": 1787452570966,
+      "updatedAt": 1787452570966
+    },
+    {
+      "id": "tool:agent_list_available_tools",
+      "type": "tool",
+      "name": "agent_list_available_tools",
+      "description": "列出所有Agent可用的工具及其分类",
+      "status": "active",
+      "permissions": [],
+      "capabilities": [
+        "agent"
+      ],
+      "metadata": {
+        "category": "agent",
+        "module": "commerce-agent",
+        "parameters": {}
+      },
+      "createdAt": 1787452570966,
+      "updatedAt": 1787452570966
+    },
+    {
+      "id": "test:agent - 端到端完整购物流程",
+      "type": "command",
+      "name": "agent - 端到端完整购物流程",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-agent"
+      },
+      "createdAt": 1787452570966,
+      "updatedAt": 1787452570966
+    },
+    {
+      "id": "test:agent - 可用工具列表",
+      "type": "command",
+      "name": "agent - 可用工具列表",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-agent"
+      },
+      "createdAt": 1787452570966,
+      "updatedAt": 1787452570966
+    },
+    {
+      "id": "module:commerce-storefront",
+      "type": "module",
+      "name": "commerce-storefront",
+      "description": "前台BFF接口：首页数据、商品聚合、购物流程优化",
+      "version": "0.1.0",
+      "status": "active",
+      "capabilities": [],
+      "metadata": {
+        "namespace": "storefront"
+      },
+      "createdAt": 1787452570966,
+      "updatedAt": 1787452570966
+    },
+    {
+      "id": "api:getHomeData",
+      "type": "api",
+      "name": "getHomeData",
+      "description": "首页聚合数据：轮播、分类、热门商品、新品",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/storefront/home",
+        "module": "commerce-storefront"
+      },
+      "createdAt": 1787452570966,
+      "updatedAt": 1787452570966
+    },
+    {
+      "id": "api:getProductList",
+      "type": "api",
+      "name": "getProductList",
+      "description": "前台商品列表（聚合分类、品牌、筛选条件）",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/storefront/products",
+        "module": "commerce-storefront"
+      },
+      "createdAt": 1787452570966,
+      "updatedAt": 1787452570966
+    },
+    {
+      "id": "api:getProductDetail",
+      "type": "api",
+      "name": "getProductDetail",
+      "description": "前台商品详情（聚合商品、SKU、品牌、分类、相关商品）",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/storefront/products/:id",
+        "module": "commerce-storefront"
+      },
+      "createdAt": 1787452570966,
+      "updatedAt": 1787452570966
+    },
+    {
+      "id": "api:getCheckoutData",
+      "type": "api",
+      "name": "getCheckoutData",
+      "description": "结算页数据：购物车、地址、支付方式、优惠券",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/storefront/checkout",
+        "module": "commerce-storefront"
+      },
+      "createdAt": 1787452570966,
+      "updatedAt": 1787452570966
+    },
+    {
+      "id": "api:getUserCenter",
+      "type": "api",
+      "name": "getUserCenter",
+      "description": "个人中心聚合数据：用户信息、订单统计、会员信息",
+      "status": "active",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/storefront/user-center",
+        "module": "commerce-storefront"
+      },
+      "createdAt": 1787452570966,
+      "updatedAt": 1787452570966
+    },
+    {
+      "id": "test:storefront - 首页数据",
+      "type": "command",
+      "name": "storefront - 首页数据",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-storefront"
+      },
+      "createdAt": 1787452570966,
+      "updatedAt": 1787452570966
+    },
+    {
+      "id": "test:storefront - 商品列表聚合",
+      "type": "command",
+      "name": "storefront - 商品列表聚合",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-storefront"
+      },
+      "createdAt": 1787452570966,
+      "updatedAt": 1787452570966
+    },
+    {
+      "id": "test:storefront - 结算页数据",
+      "type": "command",
+      "name": "storefront - 结算页数据",
+      "description": "",
+      "status": "pending",
+      "metadata": {
+        "kind": "test",
+        "module": "commerce-storefront"
+      },
+      "createdAt": 1787452570966,
+      "updatedAt": 1787452570966
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge_mt573yo8_4",
+      "type": "belongs_to",
+      "source": "api:listCategories",
+      "target": "module:commerce-catalog",
+      "createdAt": 1787452570952
+    },
+    {
+      "id": "edge_mt573yo8_6",
+      "type": "belongs_to",
+      "source": "api:getCategory",
+      "target": "module:commerce-catalog",
+      "createdAt": 1787452570952
+    },
+    {
+      "id": "edge_mt573yo8_8",
+      "type": "belongs_to",
+      "source": "api:createCategory",
+      "target": "module:commerce-catalog",
+      "createdAt": 1787452570952
+    },
+    {
+      "id": "edge_mt573yo8_10",
+      "type": "belongs_to",
+      "source": "api:listBrands",
+      "target": "module:commerce-catalog",
+      "createdAt": 1787452570952
+    },
+    {
+      "id": "edge_mt573yo8_12",
+      "type": "belongs_to",
+      "source": "api:getBrand",
+      "target": "module:commerce-catalog",
+      "createdAt": 1787452570952
+    },
+    {
+      "id": "edge_mt573yo8_14",
+      "type": "belongs_to",
+      "source": "api:createBrand",
+      "target": "module:commerce-catalog",
+      "createdAt": 1787452570952
+    },
+    {
+      "id": "edge_mt573yo8_16",
+      "type": "belongs_to",
+      "source": "api:listProducts",
+      "target": "module:commerce-catalog",
+      "createdAt": 1787452570952
+    },
+    {
+      "id": "edge_mt573yo8_18",
+      "type": "belongs_to",
+      "source": "api:getProduct",
+      "target": "module:commerce-catalog",
+      "createdAt": 1787452570952
+    },
+    {
+      "id": "edge_mt573yo8_20",
+      "type": "belongs_to",
+      "source": "api:createProduct",
+      "target": "module:commerce-catalog",
+      "createdAt": 1787452570952
+    },
+    {
+      "id": "edge_mt573yo8_22",
+      "type": "belongs_to",
+      "source": "api:updateProduct",
+      "target": "module:commerce-catalog",
+      "createdAt": 1787452570952
+    },
+    {
+      "id": "edge_mt573yo8_24",
+      "type": "belongs_to",
+      "source": "api:listProductSkus",
+      "target": "module:commerce-catalog",
+      "createdAt": 1787452570952
+    },
+    {
+      "id": "edge_mt573yo8_26",
+      "type": "belongs_to",
+      "source": "api:getSku",
+      "target": "module:commerce-catalog",
+      "createdAt": 1787452570952
+    },
+    {
+      "id": "edge_mt573yo8_28",
+      "type": "belongs_to",
+      "source": "api:createSku",
+      "target": "module:commerce-catalog",
+      "createdAt": 1787452570952
+    },
+    {
+      "id": "edge_mt573yo8_30",
+      "type": "belongs_to",
+      "source": "api:getInventory",
+      "target": "module:commerce-catalog",
+      "createdAt": 1787452570952
+    },
+    {
+      "id": "edge_mt573yo8_32",
+      "type": "belongs_to",
+      "source": "api:adjustInventory",
+      "target": "module:commerce-catalog",
+      "createdAt": 1787452570952
+    },
+    {
+      "id": "edge_mt573yo8_34",
+      "type": "belongs_to",
+      "source": "tool:catalog_search_products",
+      "target": "module:commerce-catalog",
+      "createdAt": 1787452570952
+    },
+    {
+      "id": "edge_mt573yo8_36",
+      "type": "belongs_to",
+      "source": "tool:catalog_get_product",
+      "target": "module:commerce-catalog",
+      "createdAt": 1787452570952
+    },
+    {
+      "id": "edge_mt573yo8_38",
+      "type": "belongs_to",
+      "source": "tool:catalog_create_product",
+      "target": "module:commerce-catalog",
+      "createdAt": 1787452570952
+    },
+    {
+      "id": "edge_mt573yo8_40",
+      "type": "belongs_to",
+      "source": "tool:catalog_check_stock",
+      "target": "module:commerce-catalog",
+      "createdAt": 1787452570952
+    },
+    {
+      "id": "edge_mt573yo9_42",
+      "type": "belongs_to",
+      "source": "test:catalog - 商品列表和详情",
+      "target": "module:commerce-catalog",
+      "createdAt": 1787452570953
+    },
+    {
+      "id": "edge_mt573yo9_44",
+      "type": "belongs_to",
+      "source": "test:catalog - 分类树形结构",
+      "target": "module:commerce-catalog",
+      "createdAt": 1787452570953
+    },
+    {
+      "id": "edge_mt573yo9_46",
+      "type": "belongs_to",
+      "source": "test:catalog - 库存调整",
+      "target": "module:commerce-catalog",
+      "createdAt": 1787452570953
+    },
+    {
+      "id": "edge_mt573yo9_49",
+      "type": "belongs_to",
+      "source": "api:register",
+      "target": "module:commerce-customer",
+      "createdAt": 1787452570953
+    },
+    {
+      "id": "edge_mt573yo9_51",
+      "type": "belongs_to",
+      "source": "api:login",
+      "target": "module:commerce-customer",
+      "createdAt": 1787452570953
+    },
+    {
+      "id": "edge_mt573yo9_53",
+      "type": "belongs_to",
+      "source": "api:logout",
+      "target": "module:commerce-customer",
+      "createdAt": 1787452570953
+    },
+    {
+      "id": "edge_mt573yo9_55",
+      "type": "belongs_to",
+      "source": "api:getCurrentUser",
+      "target": "module:commerce-customer",
+      "createdAt": 1787452570953
+    },
+    {
+      "id": "edge_mt573yo9_57",
+      "type": "belongs_to",
+      "source": "api:listUsers",
+      "target": "module:commerce-customer",
+      "createdAt": 1787452570953
+    },
+    {
+      "id": "edge_mt573yo9_59",
+      "type": "belongs_to",
+      "source": "api:getUser",
+      "target": "module:commerce-customer",
+      "createdAt": 1787452570953
+    },
+    {
+      "id": "edge_mt573yo9_61",
+      "type": "belongs_to",
+      "source": "api:updateUser",
+      "target": "module:commerce-customer",
+      "createdAt": 1787452570953
+    },
+    {
+      "id": "edge_mt573yo9_63",
+      "type": "belongs_to",
+      "source": "api:listAddresses",
+      "target": "module:commerce-customer",
+      "createdAt": 1787452570953
+    },
+    {
+      "id": "edge_mt573yo9_65",
+      "type": "belongs_to",
+      "source": "api:createAddress",
+      "target": "module:commerce-customer",
+      "createdAt": 1787452570953
+    },
+    {
+      "id": "edge_mt573yo9_67",
+      "type": "belongs_to",
+      "source": "api:updateAddress",
+      "target": "module:commerce-customer",
+      "createdAt": 1787452570953
+    },
+    {
+      "id": "edge_mt573yo9_69",
+      "type": "belongs_to",
+      "source": "api:deleteAddress",
+      "target": "module:commerce-customer",
+      "createdAt": 1787452570953
+    },
+    {
+      "id": "edge_mt573yo9_71",
+      "type": "belongs_to",
+      "source": "api:listMembershipLevels",
+      "target": "module:commerce-customer",
+      "createdAt": 1787452570953
+    },
+    {
+      "id": "edge_mt573yo9_73",
+      "type": "belongs_to",
+      "source": "api:getMyMembership",
+      "target": "module:commerce-customer",
+      "createdAt": 1787452570953
+    },
+    {
+      "id": "edge_mt573yo9_75",
+      "type": "belongs_to",
+      "source": "tool:customer_login",
+      "target": "module:commerce-customer",
+      "createdAt": 1787452570953
+    },
+    {
+      "id": "edge_mt573yo9_77",
+      "type": "belongs_to",
+      "source": "tool:customer_get_user",
+      "target": "module:commerce-customer",
+      "createdAt": 1787452570953
+    },
+    {
+      "id": "edge_mt573yo9_79",
+      "type": "belongs_to",
+      "source": "tool:customer_list_addresses",
+      "target": "module:commerce-customer",
+      "createdAt": 1787452570953
+    },
+    {
+      "id": "edge_mt573yo9_81",
+      "type": "belongs_to",
+      "source": "test:customer - 用户注册和登录",
+      "target": "module:commerce-customer",
+      "createdAt": 1787452570953
+    },
+    {
+      "id": "edge_mt573yo9_83",
+      "type": "belongs_to",
+      "source": "test:customer - 地址管理",
+      "target": "module:commerce-customer",
+      "createdAt": 1787452570953
+    },
+    {
+      "id": "edge_mt573yo9_85",
+      "type": "belongs_to",
+      "source": "test:customer - 会员等级",
+      "target": "module:commerce-customer",
+      "createdAt": 1787452570953
+    },
+    {
+      "id": "edge_mt573yob_88",
+      "type": "belongs_to",
+      "source": "api:getCart",
+      "target": "module:commerce-cart",
+      "createdAt": 1787452570955
+    },
+    {
+      "id": "edge_mt573yob_90",
+      "type": "belongs_to",
+      "source": "api:addToCart",
+      "target": "module:commerce-cart",
+      "createdAt": 1787452570955
+    },
+    {
+      "id": "edge_mt573yob_92",
+      "type": "belongs_to",
+      "source": "api:updateCartItem",
+      "target": "module:commerce-cart",
+      "createdAt": 1787452570955
+    },
+    {
+      "id": "edge_mt573yob_94",
+      "type": "belongs_to",
+      "source": "api:removeCartItem",
+      "target": "module:commerce-cart",
+      "createdAt": 1787452570955
+    },
+    {
+      "id": "edge_mt573yob_96",
+      "type": "belongs_to",
+      "source": "api:clearCart",
+      "target": "module:commerce-cart",
+      "createdAt": 1787452570955
+    },
+    {
+      "id": "edge_mt573yob_98",
+      "type": "belongs_to",
+      "source": "tool:cart_add",
+      "target": "module:commerce-cart",
+      "createdAt": 1787452570955
+    },
+    {
+      "id": "edge_mt573yob_100",
+      "type": "belongs_to",
+      "source": "tool:cart_get",
+      "target": "module:commerce-cart",
+      "createdAt": 1787452570955
+    },
+    {
+      "id": "edge_mt573yob_102",
+      "type": "belongs_to",
+      "source": "tool:cart_clear",
+      "target": "module:commerce-cart",
+      "createdAt": 1787452570955
+    },
+    {
+      "id": "edge_mt573yob_104",
+      "type": "belongs_to",
+      "source": "test:cart - 添加和获取购物车",
+      "target": "module:commerce-cart",
+      "createdAt": 1787452570955
+    },
+    {
+      "id": "edge_mt573yob_106",
+      "type": "belongs_to",
+      "source": "test:cart - 修改数量和删除",
+      "target": "module:commerce-cart",
+      "createdAt": 1787452570955
+    },
+    {
+      "id": "edge_mt573yoc_109",
+      "type": "belongs_to",
+      "source": "api:createOrder",
+      "target": "module:commerce-order",
+      "createdAt": 1787452570956
+    },
+    {
+      "id": "edge_mt573yoc_111",
+      "type": "belongs_to",
+      "source": "api:listOrders",
+      "target": "module:commerce-order",
+      "createdAt": 1787452570956
+    },
+    {
+      "id": "edge_mt573yoc_113",
+      "type": "belongs_to",
+      "source": "api:getOrder",
+      "target": "module:commerce-order",
+      "createdAt": 1787452570956
+    },
+    {
+      "id": "edge_mt573yoc_115",
+      "type": "belongs_to",
+      "source": "api:cancelOrder",
+      "target": "module:commerce-order",
+      "createdAt": 1787452570956
+    },
+    {
+      "id": "edge_mt573yoc_117",
+      "type": "belongs_to",
+      "source": "api:shipOrder",
+      "target": "module:commerce-order",
+      "createdAt": 1787452570956
+    },
+    {
+      "id": "edge_mt573yoc_119",
+      "type": "belongs_to",
+      "source": "api:completeOrder",
+      "target": "module:commerce-order",
+      "createdAt": 1787452570956
+    },
+    {
+      "id": "edge_mt573yoc_121",
+      "type": "belongs_to",
+      "source": "tool:order_create",
+      "target": "module:commerce-order",
+      "createdAt": 1787452570956
+    },
+    {
+      "id": "edge_mt573yoc_123",
+      "type": "belongs_to",
+      "source": "tool:order_get",
+      "target": "module:commerce-order",
+      "createdAt": 1787452570956
+    },
+    {
+      "id": "edge_mt573yoc_125",
+      "type": "belongs_to",
+      "source": "tool:order_list",
+      "target": "module:commerce-order",
+      "createdAt": 1787452570956
+    },
+    {
+      "id": "edge_mt573yoc_127",
+      "type": "belongs_to",
+      "source": "test:order - 创建订单完整流程",
+      "target": "module:commerce-order",
+      "createdAt": 1787452570957
+    },
+    {
+      "id": "edge_mt573yod_129",
+      "type": "belongs_to",
+      "source": "test:order - 取消订单释放库存",
+      "target": "module:commerce-order",
+      "createdAt": 1787452570957
+    },
+    {
+      "id": "edge_mt573yod_132",
+      "type": "belongs_to",
+      "source": "api:listPaymentMethods",
+      "target": "module:commerce-payment",
+      "createdAt": 1787452570957
+    },
+    {
+      "id": "edge_mt573yod_134",
+      "type": "belongs_to",
+      "source": "api:createPayment",
+      "target": "module:commerce-payment",
+      "createdAt": 1787452570957
+    },
+    {
+      "id": "edge_mt573yod_136",
+      "type": "belongs_to",
+      "source": "api:paymentNotify",
+      "target": "module:commerce-payment",
+      "createdAt": 1787452570957
+    },
+    {
+      "id": "edge_mt573yod_138",
+      "type": "belongs_to",
+      "source": "api:refundPayment",
+      "target": "module:commerce-payment",
+      "createdAt": 1787452570957
+    },
+    {
+      "id": "edge_mt573yod_140",
+      "type": "belongs_to",
+      "source": "api:getPaymentStatus",
+      "target": "module:commerce-payment",
+      "createdAt": 1787452570957
+    },
+    {
+      "id": "edge_mt573yod_142",
+      "type": "belongs_to",
+      "source": "tool:payment_pay",
+      "target": "module:commerce-payment",
+      "createdAt": 1787452570957
+    },
+    {
+      "id": "edge_mt573yod_144",
+      "type": "belongs_to",
+      "source": "tool:payment_status",
+      "target": "module:commerce-payment",
+      "createdAt": 1787452570957
+    },
+    {
+      "id": "edge_mt573yod_146",
+      "type": "belongs_to",
+      "source": "test:payment - 支付流程",
+      "target": "module:commerce-payment",
+      "createdAt": 1787452570957
+    },
+    {
+      "id": "edge_mt573yoe_149",
+      "type": "belongs_to",
+      "source": "api:listCoupons",
+      "target": "module:commerce-marketing",
+      "createdAt": 1787452570958
+    },
+    {
+      "id": "edge_mt573yoe_151",
+      "type": "belongs_to",
+      "source": "api:getCoupon",
+      "target": "module:commerce-marketing",
+      "createdAt": 1787452570958
+    },
+    {
+      "id": "edge_mt573yoe_153",
+      "type": "belongs_to",
+      "source": "api:createCoupon",
+      "target": "module:commerce-marketing",
+      "createdAt": 1787452570958
+    },
+    {
+      "id": "edge_mt573yoe_155",
+      "type": "belongs_to",
+      "source": "api:validateCoupon",
+      "target": "module:commerce-marketing",
+      "createdAt": 1787452570958
+    },
+    {
+      "id": "edge_mt573yoe_157",
+      "type": "belongs_to",
+      "source": "api:listUserCoupons",
+      "target": "module:commerce-marketing",
+      "createdAt": 1787452570958
+    },
+    {
+      "id": "edge_mt573yoe_159",
+      "type": "belongs_to",
+      "source": "tool:marketing_validate_coupon",
+      "target": "module:commerce-marketing",
+      "createdAt": 1787452570958
+    },
+    {
+      "id": "edge_mt573yoe_161",
+      "type": "belongs_to",
+      "source": "tool:marketing_list_coupons",
+      "target": "module:commerce-marketing",
+      "createdAt": 1787452570958
+    },
+    {
+      "id": "edge_mt573yoe_163",
+      "type": "belongs_to",
+      "source": "test:marketing - 优惠券验证",
+      "target": "module:commerce-marketing",
+      "createdAt": 1787452570958
+    },
+    {
+      "id": "edge_mt573yoe_165",
+      "type": "belongs_to",
+      "source": "test:marketing - 优惠券列表",
+      "target": "module:commerce-marketing",
+      "createdAt": 1787452570958
+    },
+    {
+      "id": "edge_mt573yof_168",
+      "type": "belongs_to",
+      "source": "api:listLanguages",
+      "target": "module:commerce-locale",
+      "createdAt": 1787452570959
+    },
+    {
+      "id": "edge_mt573yof_170",
+      "type": "belongs_to",
+      "source": "api:listCurrencies",
+      "target": "module:commerce-locale",
+      "createdAt": 1787452570959
+    },
+    {
+      "id": "edge_mt573yof_172",
+      "type": "belongs_to",
+      "source": "api:getTranslations",
+      "target": "module:commerce-locale",
+      "createdAt": 1787452570959
+    },
+    {
+      "id": "edge_mt573yof_174",
+      "type": "belongs_to",
+      "source": "api:convertCurrency",
+      "target": "module:commerce-locale",
+      "createdAt": 1787452570959
+    },
+    {
+      "id": "edge_mt573yof_176",
+      "type": "belongs_to",
+      "source": "tool:locale_convert_currency",
+      "target": "module:commerce-locale",
+      "createdAt": 1787452570959
+    },
+    {
+      "id": "edge_mt573yof_178",
+      "type": "belongs_to",
+      "source": "tool:locale_get_translations",
+      "target": "module:commerce-locale",
+      "createdAt": 1787452570959
+    },
+    {
+      "id": "edge_mt573yof_180",
+      "type": "belongs_to",
+      "source": "test:locale - 语言和币种列表",
+      "target": "module:commerce-locale",
+      "createdAt": 1787452570959
+    },
+    {
+      "id": "edge_mt573yof_182",
+      "type": "belongs_to",
+      "source": "test:locale - 货币转换",
+      "target": "module:commerce-locale",
+      "createdAt": 1787452570959
+    },
+    {
+      "id": "edge_mt573yof_184",
+      "type": "belongs_to",
+      "source": "test:locale - 翻译字典",
+      "target": "module:commerce-locale",
+      "createdAt": 1787452570959
+    },
+    {
+      "id": "edge_mt573yof_187",
+      "type": "belongs_to",
+      "source": "api:listCompanies",
+      "target": "module:commerce-b2b",
+      "createdAt": 1787452570959
+    },
+    {
+      "id": "edge_mt573yof_189",
+      "type": "belongs_to",
+      "source": "api:getCompany",
+      "target": "module:commerce-b2b",
+      "createdAt": 1787452570959
+    },
+    {
+      "id": "edge_mt573yof_191",
+      "type": "belongs_to",
+      "source": "api:createCompany",
+      "target": "module:commerce-b2b",
+      "createdAt": 1787452570959
+    },
+    {
+      "id": "edge_mt573yof_193",
+      "type": "belongs_to",
+      "source": "api:addCompanyMember",
+      "target": "module:commerce-b2b",
+      "createdAt": 1787452570959
+    },
+    {
+      "id": "edge_mt573yof_195",
+      "type": "belongs_to",
+      "source": "api:getB2BQuote",
+      "target": "module:commerce-b2b",
+      "createdAt": 1787452570959
+    },
+    {
+      "id": "edge_mt573yof_197",
+      "type": "belongs_to",
+      "source": "tool:b2b_get_quote",
+      "target": "module:commerce-b2b",
+      "createdAt": 1787452570959
+    },
+    {
+      "id": "edge_mt573yof_199",
+      "type": "belongs_to",
+      "source": "test:b2b - 企业列表和详情",
+      "target": "module:commerce-b2b",
+      "createdAt": 1787452570959
+    },
+    {
+      "id": "edge_mt573yof_201",
+      "type": "belongs_to",
+      "source": "test:b2b - 批量报价",
+      "target": "module:commerce-b2b",
+      "createdAt": 1787452570959
+    },
+    {
+      "id": "edge_mt573yof_204",
+      "type": "belongs_to",
+      "source": "api:uploadFile",
+      "target": "module:commerce-file",
+      "createdAt": 1787452570959
+    },
+    {
+      "id": "edge_mt573yof_206",
+      "type": "belongs_to",
+      "source": "api:getFile",
+      "target": "module:commerce-file",
+      "createdAt": 1787452570959
+    },
+    {
+      "id": "edge_mt573yof_208",
+      "type": "belongs_to",
+      "source": "api:listFiles",
+      "target": "module:commerce-file",
+      "createdAt": 1787452570959
+    },
+    {
+      "id": "edge_mt573yof_210",
+      "type": "belongs_to",
+      "source": "api:deleteFile",
+      "target": "module:commerce-file",
+      "createdAt": 1787452570959
+    },
+    {
+      "id": "edge_mt573yof_212",
+      "type": "belongs_to",
+      "source": "tool:file_upload",
+      "target": "module:commerce-file",
+      "createdAt": 1787452570959
+    },
+    {
+      "id": "edge_mt573yof_214",
+      "type": "belongs_to",
+      "source": "test:file - 上传和获取文件",
+      "target": "module:commerce-file",
+      "createdAt": 1787452570959
+    },
+    {
+      "id": "edge_mt573yog_217",
+      "type": "belongs_to",
+      "source": "api:list_shipping_methods",
+      "target": "module:commerce-shipping",
+      "createdAt": 1787452570960
+    },
+    {
+      "id": "edge_mt573yog_219",
+      "type": "belongs_to",
+      "source": "api:create_shipping_method",
+      "target": "module:commerce-shipping",
+      "createdAt": 1787452570960
+    },
+    {
+      "id": "edge_mt573yog_221",
+      "type": "belongs_to",
+      "source": "api:list_shipping_zones",
+      "target": "module:commerce-shipping",
+      "createdAt": 1787452570960
+    },
+    {
+      "id": "edge_mt573yog_223",
+      "type": "belongs_to",
+      "source": "api:create_shipping_zone",
+      "target": "module:commerce-shipping",
+      "createdAt": 1787452570960
+    },
+    {
+      "id": "edge_mt573yog_225",
+      "type": "belongs_to",
+      "source": "api:list_shipping_rates",
+      "target": "module:commerce-shipping",
+      "createdAt": 1787452570960
+    },
+    {
+      "id": "edge_mt573yog_227",
+      "type": "belongs_to",
+      "source": "api:create_shipping_rate",
+      "target": "module:commerce-shipping",
+      "createdAt": 1787452570960
+    },
+    {
+      "id": "edge_mt573yog_229",
+      "type": "belongs_to",
+      "source": "api:calculate_shipping",
+      "target": "module:commerce-shipping",
+      "createdAt": 1787452570960
+    },
+    {
+      "id": "edge_mt573yog_231",
+      "type": "belongs_to",
+      "source": "api:create_shipment",
+      "target": "module:commerce-shipping",
+      "createdAt": 1787452570960
+    },
+    {
+      "id": "edge_mt573yog_233",
+      "type": "belongs_to",
+      "source": "api:get_shipment",
+      "target": "module:commerce-shipping",
+      "createdAt": 1787452570960
+    },
+    {
+      "id": "edge_mt573yog_235",
+      "type": "belongs_to",
+      "source": "api:add_tracking",
+      "target": "module:commerce-shipping",
+      "createdAt": 1787452570960
+    },
+    {
+      "id": "edge_mt573yog_237",
+      "type": "belongs_to",
+      "source": "api:list_shipments",
+      "target": "module:commerce-shipping",
+      "createdAt": 1787452570960
+    },
+    {
+      "id": "edge_mt573yog_239",
+      "type": "belongs_to",
+      "source": "tool:shipping_calculate",
+      "target": "module:commerce-shipping",
+      "createdAt": 1787452570960
+    },
+    {
+      "id": "edge_mt573yog_241",
+      "type": "belongs_to",
+      "source": "tool:shipping_create_shipment",
+      "target": "module:commerce-shipping",
+      "createdAt": 1787452570960
+    },
+    {
+      "id": "edge_mt573yog_243",
+      "type": "belongs_to",
+      "source": "tool:shipping_track",
+      "target": "module:commerce-shipping",
+      "createdAt": 1787452570960
+    },
+    {
+      "id": "edge_mt573yog_245",
+      "type": "belongs_to",
+      "source": "test:shipping - 运费计算",
+      "target": "module:commerce-shipping",
+      "createdAt": 1787452570960
+    },
+    {
+      "id": "edge_mt573yog_247",
+      "type": "belongs_to",
+      "source": "test:shipping - 发货和轨迹",
+      "target": "module:commerce-shipping",
+      "createdAt": 1787452570960
+    },
+    {
+      "id": "edge_mt573yoi_250",
+      "type": "belongs_to",
+      "source": "api:list_suppliers",
+      "target": "module:commerce-supplier",
+      "createdAt": 1787452570962
+    },
+    {
+      "id": "edge_mt573yoi_252",
+      "type": "belongs_to",
+      "source": "api:get_supplier",
+      "target": "module:commerce-supplier",
+      "createdAt": 1787452570962
+    },
+    {
+      "id": "edge_mt573yoi_254",
+      "type": "belongs_to",
+      "source": "api:create_supplier",
+      "target": "module:commerce-supplier",
+      "createdAt": 1787452570962
+    },
+    {
+      "id": "edge_mt573yoi_256",
+      "type": "belongs_to",
+      "source": "api:update_supplier",
+      "target": "module:commerce-supplier",
+      "createdAt": 1787452570962
+    },
+    {
+      "id": "edge_mt573yoi_258",
+      "type": "belongs_to",
+      "source": "api:list_supplier_products",
+      "target": "module:commerce-supplier",
+      "createdAt": 1787452570962
+    },
+    {
+      "id": "edge_mt573yoi_260",
+      "type": "belongs_to",
+      "source": "api:create_supplier_product",
+      "target": "module:commerce-supplier",
+      "createdAt": 1787452570962
+    },
+    {
+      "id": "edge_mt573yoi_262",
+      "type": "belongs_to",
+      "source": "api:list_purchase_orders",
+      "target": "module:commerce-supplier",
+      "createdAt": 1787452570962
+    },
+    {
+      "id": "edge_mt573yoi_264",
+      "type": "belongs_to",
+      "source": "api:create_purchase_order",
+      "target": "module:commerce-supplier",
+      "createdAt": 1787452570962
+    },
+    {
+      "id": "edge_mt573yoi_266",
+      "type": "belongs_to",
+      "source": "api:get_purchase_order",
+      "target": "module:commerce-supplier",
+      "createdAt": 1787452570962
+    },
+    {
+      "id": "edge_mt573yoi_268",
+      "type": "belongs_to",
+      "source": "api:update_po_status",
+      "target": "module:commerce-supplier",
+      "createdAt": 1787452570962
+    },
+    {
+      "id": "edge_mt573yoi_270",
+      "type": "belongs_to",
+      "source": "tool:supplier_list",
+      "target": "module:commerce-supplier",
+      "createdAt": 1787452570962
+    },
+    {
+      "id": "edge_mt573yoi_272",
+      "type": "belongs_to",
+      "source": "tool:supplier_create_po",
+      "target": "module:commerce-supplier",
+      "createdAt": 1787452570962
+    },
+    {
+      "id": "edge_mt573yoi_274",
+      "type": "belongs_to",
+      "source": "test:supplier - 供应商CRUD",
+      "target": "module:commerce-supplier",
+      "createdAt": 1787452570962
+    },
+    {
+      "id": "edge_mt573yoi_276",
+      "type": "belongs_to",
+      "source": "test:supplier - 采购单流程",
+      "target": "module:commerce-supplier",
+      "createdAt": 1787452570962
+    },
+    {
+      "id": "edge_mt573yoj_279",
+      "type": "belongs_to",
+      "source": "api:list_merchants",
+      "target": "module:commerce-merchant",
+      "createdAt": 1787452570963
+    },
+    {
+      "id": "edge_mt573yoj_281",
+      "type": "belongs_to",
+      "source": "api:get_merchant",
+      "target": "module:commerce-merchant",
+      "createdAt": 1787452570963
+    },
+    {
+      "id": "edge_mt573yoj_283",
+      "type": "belongs_to",
+      "source": "api:create_merchant",
+      "target": "module:commerce-merchant",
+      "createdAt": 1787452570963
+    },
+    {
+      "id": "edge_mt573yoj_285",
+      "type": "belongs_to",
+      "source": "api:update_merchant",
+      "target": "module:commerce-merchant",
+      "createdAt": 1787452570963
+    },
+    {
+      "id": "edge_mt573yoj_287",
+      "type": "belongs_to",
+      "source": "api:audit_merchant",
+      "target": "module:commerce-merchant",
+      "createdAt": 1787452570963
+    },
+    {
+      "id": "edge_mt573yoj_289",
+      "type": "belongs_to",
+      "source": "api:list_merchant_users",
+      "target": "module:commerce-merchant",
+      "createdAt": 1787452570963
+    },
+    {
+      "id": "edge_mt573yoj_291",
+      "type": "belongs_to",
+      "source": "api:add_merchant_user",
+      "target": "module:commerce-merchant",
+      "createdAt": 1787452570963
+    },
+    {
+      "id": "edge_mt573yoj_293",
+      "type": "belongs_to",
+      "source": "api:list_merchant_products",
+      "target": "module:commerce-merchant",
+      "createdAt": 1787452570963
+    },
+    {
+      "id": "edge_mt573yoj_295",
+      "type": "belongs_to",
+      "source": "api:add_merchant_product",
+      "target": "module:commerce-merchant",
+      "createdAt": 1787452570963
+    },
+    {
+      "id": "edge_mt573yoj_297",
+      "type": "belongs_to",
+      "source": "api:merchant_dashboard",
+      "target": "module:commerce-merchant",
+      "createdAt": 1787452570963
+    },
+    {
+      "id": "edge_mt573yoj_299",
+      "type": "belongs_to",
+      "source": "tool:merchant_list",
+      "target": "module:commerce-merchant",
+      "createdAt": 1787452570963
+    },
+    {
+      "id": "edge_mt573yoj_301",
+      "type": "belongs_to",
+      "source": "tool:merchant_dashboard",
+      "target": "module:commerce-merchant",
+      "createdAt": 1787452570963
+    },
+    {
+      "id": "edge_mt573yoj_303",
+      "type": "belongs_to",
+      "source": "test:merchant - 商户入驻和审核",
+      "target": "module:commerce-merchant",
+      "createdAt": 1787452570963
+    },
+    {
+      "id": "edge_mt573yoj_305",
+      "type": "belongs_to",
+      "source": "test:merchant - 商户商品和仪表盘",
+      "target": "module:commerce-merchant",
+      "createdAt": 1787452570963
+    },
+    {
+      "id": "edge_mt573yok_308",
+      "type": "belongs_to",
+      "source": "api:list_settlements",
+      "target": "module:commerce-settlement",
+      "createdAt": 1787452570964
+    },
+    {
+      "id": "edge_mt573yok_310",
+      "type": "belongs_to",
+      "source": "api:get_settlement",
+      "target": "module:commerce-settlement",
+      "createdAt": 1787452570964
+    },
+    {
+      "id": "edge_mt573yok_312",
+      "type": "belongs_to",
+      "source": "api:generate_settlement",
+      "target": "module:commerce-settlement",
+      "createdAt": 1787452570964
+    },
+    {
+      "id": "edge_mt573yok_314",
+      "type": "belongs_to",
+      "source": "api:pay_settlement",
+      "target": "module:commerce-settlement",
+      "createdAt": 1787452570964
+    },
+    {
+      "id": "edge_mt573yok_316",
+      "type": "belongs_to",
+      "source": "api:list_transactions",
+      "target": "module:commerce-settlement",
+      "createdAt": 1787452570964
+    },
+    {
+      "id": "edge_mt573yok_318",
+      "type": "belongs_to",
+      "source": "api:create_transaction",
+      "target": "module:commerce-settlement",
+      "createdAt": 1787452570964
+    },
+    {
+      "id": "edge_mt573yok_320",
+      "type": "belongs_to",
+      "source": "api:settlement_overview",
+      "target": "module:commerce-settlement",
+      "createdAt": 1787452570964
+    },
+    {
+      "id": "edge_mt573yok_322",
+      "type": "belongs_to",
+      "source": "tool:settlement_generate",
+      "target": "module:commerce-settlement",
+      "createdAt": 1787452570964
+    },
+    {
+      "id": "edge_mt573yok_324",
+      "type": "belongs_to",
+      "source": "tool:settlement_overview",
+      "target": "module:commerce-settlement",
+      "createdAt": 1787452570964
+    },
+    {
+      "id": "edge_mt573yok_326",
+      "type": "belongs_to",
+      "source": "test:settlement - 结算单生成和打款",
+      "target": "module:commerce-settlement",
+      "createdAt": 1787452570964
+    },
+    {
+      "id": "edge_mt573yok_328",
+      "type": "belongs_to",
+      "source": "test:settlement - 资金流水",
+      "target": "module:commerce-settlement",
+      "createdAt": 1787452570964
+    },
+    {
+      "id": "edge_mt573yol_331",
+      "type": "belongs_to",
+      "source": "api:sales_overview",
+      "target": "module:commerce-analytics",
+      "createdAt": 1787452570965
+    },
+    {
+      "id": "edge_mt573yol_333",
+      "type": "belongs_to",
+      "source": "api:sales_trend",
+      "target": "module:commerce-analytics",
+      "createdAt": 1787452570965
+    },
+    {
+      "id": "edge_mt573yol_335",
+      "type": "belongs_to",
+      "source": "api:product_analytics",
+      "target": "module:commerce-analytics",
+      "createdAt": 1787452570965
+    },
+    {
+      "id": "edge_mt573yol_337",
+      "type": "belongs_to",
+      "source": "api:user_analytics",
+      "target": "module:commerce-analytics",
+      "createdAt": 1787452570965
+    },
+    {
+      "id": "edge_mt573yol_339",
+      "type": "belongs_to",
+      "source": "api:order_status_analytics",
+      "target": "module:commerce-analytics",
+      "createdAt": 1787452570965
+    },
+    {
+      "id": "edge_mt573yol_341",
+      "type": "belongs_to",
+      "source": "api:full_report",
+      "target": "module:commerce-analytics",
+      "createdAt": 1787452570965
+    },
+    {
+      "id": "edge_mt573yol_343",
+      "type": "belongs_to",
+      "source": "tool:analytics_sales_overview",
+      "target": "module:commerce-analytics",
+      "createdAt": 1787452570965
+    },
+    {
+      "id": "edge_mt573yol_345",
+      "type": "belongs_to",
+      "source": "tool:analytics_full_report",
+      "target": "module:commerce-analytics",
+      "createdAt": 1787452570965
+    },
+    {
+      "id": "edge_mt573yol_347",
+      "type": "belongs_to",
+      "source": "test:analytics - 销售概览和趋势",
+      "target": "module:commerce-analytics",
+      "createdAt": 1787452570965
+    },
+    {
+      "id": "edge_mt573yol_349",
+      "type": "belongs_to",
+      "source": "test:analytics - 商品和用户分析",
+      "target": "module:commerce-analytics",
+      "createdAt": 1787452570965
+    },
+    {
+      "id": "edge_mt573yol_352",
+      "type": "belongs_to",
+      "source": "api:list_promotions",
+      "target": "module:commerce-promotion",
+      "createdAt": 1787452570965
+    },
+    {
+      "id": "edge_mt573yol_354",
+      "type": "belongs_to",
+      "source": "api:get_promotion",
+      "target": "module:commerce-promotion",
+      "createdAt": 1787452570965
+    },
+    {
+      "id": "edge_mt573yol_356",
+      "type": "belongs_to",
+      "source": "api:create_promotion",
+      "target": "module:commerce-promotion",
+      "createdAt": 1787452570965
+    },
+    {
+      "id": "edge_mt573yol_358",
+      "type": "belongs_to",
+      "source": "api:update_promotion",
+      "target": "module:commerce-promotion",
+      "createdAt": 1787452570965
+    },
+    {
+      "id": "edge_mt573yol_360",
+      "type": "belongs_to",
+      "source": "api:update_promotion_status",
+      "target": "module:commerce-promotion",
+      "createdAt": 1787452570965
+    },
+    {
+      "id": "edge_mt573yol_362",
+      "type": "belongs_to",
+      "source": "api:add_promotion_item",
+      "target": "module:commerce-promotion",
+      "createdAt": 1787452570965
+    },
+    {
+      "id": "edge_mt573yol_364",
+      "type": "belongs_to",
+      "source": "api:calculate_promotion",
+      "target": "module:commerce-promotion",
+      "createdAt": 1787452570965
+    },
+    {
+      "id": "edge_mt573yol_366",
+      "type": "belongs_to",
+      "source": "api:active_promotion_items",
+      "target": "module:commerce-promotion",
+      "createdAt": 1787452570965
+    },
+    {
+      "id": "edge_mt573yol_368",
+      "type": "belongs_to",
+      "source": "tool:promotion_calculate",
+      "target": "module:commerce-promotion",
+      "createdAt": 1787452570965
+    },
+    {
+      "id": "edge_mt573yol_370",
+      "type": "belongs_to",
+      "source": "tool:promotion_list_active",
+      "target": "module:commerce-promotion",
+      "createdAt": 1787452570965
+    },
+    {
+      "id": "edge_mt573yol_372",
+      "type": "belongs_to",
+      "source": "test:promotion - 满减活动",
+      "target": "module:commerce-promotion",
+      "createdAt": 1787452570965
+    },
+    {
+      "id": "edge_mt573yol_374",
+      "type": "belongs_to",
+      "source": "test:promotion - 限时折扣和活动商品",
+      "target": "module:commerce-promotion",
+      "createdAt": 1787452570965
+    },
+    {
+      "id": "edge_mt573yol_377",
+      "type": "belongs_to",
+      "source": "api:getDashboard",
+      "target": "module:commerce-admin",
+      "createdAt": 1787452570965
+    },
+    {
+      "id": "edge_mt573yol_379",
+      "type": "belongs_to",
+      "source": "api:adminListOrders",
+      "target": "module:commerce-admin",
+      "createdAt": 1787452570965
+    },
+    {
+      "id": "edge_mt573yol_381",
+      "type": "belongs_to",
+      "source": "api:adminListProducts",
+      "target": "module:commerce-admin",
+      "createdAt": 1787452570965
+    },
+    {
+      "id": "edge_mt573yol_383",
+      "type": "belongs_to",
+      "source": "api:adminListUsers",
+      "target": "module:commerce-admin",
+      "createdAt": 1787452570965
+    },
+    {
+      "id": "edge_mt573yol_385",
+      "type": "belongs_to",
+      "source": "api:getSystemInfo",
+      "target": "module:commerce-admin",
+      "createdAt": 1787452570966
+    },
+    {
+      "id": "edge_mt573yom_387",
+      "type": "belongs_to",
+      "source": "tool:admin_dashboard",
+      "target": "module:commerce-admin",
+      "createdAt": 1787452570966
+    },
+    {
+      "id": "edge_mt573yom_389",
+      "type": "belongs_to",
+      "source": "tool:admin_system_info",
+      "target": "module:commerce-admin",
+      "createdAt": 1787452570966
+    },
+    {
+      "id": "edge_mt573yom_391",
+      "type": "belongs_to",
+      "source": "test:admin - 仪表盘数据",
+      "target": "module:commerce-admin",
+      "createdAt": 1787452570966
+    },
+    {
+      "id": "edge_mt573yom_393",
+      "type": "belongs_to",
+      "source": "test:admin - 系统信息",
+      "target": "module:commerce-admin",
+      "createdAt": 1787452570966
+    },
+    {
+      "id": "edge_mt573yom_396",
+      "type": "belongs_to",
+      "source": "tool:agent_full_shopping_flow",
+      "target": "module:commerce-agent",
+      "createdAt": 1787452570966
+    },
+    {
+      "id": "edge_mt573yom_398",
+      "type": "belongs_to",
+      "source": "tool:agent_list_available_tools",
+      "target": "module:commerce-agent",
+      "createdAt": 1787452570966
+    },
+    {
+      "id": "edge_mt573yom_400",
+      "type": "belongs_to",
+      "source": "test:agent - 端到端完整购物流程",
+      "target": "module:commerce-agent",
+      "createdAt": 1787452570966
+    },
+    {
+      "id": "edge_mt573yom_402",
+      "type": "belongs_to",
+      "source": "test:agent - 可用工具列表",
+      "target": "module:commerce-agent",
+      "createdAt": 1787452570966
+    },
+    {
+      "id": "edge_mt573yom_405",
+      "type": "belongs_to",
+      "source": "api:getHomeData",
+      "target": "module:commerce-storefront",
+      "createdAt": 1787452570966
+    },
+    {
+      "id": "edge_mt573yom_407",
+      "type": "belongs_to",
+      "source": "api:getProductList",
+      "target": "module:commerce-storefront",
+      "createdAt": 1787452570966
+    },
+    {
+      "id": "edge_mt573yom_409",
+      "type": "belongs_to",
+      "source": "api:getProductDetail",
+      "target": "module:commerce-storefront",
+      "createdAt": 1787452570966
+    },
+    {
+      "id": "edge_mt573yom_411",
+      "type": "belongs_to",
+      "source": "api:getCheckoutData",
+      "target": "module:commerce-storefront",
+      "createdAt": 1787452570966
+    },
+    {
+      "id": "edge_mt573yom_413",
+      "type": "belongs_to",
+      "source": "api:getUserCenter",
+      "target": "module:commerce-storefront",
+      "createdAt": 1787452570966
+    },
+    {
+      "id": "edge_mt573yom_415",
+      "type": "belongs_to",
+      "source": "test:storefront - 首页数据",
+      "target": "module:commerce-storefront",
+      "createdAt": 1787452570966
+    },
+    {
+      "id": "edge_mt573yom_417",
+      "type": "belongs_to",
+      "source": "test:storefront - 商品列表聚合",
+      "target": "module:commerce-storefront",
+      "createdAt": 1787452570966
+    },
+    {
+      "id": "edge_mt573yom_419",
+      "type": "belongs_to",
+      "source": "test:storefront - 结算页数据",
+      "target": "module:commerce-storefront",
+      "createdAt": 1787452570966
+    }
+  ],
+  "generatedAt": 1787452570976
+}

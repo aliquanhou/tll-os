@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>后台管理 - TLL商城</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="header" style="background:linear-gradient(135deg,#2c3e50,#34495e)">
+    <h1>⚙️ TLL商城 后台管理</h1>
+  </div>
+
+  <div id="adminContent">
+    <div class="loading"><div class="spinner"></div><p>加载中...</p></div>
+  </div>
+
+  <div class="section-title"><span>📊 系统信息</span></div>
+  <div class="checkout-section" id="systemInfo" style="font-size:12px;color:#666">
+    加载中...
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    async function init() {
+      const dashResp = await API.getDashboard();
+      const container = document.getElementById('adminContent');
+      if (dashResp.status !== 200) {
+        container.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><div class="text">数据加载失败</div></div>';
+        return;
+      }
+      const s = dashResp.data.stats;
+      container.innerHTML = `
+        <div class="admin-stats">
+          <div class="stat-card primary"><div class="label">商品总数</div><div class="value">${s.totalProducts}</div></div>
+          <div class="stat-card"><div class="label">SKU数量</div><div class="value">${s.totalSkus}</div></div>
+          <div class="stat-card success"><div class="label">用户总数</div><div class="value">${s.totalUsers}</div></div>
+          <div class="stat-card warning"><div class="label">订单总数</div><div class="value">${s.totalOrders}</div></div>
+          <div class="stat-card primary"><div class="label">总营收</div><div class="value">¥${s.totalRevenue.toLocaleString()}</div></div>
+          <div class="stat-card"><div class="label">今日订单</div><div class="value">${s.todayOrders}</div></div>
+          <div class="stat-card success"><div class="label">今日营收</div><div class="value">¥${s.todayRevenue}</div></div>
+          <div class="stat-card warning"><div class="label">低库存SKU</div><div class="value">${s.lowStockSkus}</div></div>
+        </div>
+        <div class="section-title"><span>📦 订单状态分布</span></div>
+        <div class="checkout-section">
+          ${Object.entries(dashResp.data.orderStatusCounts || {}).map(([status, count]) => {
+            const names = { pending: '待支付', paid: '已支付', shipped: '已发货', completed: '已完成', cancelled: '已取消' };
+            return `<div style="display:flex;justify-content:space-between;padding:6px 0"><span>${names[status] || status}</span><span style="font-weight:600">${count}</span></div>`;
+          }).join('')}
+        </div>
+        <div class="section-title"><span>🔥 热销商品 TOP5</span></div>
+        <div class="checkout-section">
+          ${(dashResp.data.topProducts || []).map((p, i) => `
+            <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0">
+              <span><span style="display:inline-block;width:20px;height:20px;background:var(--primary);color:white;border-radius:50%;text-align:center;line-height:20px;font-size:11px;margin-right:8px">${i+1}</span>${p.name}</span>
+              <span style="font-weight:600">${p.quantity}件</span>
+            </div>
+          `).join('') || '<div style="color:#888;text-align:center;padding:16px">暂无销售数据</div>'}
+        </div>
+      `;
+
+      // System info
+      const sysResp = await API.getSystemInfo();
+      if (sysResp.status === 200) {
+        const sys = sysResp.data;
+        document.getElementById('systemInfo').innerHTML = `
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div>应用: ${sys.appName} v${sys.version}</div>
+            <div>运行时: ${sys.runtime}</div>
+            <div>协议: ${sys.protocol}</div>
+            <div>Node: ${sys.nodeVersion}</div>
+            <div>模块数: ${sys.modules.length}</div>
+            <div>API数: ${sys.graph.byType.api}</div>
+            <div>工具数: ${sys.graph.byType.tool}</div>
+            <div>测试数: ${sys.graph.byType.test}</div>
+          </div>
+        `;
+      }
+    }
+    init();
+  </script>
+</body>
+</html>
