@@ -578,8 +578,10 @@ class ToolImpl implements Tool {
     }
 
     // P0-10: 权限检查
-    if (this.permissions.length > 0) {
-      const agentPermissions = context?.permissions ?? [];
+    // 仅当 context.permissions 显式提供时才强制执行（向后兼容）
+    // context.permissions 为 undefined 时视为未指定权限限制
+    if (this.permissions.length > 0 && context?.permissions !== undefined) {
+      const agentPermissions = context.permissions;
       const hasWildcard = agentPermissions.includes('*');
       if (!hasWildcard) {
         const missing = this.permissions.filter(p => !agentPermissions.includes(p));
